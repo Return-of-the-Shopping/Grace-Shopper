@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fetchProducts} from '../store/products'
+import {Link} from 'react-router-dom'
 
 class Products extends React.Component {
   componentDidMount() {
@@ -12,7 +13,11 @@ class Products extends React.Component {
 
     return (
       <div>
-        {products.map(product => <div key={product.id}>{product.name}</div>)}
+        {products.map(product => (
+          <div key={product.id}>
+            <Link to={`/products/${product.id}`}>{product.name}</Link>
+          </div>
+        ))}
       </div>
     )
   }
