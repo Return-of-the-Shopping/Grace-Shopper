@@ -3,10 +3,38 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const User = db.define('user', {
+  firstName: {
+    type: Sequelize.STRING
+  },
+  lastName: {
+    type: Sequelize.STRING
+  },
   email: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false
+  },
+  phone: {
+    type: Sequelize.STRING,
+    validate: {
+      isNumeric: true
+    }
+  },
+  address: {
+    type: Sequelize.TEXT
+  },
+  payment: {
+    type: Sequelize.STRING,
+    validate: {
+      isCreditCard: true
+    }
+  },
+  cart: {
+    type: Sequelize.ARRAY(Sequelize.STRING)
+  },
+  role: {
+    type: Sequelize.ENUM('customer', 'admin'),
+    defaultValue: 'customer'
   },
   password: {
     type: Sequelize.STRING,
@@ -23,9 +51,6 @@ const User = db.define('user', {
     get() {
       return () => this.getDataValue('salt')
     }
-  },
-  googleId: {
-    type: Sequelize.STRING
   }
 })
 
