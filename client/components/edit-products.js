@@ -51,7 +51,7 @@ export default class CampusUpdate extends React.Component {
         error: true
       })
     } else {
-      this.props.updateSingleProduct(this.props.singleProduct.id, this.state)
+      this.props.updateProduct(this.props.singleProduct.id, this.state)
 
       this.setState({
         error: false
