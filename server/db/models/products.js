@@ -3,7 +3,7 @@ const db = require('../db')
 
 const Product = db.define('product', {
   name: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
     validate: {
       notEmpty: true
@@ -11,7 +11,11 @@ const Product = db.define('product', {
   },
 
   description: {
-    type: Sequelize.STRING
+    type: Sequelize.TEXT
+  },
+
+  abv: {
+    type: Sequelize.DECIMAL(4, 2)
   },
 
   imageUrl: {
@@ -33,6 +37,11 @@ const Product = db.define('product', {
     validate: {
       min: 0
     }
+  },
+
+  category: {
+    type: Sequelize.TEXT,
+    defaultValue: 'Uncategorized'
   }
 })
 
