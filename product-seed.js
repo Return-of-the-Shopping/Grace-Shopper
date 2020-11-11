@@ -1,4 +1,7 @@
 const axios = require('axios')
+//key was placed in a secrets.js file in root.
+//then module.exports = key.
+
 const key = require('./secrets')
 const {Product} = require('./server/db/models')
 
@@ -26,4 +29,5 @@ const fetchProducts = async () => {
   console.log('It worked. First try, definitely, first try.')
 }
 
+//run in terminal: node product-seed.js
 fetchProducts()
