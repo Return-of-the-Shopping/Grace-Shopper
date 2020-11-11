@@ -24,10 +24,10 @@ const User = db.define('user', {
     type: Sequelize.TEXT
   },
   payment: {
-    type: Sequelize.STRING,
-    validate: {
-      isCreditCard: true
-    }
+    type: Sequelize.STRING
+    // validate: {
+    //   isCreditCard: true
+    // }
   },
   cart: {
     type: Sequelize.ARRAY(Sequelize.STRING)
