@@ -2,17 +2,69 @@
 
 const db = require('../server/db')
 const {User} = require('../server/db/models')
+const faker = require('faker')
+
+//created an array to hold all the objects that we create
+//generateUsers loop 20 times to create 20 new objects
+const usersArr = []
+const generateUsers = () => {
+  for (let i = 0; i < 20; i++) {
+    const firstName = faker.name.firstName()
+    const lastName = faker.name.lastName()
+    const email = faker.internet.email(firstName, lastName)
+    let phone = faker.phone.phoneNumber()
+    phone = phone
+      .split('')
+      .filter(number => {
+        const convert = parseInt(number)
+        if (isNaN(convert)) {
+          return false
+        }
+        return true
+      })
+      .join('')
+    // had to get rid of - values cause of isNumeric validator, I think it'll be preferred if we get rid of the validator so its more clean
+
+    const address = faker.address.streetAddress()
+    let payment = faker.finance.creditCardNumber()
+
+    // at first, the isCreditCard validator worked for us but not sure why it won't work for the random generator, so I got rid of it.
+
+    // payment = payment.split('').filter((number)=>{
+    //   const convert = parseInt(number);
+    //   if(isNaN(convert)){
+    //     return false;
+    //   }
+    //   return true;
+    // }).join('');
+
+    const password = faker.internet.password()
+    const userObj = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone,
+      address: address,
+      payment: payment,
+      password: password
+    }
+    usersArr.push(userObj)
+  }
+}
+// invoke the function to loop
+generateUsers()
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
+  // map the usersArray and create a single instance for each object in the array
+  await Promise.all(
+    usersArr.map(user => {
+      return User.create(user)
+    })
+  )
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
-
-  console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${usersArr.length} users`)
   console.log(`seeded successfully`)
 }
 
