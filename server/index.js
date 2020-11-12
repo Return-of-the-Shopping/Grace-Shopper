@@ -104,6 +104,7 @@ const startListening = () => {
   const io = socketio(server)
   require('./socket')(io)
 }
+
 // changed to false
 const syncDb = () => db.sync({force: false})
 
