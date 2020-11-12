@@ -1,8 +1,11 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Product} = require('../server/db/models')
 const faker = require('faker')
+
+const axios = require('axios')
+const key = require('../secrets')
 
 //created an array to hold all the objects that we create
 //generateUsers loop 20 times to create 20 new objects
@@ -54,6 +57,37 @@ const generateUsers = () => {
 // invoke the function to loop
 generateUsers()
 
+const beerPrice = () => {
+  return 10 - Math.floor(Math.random() * 4)
+}
+
+const fetchProducts = async () => {
+  // 23 total pages
+  for (let i = 1; i <= 23; i++) {
+    try {
+      const {data} = await axios.get(
+        `https://sandbox-api.brewerydb.com/v2/beers/?key=${process.env
+          .BREW_KEY || key}&withBreweries=Y&p=${i}`
+      )
+      const beers = data.data
+      for (let j = 0; j < 50; j++) {
+        await Product.create({
+          name: beers[j].name,
+          abv: beers[j].abv,
+          price: beerPrice(),
+          description: beers[j].description || 'n/a',
+          category: beers[j].style
+            ? beers[j].style.category.name
+            : 'Uncategorized',
+          imageUrl: beers[j].labels ? beers[j].labels.large : null
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
@@ -63,7 +97,7 @@ async function seed() {
       return User.create(user)
     })
   )
-
+  await fetchProducts()
   console.log(`seeded ${usersArr.length} users`)
   console.log(`seeded successfully`)
 }
