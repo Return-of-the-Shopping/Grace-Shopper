@@ -29,12 +29,10 @@ const User = db.define('user', {
     //   isCreditCard: true
     // }
   },
-  cart: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
-  },
-  role: {
-    type: Sequelize.ENUM('customer', 'admin'),
-    defaultValue: 'customer'
+
+  admin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   },
   password: {
     type: Sequelize.STRING,
