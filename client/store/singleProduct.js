@@ -5,6 +5,7 @@ import axios from 'axios'
  */
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT'
 const UPDATE_SINGLE_PRODUCT = 'UPDATE_SINGLE_PRODUCT'
+const ADD_TO_CART = 'ADD_TO_CART'
 
 /**
  * INITIAL STATE
@@ -16,6 +17,7 @@ const defaultSingleProduct = {}
  */
 const getSingleProduct = product => ({type: GET_SINGLE_PRODUCT, product})
 const updateProduct = info => ({type: UPDATE_SINGLE_PRODUCT, info})
+const addToCart = () => ({type: ADD_TO_CART})
 
 /**
  * THUNK CREATORS
@@ -35,6 +37,16 @@ export const updateSingleProduct = (productId, update) => async dispatch => {
     dispatch(updateProduct(res.data))
   } catch (err) {
     console.log(err)
+  }
+}
+
+//
+export const putToCart = info => async dispatch => {
+  try {
+    const res = await axios.post(`/api/orders`, info)
+    dispatch(addToCart())
+  } catch (err) {
+    console.error(err)
   }
 }
 

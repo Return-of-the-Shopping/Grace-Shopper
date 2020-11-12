@@ -50,7 +50,7 @@ router.post('/', async (req, res, next) => {
     const productOrder = await ProductOrder.findOne({
       where: {orderId: order.id, productId: product.id}
     })
-    productOrder.update({price: req.body.price, quantity: req.body.quantity})
+    productOrder.update({price: +req.body.price, quantity: req.body.quantity})
     // productorder table should have values now
     //we're creating an association between the product we clicked, and the order we found or created.
 
