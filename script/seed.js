@@ -63,7 +63,7 @@ const beerPrice = () => {
 
 const fetchProducts = async () => {
   // 23 total pages
-  for (let i = 1; i <= 23; i++) {
+  for (let i = 1; i <= 1; i++) {
     try {
       const {data} = await axios.get(
         `https://sandbox-api.brewerydb.com/v2/beers/?key=${process.env

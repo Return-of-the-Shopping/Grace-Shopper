@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Order, ProductOrder} = require('../db/models')
+const {User, Product, Order, ProductOrder} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -25,23 +25,37 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    //find an order for a user that is not yet fulfilled, or create one.
-    //if order is created, then set a user to that order
-    //then, take product that we clicked, and add to order via a magic method
-    //product order at specific id, add price and quantity
-    // productorder table should have values now
-    // const order = await Order.findOne({
-    //   where: {userId: req.body.id, isFulfilled: false},
-    // })
-    const order = await Order.create()
-    const user = await User.findByPk(req.body.id)
+    // Inside our req.body; we NEED userId, productId, quantity, price
+
+    //find an order for a user that is not yet fulfilled if it exists
+    let order = await Order.findOne({
+      where: {userId: req.body.userId, isFulfilled: false}
+    })
+    // if find order does not exist, create a new order
+    if (!order) order = await Order.create()
+
+    // find the user to associate the order with
+    const user = await User.findByPk(req.body.userId)
+
+    //after we get the order from db, then set a user to that order
     await order.setUser(user)
-    //we need to know who the user is?? req.body??
-    // order.setUser()
+
+    //then, find the product that we clicked,
+    const product = await Product.findByPk(req.body.productId)
+
+    //and associate that product to productOrders via a magic method
+    await order.addProduct(product)
+
+    //at current productOrder, add price and quantity only to that specific product
+    const productOrder = await ProductOrder.findOne({
+      where: {orderId: order.id, productId: product.id}
+    })
+    productOrder.update({price: req.body.price, quantity: req.body.quantity})
+    // productorder table should have values now
     //we're creating an association between the product we clicked, and the order we found or created.
-    // // order.setOrder()
-    res.send(order)
-    // res.status(201).json(order)
+
+    // res.send(order)
+    res.status(201).json(order)
   } catch (error) {
     next(error)
   }
