@@ -1,15 +1,15 @@
 const router = require('express').Router()
-const {Order} = require('../db/models')
+const {Order, ProductOrder} = require('../db/models')
 module.exports = router
 
-// router.get('/', async (req, res, next) => {
-//   try {
-//     const products = await Product.findAll()
-//     res.json(products)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
+router.get('/', async (req, res, next) => {
+  try {
+    const order = await Order.findAll()
+    res.json(order)
+  } catch (err) {
+    next(err)
+  }
+})
 
 // router.get('/:productId', async (req, res, next) => {
 //   try {
@@ -25,8 +25,20 @@ module.exports = router
 
 router.post('/', async (req, res, next) => {
   try {
-    const order = await Order.create()
-    res.status(201).json(order)
+    //find an order for a user that is not yet fulfilled, or create one.
+    //if order is created, then set a user to that order
+    //then, take product that we clicked, and add to order via a magic method
+    //product order at specific id, add price and quantity
+    //productorder table should have values now
+    const order = await Order.findOrCreate({
+      where: {userId: req.body.id, isFulfilled: false}
+    })
+    //we need to know who the user is?? req.body??
+    // order.setUser()
+    //we're creating an association between the product we clicked, and the order we found or created.
+    // // order.setOrder()
+    res.send(order)
+    // res.status(201).json(order)
   } catch (error) {
     next(error)
   }
