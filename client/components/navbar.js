@@ -1,31 +1,36 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {logout} from '../store'
+import {Navbar as NavBar, Nav, Form, Button, FormControl} from 'react-bootstrap'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <h1>Hoppy Endings</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/">Home</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
+    <NavBar className="main-nav" bg="dark" variant="dark">
+      <NavBar.Brand href="#home">Hoppy Endings</NavBar.Brand>
+      <Nav className="mr-auto">
+        {isLoggedIn ? (
+          <div>
+            {/* The NavBar will show these links after you log in */}
+            <NavLink to="/home">Home</NavLink>
+            <a href="/" onClick={handleClick}>
+              Logout
+            </a>
+          </div>
+        ) : (
+          <div>
+            <NavLink to="/home">Home</NavLink>
+            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/signup">Signup</NavLink>
+          </div>
+        )}
+      </Nav>
+      <Form inline>
+        <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+        <Button variant="outline-info">Search</Button>
+      </Form>
+    </NavBar>
   </div>
 )
 
