@@ -1,7 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {fetchSingleProduct, updateSingleProduct} from '../store/singleProduct'
+import {
+  fetchSingleProduct,
+  updateSingleProduct,
+  putToCart
+} from '../store/singleProduct'
 import {Button, InputGroup, FormControl} from 'react-bootstrap'
+import cart from '../cart'
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -9,13 +14,32 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: 1
     }
+    this.handleClick = this.handleClick.bind(this)
   }
   componentDidMount() {
     this.props.fetchProduct(this.props.match.params.productId)
   }
 
+  handleClick(product, user) {
+    const checkoutInfo = {
+      name: product.name,
+      price: product.price,
+      quantity: this.state.quantity,
+      imageUrl: product.imageUrl
+    }
+    cart.setItem(product.id, JSON.stringify(checkoutInfo))
+    const info = {
+      productId: product.id,
+      userId: user.id,
+      price: product.price,
+      quantity: this.state.quantity
+    }
+    this.props.addToCart(info)
+  }
+
   render() {
-    const {product} = this.props
+    const {product, user} = this.props
+    console.log(user)
 
     return (
       <div>
@@ -45,7 +69,11 @@ class SingleProduct extends React.Component {
             </Button>
           </InputGroup.Append>
         </InputGroup>
-        <Button size="lg" disabled={!product.quantity}>
+        <Button
+          onClick={() => this.handleClick(product, user)}
+          size="lg"
+          disabled={!product.quantity}
+        >
           {!product.quantity ? 'SOLD OUT' : 'Add to Cart'}
         </Button>
       </div>
@@ -55,7 +83,8 @@ class SingleProduct extends React.Component {
 
 const mapState = state => {
   return {
-    product: state.singleProduct
+    product: state.singleProduct,
+    user: state.user
   }
 }
 
@@ -63,7 +92,8 @@ const mapDispatch = dispatch => {
   return {
     fetchProduct: productId => dispatch(fetchSingleProduct(productId)),
     updateProduct: (productId, update) =>
-      dispatch(updateSingleProduct(productId, update))
+      dispatch(updateSingleProduct(productId, update)),
+    addToCart: info => dispatch(putToCart(info))
   }
 }
 
