@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Order, ProductOrder} = require('../db/models')
+const {User, Order, ProductOrder} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -29,10 +29,13 @@ router.post('/', async (req, res, next) => {
     //if order is created, then set a user to that order
     //then, take product that we clicked, and add to order via a magic method
     //product order at specific id, add price and quantity
-    //productorder table should have values now
-    const order = await Order.findOrCreate({
-      where: {userId: req.body.id, isFulfilled: false}
-    })
+    // productorder table should have values now
+    // const order = await Order.findOne({
+    //   where: {userId: req.body.id, isFulfilled: false},
+    // })
+    const order = await Order.create()
+    const user = await User.findByPk(req.body.id)
+    await order.setUser(user)
     //we need to know who the user is?? req.body??
     // order.setUser()
     //we're creating an association between the product we clicked, and the order we found or created.
