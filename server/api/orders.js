@@ -11,6 +11,18 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/:orderId', async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.params.orderId)
+    if (!order) {
+      return res.sendStatus(404)
+    }
+    res.json(order)
+  } catch (err) {
+    next(err)
+  }
+})
+
 // router.get('/:productId', async (req, res, next) => {
 //   try {
 //     const product = await Product.findByPk(req.params.productId)
@@ -28,13 +40,16 @@ router.post('/', async (req, res, next) => {
     // Inside our req.body; we NEED userId, productId, quantity, price
 
     //find an order for a user that is not yet fulfilled if it exists
+
     let order = await Order.findOne({
+      // ***Keep in mind that guests have no userId
       where: {userId: req.body.userId, isFulfilled: false}
     })
     // if find order does not exist, create a new order
     if (!order) order = await Order.create()
 
     // find the user to associate the order with
+
     const user = await User.findByPk(req.body.userId)
 
     //after we get the order from db, then set a user to that order
@@ -58,6 +73,59 @@ router.post('/', async (req, res, next) => {
     res.status(201).json(order)
   } catch (error) {
     next(error)
+  }
+})
+
+router.delete('/', async (req, res, next) => {
+  try {
+    // user, don’t know their order history? so get an order that isFulfilled = false that matches userId
+    const userId = req.body.userId
+    const userOrder = await Order.findOne({
+      where: {
+        userId: userId,
+        isFulfilled: false
+      }
+    })
+    await ProductOrder.destroy({
+      where: {
+        orderId: userOrder.id,
+        productId: req.body.productId
+      }
+    })
+    res.sendStatus(204).end()
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/', async (req, res, next) => {
+  try {
+    const userId = req.body.userId
+    const userOrder = await Order.findOne({
+      where: {
+        userId: userId,
+        isFulfilled: false
+      }
+    })
+
+    if (!req.body.quantity) {
+      await ProductOrder.destroy({
+        where: {
+          orderId: userOrder.id,
+          productId: req.body.productId
+        }
+      })
+    } else {
+      await ProductOrder.update(req.body, {
+        where: {
+          orderId: userOrder.id,
+          productId: req.body.productId
+        }
+      })
+    }
+    res.sendStatus(304)
+  } catch (err) {
+    next(err)
   }
 })
 
