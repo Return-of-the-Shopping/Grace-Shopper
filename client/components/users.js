@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getUsers} from '../store/user'
+import {getUsers} from '../store/users'
 
 export class AllUsers extends Component {
   componentDidMount() {
@@ -8,15 +8,22 @@ export class AllUsers extends Component {
   }
 
   render() {
-    const {user} = this.props
-    console.log('props', this.props)
-
+    const {users} = this.props
+    console.log(users)
     return (
       <div>
-        <h1>Hello</h1>
-        {/* {users.map((user) => (
-          <div key={user.id}>{users.name}</div>
-        ))} */}
+        <table>
+          <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            {users.map(user => (
+              <React.Fragment>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+              </React.Fragment>
+            ))}
+          </tr>
+        </table>
       </div>
     )
   }
