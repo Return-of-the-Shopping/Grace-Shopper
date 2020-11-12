@@ -19,3 +19,15 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+/* img.d-block w-100 {
+  border-color: black;
+} */
+
+.carousel {
+  width: 40%;
+  /* height: 100px; */
+  /* left: 60px; */
+  margin: 10px auto;
+  /* size: 120px; */
+}
