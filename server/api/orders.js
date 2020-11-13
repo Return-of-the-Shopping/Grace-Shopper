@@ -13,11 +13,23 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:orderId', async (req, res, next) => {
   try {
-    const order = await Order.findByPk(req.params.orderId)
-    if (!order) {
+    // const order = await Order.findByPk(req.params.orderId)
+    // if (!order) {
+    //   return res.sendStatus(404)
+    // }
+    // res.json(order)
+    const orderItems = await Order.findAll({
+      where: {id: req.params.orderId},
+      include: [
+        {
+          model: Product
+        }
+      ]
+    })
+    if (!orderItems.length) {
       return res.sendStatus(404)
     }
-    res.json(order)
+    res.json(orderItems)
   } catch (err) {
     next(err)
   }
@@ -40,16 +52,15 @@ router.post('/', async (req, res, next) => {
     // Inside our req.body; we NEED userId, productId, quantity, price
 
     //find an order for a user that is not yet fulfilled if it exists
-
     let order = await Order.findOne({
       // ***Keep in mind that guests have no userId
       where: {userId: req.body.userId, isFulfilled: false}
     })
+
     // if find order does not exist, create a new order
     if (!order) order = await Order.create()
 
     // find the user to associate the order with
-
     const user = await User.findByPk(req.body.userId)
 
     //after we get the order from db, then set a user to that order
