@@ -1,7 +1,7 @@
 import React from 'react'
 import Form from './product-form'
 
-export default class CampusForm extends React.Component {
+export default class AddProduct extends React.Component {
   constructor() {
     super()
     this.state = {
