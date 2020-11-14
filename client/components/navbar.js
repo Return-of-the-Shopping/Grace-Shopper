@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import {NavLink, Link} from 'react-router-dom'
 import {logout} from '../store'
 import {Navbar as NavBar, Nav, Form, Button, FormControl} from 'react-bootstrap'
+import Badge from '@material-ui/core/Badge'
+import cart from '../cart'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
@@ -41,7 +43,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           </NavLink>
         </Nav>
       )}
-      <NavLink to="/cart">Cart</NavLink>
+      <Badge badgeContent={Object.keys(cart).length} color="primary">
+        <NavLink to="/cart">Cart</NavLink>
+      </Badge>
       {/* <Form inline>
         <FormControl type="text" placeholder="Search" className="mr-sm-2" />
         <Button variant="outline-info">Search</Button>

@@ -6,8 +6,15 @@ import user from './user'
 import users from './users'
 import products from './products'
 import singleProduct from './singleProduct'
+import orderTotal from './orderTotal'
 
-const reducer = combineReducers({user, users, products, singleProduct})
+const reducer = combineReducers({
+  user,
+  users,
+  products,
+  singleProduct,
+  orderTotal
+})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
