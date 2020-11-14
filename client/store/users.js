@@ -5,7 +5,7 @@ const GET_ALL_USERS = 'GET_ALL_USERS'
 /**
  * INITIAL STATE
  */
-const defaultUser = []
+const defaultUsers = []
 
 /**
  * ACTION CREATORS
@@ -29,7 +29,7 @@ export const getUsers = () => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultUser, action) {
+export default function(state = defaultUsers, action) {
   switch (action.type) {
     case GET_ALL_USERS:
       return action.users

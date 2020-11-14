@@ -9,18 +9,17 @@ import {Form, Button} from 'react-bootstrap'
 const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
   return (
-    <div>
-      <Form onSubmit={handleSubmit} name={name}>
+    <div className="form-container  box">
+      <Form onSubmit={handleSubmit} name={name} className="flex-col">
         <Form.Group controlId="formBasicEmail">
-          <Form.Label htmlFor="email">Email address</Form.Label>
+          <Form.Label>Email address</Form.Label>
           <Form.Control name="email" type="email" placeholder="Enter email" />
           <Form.Text className="text-muted">
             Please use a valid email address
           </Form.Text>
         </Form.Group>
-
         <Form.Group controlId="formBasicPassword">
-          <Form.Label htmlFor="password">Password</Form.Label>
+          <Form.Label>Password</Form.Label>
           <Form.Control
             name="password"
             type="password"
@@ -35,7 +34,9 @@ const AuthForm = props => {
         </Button>
         {error && error.response && <div> {error.response.data} </div>}
       </Form>
-      <a href="/auth/google">{displayName} with Google</a>
+      <div>
+        <a href="/auth/google">{displayName} with Google</a>
+      </div>
     </div>
   )
 }

@@ -5,7 +5,7 @@ import {
   deleteProductFromServer,
   fetchProducts
 } from '../store/products'
-import {Link} from 'react-router-dom'
+import {ProductCard} from '../components'
 
 class Products extends React.Component {
   componentDidMount() {
@@ -14,13 +14,10 @@ class Products extends React.Component {
 
   render() {
     const {products} = this.props
-
     return (
-      <div>
+      <div className="card-container">
         {products.map(product => (
-          <div key={product.id}>
-            <Link to={`/products/${product.id}`}>{product.name}</Link>
-          </div>
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     )

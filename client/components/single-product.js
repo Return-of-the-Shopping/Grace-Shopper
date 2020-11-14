@@ -42,40 +42,57 @@ class SingleProduct extends React.Component {
     console.log(user)
 
     return (
-      <div>
-        It took you here.
-        <h1>{product.name}</h1>
-        <p>{product.price}</p>
-        <p>{product.quantity}</p>
-        <InputGroup className="mb-3">
-          <InputGroup.Prepend>
-            <Button
-              variant="outline-secondary"
-              onClick={() => this.setState({quantity: this.state.quantity - 1})}
-            >
-              -
-            </Button>
-          </InputGroup.Prepend>
-          <FormControl
-            aria-describedby="basic-addon1"
-            value={this.state.quantity}
-          />
-          <InputGroup.Append>
-            <Button
-              variant="outline-secondary"
-              onClick={() => this.setState({quantity: this.state.quantity + 1})}
-            >
-              +
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
-        <Button
-          onClick={() => this.handleClick(product, user)}
-          size="lg"
-          disabled={!product.quantity}
-        >
-          {!product.quantity ? 'SOLD OUT' : 'Add to Cart'}
-        </Button>
+      <div className="product-container">
+        <div className="product-container-left">
+          {product.imageUrl && <img src={product.imageUrl} />}
+        </div>
+
+        <div className="product-container-right">
+          <h1>{product.name}</h1>
+          <h2>{product.abv}%</h2>
+          <hr />
+          <h6>Product Description:</h6>
+          <p>{product.description}</p>
+          <h3>${(product.price / 100).toFixed(2)}</h3>
+          {product.quantity && (
+            <div>
+              <i>{product.quantity} in stock</i>
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() =>
+                      this.setState({quantity: this.state.quantity - 1})
+                    }
+                  >
+                    -
+                  </Button>
+                </InputGroup.Prepend>
+                <FormControl
+                  aria-describedby="basic-addon1"
+                  value={this.state.quantity}
+                />
+                <InputGroup.Append>
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() =>
+                      this.setState({quantity: this.state.quantity + 1})
+                    }
+                  >
+                    +
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </div>
+          )}
+          <Button
+            onClick={() => this.handleClick(product, user)}
+            size="lg"
+            disabled={!product.quantity}
+          >
+            {!product.quantity ? 'SOLD OUT' : 'Add to Cart'}
+          </Button>
+        </div>
       </div>
     )
   }
