@@ -1,30 +1,32 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getUsers} from '../store/users'
+import {Table} from 'react-bootstrap'
+import {UserLine} from '../components'
 
 export class AllUsers extends Component {
   componentDidMount() {
-    this.props.getUsers()
+    this.props.fetchUsers()
   }
 
   render() {
     const {users} = this.props
     console.log(users)
     return (
-      <div>
-        <table>
+      <Table striped bordered hover size="sm">
+        <thead>
           <tr>
-            <th>FirstName</th>
-            <th>LastName</th>
-            {users.map(user => (
-              <React.Fragment>
-                <td>{user.firstName}</td>
-                <td>{user.lastName}</td>
-              </React.Fragment>
-            ))}
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Address</th>
           </tr>
-        </table>
-      </div>
+        </thead>
+        <tbody>
+          {users.map(user => <UserLine key={user.id} user={user} />)}
+        </tbody>
+      </Table>
     )
   }
 }
@@ -36,10 +38,8 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = dispatch => {
-  return {
-    getUsers: () => dispatch(getUsers())
-  }
-}
+const mapDispatch = dispatch => ({
+  fetchUsers: () => dispatch(getUsers())
+})
 
 export default connect(mapState, mapDispatch)(AllUsers)
