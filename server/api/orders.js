@@ -134,7 +134,7 @@ router.put('/', async (req, res, next) => {
         }
       })
     }
-    res.sendStatus(304)
+    res.sendStatus(204)
   } catch (err) {
     next(err)
   }
