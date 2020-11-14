@@ -10,6 +10,9 @@ class Checkout extends React.Component {
       lastName: '',
       email: '',
       address: '',
+      city: '',
+      state: '',
+      zipcode: '',
       payment: '',
       validated: false,
       update: false
@@ -19,21 +22,42 @@ class Checkout extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     const user = this.props.user
     console.log('mount', user)
 
-    if (!this.state.update) {
+    this.setState({
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      email: user.email || '',
+      address: user.address || '',
+      city: user.city || '',
+      state: user.state || '',
+      zipcode: user.zipcode || '',
+      payment: user.payment || '',
+      validated: false
+      // update: true,
+    })
+  }
+
+  componentDidUpdate() {
+    const user = this.props.user
+    console.log('mount', user)
+    if (!this.state.update && user.firstName) {
       this.setState({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        address: user.address || '',
-        payment: user.payment || '',
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        zipcode: user.zipcode,
+        payment: user.payment,
         validated: false,
         update: true
       })
     }
+    console.log(this.state)
   }
 
   handleSubmit = event => {
@@ -87,15 +111,15 @@ class Checkout extends React.Component {
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group md="4" controlId="validationCustomUsername">
-            <Form.Label>Username</Form.Label>
+          <Form.Group md="4" controlId="validationCustomEmail">
+            <Form.Label>Email</Form.Label>
             <InputGroup>
               <InputGroup.Prepend>
                 <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
                 type="text"
-                placeholder="Username"
+                placeholder="Email"
                 aria-describedby="inputGroupPrepend"
                 required
                 name="email"
@@ -103,7 +127,7 @@ class Checkout extends React.Component {
                 onChange={this.handleChange}
               />
               <Form.Control.Feedback type="invalid">
-                Please choose a username.
+                Please provide your email.
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
@@ -127,7 +151,14 @@ class Checkout extends React.Component {
 
           <Form.Group md="6" controlId="validationCustom03">
             <Form.Label>City</Form.Label>
-            <Form.Control type="text" placeholder="City" required />
+            <Form.Control
+              type="text"
+              placeholder="City"
+              required
+              name="city"
+              value={this.state.city}
+              onChange={this.handleChange}
+            />
             <Form.Control.Feedback type="invalid">
               Please provide a valid city.
             </Form.Control.Feedback>
@@ -135,7 +166,14 @@ class Checkout extends React.Component {
 
           <Form.Group md="3" controlId="validationCustom04">
             <Form.Label>State</Form.Label>
-            <Form.Control type="text" placeholder="State" required />
+            <Form.Control
+              type="text"
+              placeholder="State"
+              required
+              name="state"
+              value={this.state.state}
+              onChange={this.handleChange}
+            />
             <Form.Control.Feedback type="invalid">
               Please provide a valid state.
             </Form.Control.Feedback>
@@ -143,7 +181,14 @@ class Checkout extends React.Component {
 
           <Form.Group md="3" controlId="validationCustom05">
             <Form.Label>Zip</Form.Label>
-            <Form.Control type="text" placeholder="Zip" required />
+            <Form.Control
+              type="text"
+              placeholder="Zip"
+              required
+              name="zipcode"
+              value={this.state.zipcode}
+              onChange={this.handleChange}
+            />
             <Form.Control.Feedback type="invalid">
               Please provide a valid zip.
             </Form.Control.Feedback>

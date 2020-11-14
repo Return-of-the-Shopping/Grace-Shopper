@@ -5,23 +5,29 @@ class ProductLine extends React.Component {
   constructor() {
     super()
     this.state = {
-      quantity: 0,
-      update: false
+      quantity: 0
+      // update: false,
     }
 
     // this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     const product = this.props.product
+    console.log('running?')
 
-    if (!this.state.update) {
-      this.setState({
-        quantity: product.quantity,
-        update: true
-      })
-    }
+    this.setState({
+      quantity: product.quantity
+      // update: true,
+    })
+
+    // if (!this.state.update) {
+    //   this.setState({
+    //     quantity: product.quantity,
+    //     update: true,
+    //   })
+    // }
   }
 
   // handleChange(event) {
@@ -46,6 +52,7 @@ class ProductLine extends React.Component {
         <InputGroup className="mb-3">
           <InputGroup.Prepend>
             <Button
+              disabled={!product.quantity}
               variant="outline-secondary"
               onClick={() => {
                 let reduceQuant = (product.quantity -= 1)
@@ -75,6 +82,7 @@ class ProductLine extends React.Component {
               const change = {...product, quantity: info.quantity}
               if (info.quantity <= 0) {
                 this.props.cart.removeItem(info.productId)
+                this.props.resetCartState()
               } else {
                 this.props.cart.setItem(info.productId, JSON.stringify(change))
               }
@@ -82,6 +90,28 @@ class ProductLine extends React.Component {
             }}
           >
             update
+          </Button>
+
+          <Button
+            variant="outline-secondary"
+            onClick={event => {
+              event.preventDefault()
+
+              this.props.cart.removeItem(info.productId)
+              this.props.removeCart(info)
+              this.props.resetCartState()
+
+              // info.quantity = this.state.quantity
+              // const change = {...product, quantity: info.quantity}
+              // if (info.quantity <= 0) {
+              //   this.props.cart.removeItem(info.productId)
+              //   this.props.resetCartState()
+              // } else {
+              //   this.props.cart.setItem(info.productId, JSON.stringify(change))
+              // }
+            }}
+          >
+            {`delete item(s)`}
           </Button>
         </InputGroup>
         {/* <ListGroup.Item>{product.quantity}</ListGroup.Item> */}

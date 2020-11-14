@@ -1,28 +1,62 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {removeFromCart, editInCart} from '../store/singleProduct'
+import {updateOrderTotal} from '../store/orderTotal'
 import cart from '../cart'
 import ProductLine from './product-line'
 
 class Cart extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      // orderTotal: 0,
+      cartUpdate: false
+    }
+
+    this.resetCartState = this.resetCartState.bind(this)
+    // this.resetOrderTotal = this.resetOrderTotal.bind(this)
+  }
+
+  // resetOrderTotal(state, operation, amount) {
+  //   if (operation === 'add') {
+  //     this.setState({orderTotal: state.orderTotal})
+  //   } else {
+  //     this.setState({})
+  //   }
+  // }
+
+  resetCartState(state) {
+    this.setState({cartUpdate: !state.cartUpdate})
+  }
+
   render() {
     return (
       <div>
-        {Object.keys(cart).map(productId => {
-          const info = {
-            userId: this.props.user.id,
-            productId
-          }
-          return (
-            <ProductLine
-              product={JSON.parse(cart[productId])}
-              info={info}
-              editCart={this.props.editCart}
-              key={productId}
-              cart={cart}
-            />
-          )
-        })}
+        <div>
+          {Object.keys(cart).map(productId => {
+            const info = {
+              userId: this.props.user.id,
+              productId
+            }
+            return (
+              <ProductLine
+                product={JSON.parse(cart[productId])}
+                info={info}
+                editCart={this.props.editCart}
+                removeCart={this.props.removeCart}
+                key={productId}
+                cart={cart}
+                resetCartState={() => this.resetCartState(this.state)}
+              />
+            )
+          })}
+        </div>
+        <div>
+          <Link to="/checkout">
+            <button type="button">Checkout</button>
+          </Link>
+        </div>
       </div>
     )
   }
@@ -37,9 +71,10 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getCart: orderId => dispatch(fetchCart(orderId)),
+    // getCart: orderId => dispatch(fetchCart(orderId)),
     removeCart: info => dispatch(removeFromCart(info)),
-    editCart: info => dispatch(editInCart(info))
+    editCart: info => dispatch(editInCart(info)),
+    updateOrderTotal: orderTotal => dispatch(updateOrderTotal(orderTotal))
   }
 }
 

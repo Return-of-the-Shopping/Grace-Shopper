@@ -100,7 +100,7 @@ router.delete('/', async (req, res, next) => {
     await ProductOrder.destroy({
       where: {
         orderId: userOrder.id,
-        productId: req.body.productId
+        productId: +req.body.productId
       }
     })
     res.sendStatus(204).end()
