@@ -25,7 +25,7 @@ const Product = db.define('product', {
   },
 
   price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.INTEGER,
     validate: {
       isDecimal: true,
       min: 0.0
@@ -43,6 +43,10 @@ const Product = db.define('product', {
     type: Sequelize.TEXT,
     defaultValue: 'Uncategorized'
   }
+})
+
+Product.beforeCreate(product => {
+  product.price = product.price * 100
 })
 
 module.exports = Product
