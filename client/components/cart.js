@@ -1,40 +1,27 @@
 import React from 'react'
-import {ListGroup, Image} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {fetchSingleProduct} from '../store/singleProduct'
+import {removeFromCart, editInCart} from '../store/singleProduct'
+import cart from '../cart'
+import ProductLine from './product-line'
 
 class Cart extends React.Component {
-  componentDidMount() {
-    this.props.fetchProduct(1)
-  }
   render() {
-    let product = this.props.product || {}
     return (
-      <ListGroup horizontal>
-        <Image src={product.imageUrl} thumbnail />
-        <ListGroup.Item>{product.name}</ListGroup.Item>
-        <ListGroup.Item>{`$` + product.price}</ListGroup.Item>
-        <ListGroup.Item>{product.quantity}</ListGroup.Item>
-        <ListGroup.Item>
-          {`$` + product.price * product.quantity}
-        </ListGroup.Item>
-      </ListGroup>
+      <div>
+        {Object.keys(cart).map(productId => (
+          <ProductLine product={JSON.parse(cart[productId])} key={productId} />
+        ))}
+      </div>
     )
   }
 }
 
-// dummy data
-const mapState = state => {
-  return {
-    product: state.singleProduct
-  }
-}
-
-// dummy data
 const mapDispatach = dispatch => {
   return {
-    fetchProduct: productId => dispatch(fetchSingleProduct(productId))
+    getCart: orderId => dispatch(fetchCart(orderId)),
+    removeCart: info => dispatch(removeFromCart(info)),
+    editCart: info => dispatch(editInCart(info))
   }
 }
 
-export default connect(mapState, mapDispatach)(Cart)
+export default connect(null, mapDispatach)(Cart)
