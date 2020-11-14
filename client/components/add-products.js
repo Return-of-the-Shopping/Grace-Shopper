@@ -1,7 +1,9 @@
 import React from 'react'
-import Form from './product-form'
+import ProductForm from './product-form'
+import {connect} from 'react-redux'
+import {addProductToServer} from '../store/products'
 
-export default class AddProduct extends React.Component {
+class AddProduct extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -12,7 +14,8 @@ export default class AddProduct extends React.Component {
       imageUrl: '',
       price: '',
       quantity: '',
-      error: false
+      error: null,
+      validated: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -25,32 +28,46 @@ export default class AddProduct extends React.Component {
     })
   }
 
-  handleSubmit(event) {
-    event.preventDefault()
+  async handleSubmit(event) {
+    const form = event.currentTarget
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault()
+    //   event.stopPropagation()
+    // }
 
-    if (!this.state.name) {
+    event.preventDefault()
+    if (form.checkValidity() === false) {
+      this.setState({validated: true})
+      event.stopPropagation()
       this.setState({
         error: true
       })
     } else {
-      this.props.addProduct(this.state)
-
-      this.setState({
-        name: '',
-        category: '',
-        description: '',
-        abv: '',
-        imageUrl: '',
-        price: '',
-        quantity: '',
-        error: false
-      })
+      try {
+        const res = await this.props.addProduct(this.state)
+        console.log(res)
+      } catch (err) {
+        this.setState({error: err})
+      }
+      if (!this.state.error) {
+        this.setState({
+          name: '',
+          category: '',
+          description: '',
+          abv: '',
+          imageUrl: '',
+          price: '',
+          quantity: '',
+          error: false,
+          validated: false
+        })
+      }
     }
   }
 
   render() {
     return (
-      <Form
+      <ProductForm
         for="add"
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
@@ -61,8 +78,17 @@ export default class AddProduct extends React.Component {
         imageUrl={this.state.imageUrl}
         price={this.state.price}
         quantity={this.state.quantity}
+        validated={this.state.validated}
         error={this.state.error}
       />
     )
   }
 }
+
+const mapDispatch = dispatch => {
+  return {
+    addProduct: product => dispatch(addProductToServer(product))
+  }
+}
+
+export default connect(null, mapDispatch)(AddProduct)
