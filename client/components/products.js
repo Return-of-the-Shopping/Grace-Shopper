@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {
   addProductToServer,
   deleteProductFromServer,
@@ -15,10 +16,15 @@ class Products extends React.Component {
   render() {
     const {products} = this.props
     return (
-      <div className="card-container">
-        {products.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+      <div>
+        <div className="product-util">
+          <Link to="/create">Add New Product</Link>
+        </div>
+        <div className="card-container">
+          {products.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
     )
   }
