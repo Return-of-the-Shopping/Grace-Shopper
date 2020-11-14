@@ -23,6 +23,22 @@ const User = db.define('user', {
   address: {
     type: Sequelize.TEXT
   },
+  city: {
+    type: Sequelize.TEXT
+  },
+  state: {
+    type: Sequelize.TEXT
+  },
+  zipcode: {
+    type: Sequelize.INTEGER
+  },
+  DOB: {
+    type: Sequelize.DATEONLY
+    // validate: {
+    //   isBefore: Date.now() - 21
+    // }
+  },
+
   payment: {
     type: Sequelize.STRING
     // validate: {
