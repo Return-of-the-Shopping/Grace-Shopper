@@ -41,20 +41,10 @@ export class SingleUser extends Component {
   // }
 
   componentDidMount() {
-    //when you load up the page, look at the url route
-    // if (
-    //   this.props.user.id === this.props.params.match.userId ||
-    //   this.props.user.admin
-    // ) {
-    this.props.fetchSingleUser(this.props.match.params.userId)
+    this.props.fetchSingleUser(this.props.user.id)
+    const user = this.props.user
+    console.log('mount', user)
 
-    // }
-
-    //if your user id !== route userId -> NO ACCESS
-    //if you are not an admin either -> NO ACCESS
-    //otherwise, populate
-    // this.props.fetchSingleUser(this.props.user.id)
-    let user = this.props.user
     this.setState({
       firstName: user.firstName || '',
       lastName: user.lastName || '',
@@ -85,16 +75,7 @@ export class SingleUser extends Component {
   }
 
   render() {
-    let user = this.props.user
-    // if (
-    //   this.props.user.id === this.props.params.match.userId ||
-    //   this.props.user.admin
-    // ) {
-    //   user = this.props.singleUser
-    // } else {
-    //   user = this.props.user
-    // }
-
+    const {user} = this.props
     console.log('user props', user)
     return (
       <div className="product-container">
@@ -122,7 +103,7 @@ export class SingleUser extends Component {
 const mapState = state => {
   return {
     //either you're user, or admin
-    user: state.user,
+    // user: state.user
     singleUser: state.singleUser
   }
 }
@@ -131,4 +112,4 @@ const mapDispatch = dispatch => ({
   fetchSingleUser: userId => dispatch(getSingleUserDb(userId))
 })
 
-export default connect(mapState, mapDispatch)(SingleUser)
+export default connect(mapState, mapDispatch)(SingleUserCopy)
