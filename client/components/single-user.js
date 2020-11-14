@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {UserForm} from '../components'
-import {getSingleUserDb} from '../store/singleUser'
+import {getSingleUserDb, updateSingleUserDb} from '../store/singleUser'
+import {NotAdmin} from '../components'
 
 export class SingleUser extends Component {
   constructor() {
@@ -68,6 +69,8 @@ export class SingleUser extends Component {
 
   handleSubmit = event => {
     // const [validated, setValidated] = React.useState(false)
+    console.log(this.state)
+    console.log(this.props.match.params.userId)
     const form = event.currentTarget
     if (form.checkValidity() === false) {
       event.preventDefault()
@@ -75,6 +78,7 @@ export class SingleUser extends Component {
     }
     // we need to set order fuilfilled to true in backend
     // also clear the local storage
+    this.props.updateSingleUser(this.props.match.params.userId, this.state)
     this.setState({validated: true})
   }
 
@@ -86,36 +90,36 @@ export class SingleUser extends Component {
 
   render() {
     let user = this.props.user
-    // if (
-    //   this.props.user.id === this.props.params.match.userId ||
-    //   this.props.user.admin
-    // ) {
-    //   user = this.props.singleUser
-    // } else {
-    //   user = this.props.user
-    // }
 
-    console.log('user props', user)
-    return (
-      <div className="product-container">
-        <div className="product-container-left" />
-        <div className="product-container-right">
-          <h1>
-            {user.firstName} {user.lastName}
-          </h1>
-          <hr />
-          <p>{user.email}</p>
-          <p>{user.address}</p>
-          <UserForm
-            user={this.state}
-            handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
-          />
-          {/* add buttons to edit/delete account
-          view/display based on admin rights or customer user-id */}
+    if (
+      this.props.user.id === +this.props.match.params.userId ||
+      this.props.user.admin
+    ) {
+      user = this.props.singleUser
+      return (
+        <div className="product-container">
+          <div className="product-container-left" />
+          <div className="product-container-right">
+            <h1>
+              {user.firstName} {user.lastName}
+            </h1>
+            <hr />
+            <p>{user.email}</p>
+            <p>{user.address}</p>
+            <UserForm
+              user={this.state}
+              handleChange={this.handleChange}
+              handleSubmit={this.handleSubmit}
+            />
+            {/* add buttons to edit/delete account
+            view/display based on admin rights or customer user-id */}
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      user = this.props.user
+      return <NotAdmin />
+    }
   }
 }
 
@@ -128,7 +132,9 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => ({
-  fetchSingleUser: userId => dispatch(getSingleUserDb(userId))
+  fetchSingleUser: userId => dispatch(getSingleUserDb(userId)),
+  updateSingleUser: (userId, update) =>
+    dispatch(updateSingleUserDb(userId, update))
 })
 
 export default connect(mapState, mapDispatch)(SingleUser)

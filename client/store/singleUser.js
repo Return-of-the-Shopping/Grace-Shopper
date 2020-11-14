@@ -38,7 +38,14 @@ export const getSingleUserDb = userId => async dispatch => {
   }
 }
 
-export const updateSingleUserDb = () => ({})
+export const updateSingleUserDb = (userId, update) => async dispatch => {
+  try {
+    const {data} = await axios.put(`/api/users/${userId}`, update)
+    dispatch(updateSingleUser(data))
+  } catch (error) {
+    console.log(error)
+  }
+}
 export const removeSingleUserDb = () => ({})
 
 /**
