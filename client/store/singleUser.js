@@ -22,7 +22,7 @@ const updateSingleUser = singleUser => ({
   type: UPDATE_SINGLE_USER,
   singleUser
 })
-const removeSingleUser = () => ({type: REMOVE_SINGLE_USER})
+// const removeSingleUser = (userId) => ({type: REMOVE_SINGLE_USER, userId})
 
 /**
  * THUNK CREATORS
@@ -46,7 +46,14 @@ export const updateSingleUserDb = (userId, update) => async dispatch => {
     console.log(error)
   }
 }
-export const removeSingleUserDb = () => ({})
+// export const removeSingleUserDb = (userId) => async (dispatch) => {
+//   try {
+//     await axios.delete(`/api/users/${userId}`)
+//     dispatch(removeSingleUser(userId))
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
 /**
  * REDUCER
@@ -57,8 +64,7 @@ export default function(state = defaultSingle, action) {
       return action.singleUser
     case UPDATE_SINGLE_USER:
       return action.singleUser
-    case REMOVE_SINGLE_USER:
-      return defaultSingle
+
     default:
       return state
   }
