@@ -15,7 +15,8 @@ class AddProduct extends React.Component {
       price: '',
       quantity: '',
       error: null,
-      validated: false
+      validated: false,
+      success: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -24,30 +25,25 @@ class AddProduct extends React.Component {
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      success: ''
     })
   }
 
   async handleSubmit(event) {
     const form = event.currentTarget
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault()
-    //   event.stopPropagation()
-    // }
 
     event.preventDefault()
     if (form.checkValidity() === false) {
       this.setState({validated: true})
       event.stopPropagation()
-      this.setState({
-        error: true
-      })
     } else {
       try {
+        this.setState({error: null})
         const res = await this.props.addProduct(this.state)
         console.log(res)
-      } catch (err) {
-        this.setState({error: err})
+      } catch (error) {
+        this.setState({error: error})
       }
       if (!this.state.error) {
         this.setState({
@@ -58,7 +54,10 @@ class AddProduct extends React.Component {
           imageUrl: '',
           price: '',
           quantity: '',
-          error: false,
+          error: null,
+          success: `Successfully added ${
+            this.state.name
+          } to our product database!`,
           validated: false
         })
       }
@@ -80,6 +79,7 @@ class AddProduct extends React.Component {
         quantity={this.state.quantity}
         validated={this.state.validated}
         error={this.state.error}
+        success={this.state.success}
       />
     )
   }

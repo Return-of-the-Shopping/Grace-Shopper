@@ -9,8 +9,16 @@ import {
 import {ProductCard} from '../components'
 
 class Products extends React.Component {
+  constructor() {
+    super()
+    this.handleDelete = this.handleDelete.bind(this)
+  }
   componentDidMount() {
     this.props.fetchProducts()
+  }
+
+  handleDelete(productId) {
+    this.props.deleteProduct(productId)
   }
 
   render() {
@@ -18,11 +26,17 @@ class Products extends React.Component {
     return (
       <div>
         <div className="product-util">
-          <Link to="/create">Add New Product</Link>
+          <div className="util-right">
+            <Link to="/create">Add New Product</Link>
+          </div>
         </div>
         <div className="card-container">
           {products.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              handleDelete={this.handleDelete}
+            />
           ))}
         </div>
       </div>

@@ -2,7 +2,8 @@ import axios from 'axios' //CRUD
 
 /**
  * ACTION TYPES
- */ const ADD_PRODUCT = 'ADD_PRODUCT'
+ */
+const ADD_PRODUCT = 'ADD_PRODUCT'
 const GET_PRODUCTS = 'GET_PRODUCTS'
 const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
@@ -43,7 +44,7 @@ export const addProductToServer = product => async dispatch => {
 
 export const deleteProductFromServer = productId => async dispatch => {
   try {
-    await axios.delete(`/api/${productId}`)
+    await axios.delete(`/api/products/${productId}`)
     dispatch(deleteProduct(productId))
   } catch (err) {
     console.log(err)
