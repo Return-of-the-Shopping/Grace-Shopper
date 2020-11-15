@@ -47,10 +47,11 @@ export class SingleUser extends Component {
   componentDidMount() {
     if (
       this.props.user.admin ||
-      this.pros.match.params.userId === this.props.user.id
+      this.props.match.params.userId === this.props.user.id
     ) {
       this.props.fetchSingleUser(this.props.match.params.userId)
     }
+
     let user = this.props.user
     this.setState({
       firstName: user.firstName || '',
