@@ -120,6 +120,7 @@ router.put('/checkout', async (req, res, next) => {
     })
 
     if (userOrder) {
+      //reduce quanitity in product
       await userOrder.update({isFulfilled: true})
       res.sendStatus(204)
     } else {
