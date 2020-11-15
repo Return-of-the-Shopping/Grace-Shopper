@@ -7,7 +7,7 @@ import {Navbar as NavBar, Nav, Form, Button, FormControl} from 'react-bootstrap'
 import Badge from '@material-ui/core/Badge'
 import cart from '../cart'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
+const Navbar = ({handleClick, isLoggedIn, userId}) => (
   <div>
     <NavBar className="main-nav" bg="light" variant="light">
       <NavBar.Brand>
@@ -26,7 +26,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       {isLoggedIn ? (
         <Nav className="nav-right">
           {/* The NavBar will show these links after you log in */}
-          <NavLink to="/profile" activeClassName="selected">
+          <NavLink to={`/users/${userId}`} activeClassName="selected">
             Profile
           </NavLink>
           <a onClick={handleClick} activeClassName="selected">
@@ -59,7 +59,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    userId: state.user.id
   }
 }
 
