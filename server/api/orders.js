@@ -109,6 +109,29 @@ router.delete('/', async (req, res, next) => {
   }
 })
 
+router.put('/checkout', async (req, res, next) => {
+  try {
+    const userId = req.body.userId
+    const userOrder = await Order.findOne({
+      where: {
+        userId: userId,
+        isFulfilled: false
+      }
+    })
+
+    if (userOrder) {
+      //reduce quanitity in product
+      await userOrder.update({isFulfilled: true})
+      res.sendStatus(204)
+    } else {
+      const error = new Error('User does not have any current order.')
+      throw error
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.put('/', async (req, res, next) => {
   try {
     const userId = req.body.userId

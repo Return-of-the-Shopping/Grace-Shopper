@@ -57,6 +57,7 @@ class ProductLine extends React.Component {
               onClick={() => {
                 let reduceQuant = (product.quantity -= 1)
                 this.setState({quantity: reduceQuant})
+                this.props.resetCartState()
               }}
             >
               -
@@ -69,6 +70,7 @@ class ProductLine extends React.Component {
               onClick={() => {
                 let addQuant = (product.quantity += 1)
                 this.setState({quantity: addQuant})
+                this.props.resetCartState()
               }}
             >
               +
@@ -87,6 +89,7 @@ class ProductLine extends React.Component {
                 this.props.cart.setItem(info.productId, JSON.stringify(change))
               }
               this.props.editCart(info)
+              this.props.resetCartState()
             }}
           >
             update

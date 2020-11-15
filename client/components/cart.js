@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {removeFromCart, editInCart} from '../store/singleProduct'
-import {updateOrderTotal} from '../store/orderTotal'
 import cart from '../cart'
 import ProductLine from './product-line'
 
@@ -53,9 +52,21 @@ class Cart extends React.Component {
           })}
         </div>
         <div>
-          <Link to="/checkout">
-            <button type="button">Checkout</button>
-          </Link>
+          Order Total:{' '}
+          {Object.keys(cart).reduce(
+            (orderTotal, productId) =>
+              orderTotal +
+              JSON.parse(cart[productId]).price *
+                JSON.parse(cart[productId]).quantity,
+            0
+          )}
+        </div>
+        <div>
+          {Object.keys(cart).length && (
+            <Link to="/checkout">
+              <button type="button">Checkout</button>
+            </Link>
+          )}
         </div>
       </div>
     )
