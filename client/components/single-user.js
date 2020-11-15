@@ -47,7 +47,7 @@ export class SingleUser extends Component {
   componentDidMount() {
     if (
       this.props.user.admin ||
-      this.props.match.params.userId === this.props.user.id
+      +this.props.match.params.userId === this.props.user.id
     ) {
       this.props.fetchSingleUser(this.props.match.params.userId)
     }
