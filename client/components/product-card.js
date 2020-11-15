@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Card} from 'react-bootstrap'
+import {Card, Button} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 
 const ProductCard = props => {
@@ -11,6 +11,11 @@ const ProductCard = props => {
       <Card.Body className="card-body">
         <Card.Title className="card-title">{product.name}</Card.Title>
         <Link to={`/products/${product.id}`}>View</Link>
+        {/* {user.admin && (
+          <Button onClick={() => props.handleDelete(product.id)}>
+            Delete Product
+          </Button>
+        )} */}
       </Card.Body>
     </Card>
   )
