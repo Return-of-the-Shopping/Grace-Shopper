@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {UserForm} from '../components'
+import {UserForm, NotAdmin, AdminUserTools} from '../components'
 import {getSingleUserDb, updateSingleUserDb} from '../store/singleUser'
-import {NotAdmin, AdminUserTools} from '../components'
-import {getUsers, removeSingleUserDb} from '../store/users'
+import {removeSingleUserDb} from '../store/users'
 
 export class SingleUser extends Component {
   constructor() {
@@ -25,7 +24,7 @@ export class SingleUser extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.toggleEdit = this.toggleEdit.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   // componentDidUpdate() {
@@ -46,23 +45,12 @@ export class SingleUser extends Component {
   // }
 
   componentDidMount() {
-    //when you load up the page, look at the url route
-    // if (
-    //   this.props.user.id === this.props.params.match.userId ||
-    //   this.props.user.admin
-    // ) {
-    // if (this.props.match.path !== '/profile' && this.props.user.admin) {
-    this.props.fetchSingleUser(this.props.match.params.userId)
-    // if (this.props.user.admin) {
-    //   this.props.fetchUsers()
-    // }
-    // }
-    // }
-
-    //if your user id !== route userId -> NO ACCESS
-    //if you are not an admin either -> NO ACCESS
-    //otherwise, populate
-    // this.props.fetchSingleUser(this.props.user.id)
+    if (
+      this.props.user.admin ||
+      this.pros.match.params.userId === this.props.user.id
+    ) {
+      this.props.fetchSingleUser(this.props.match.params.userId)
+    }
     let user = this.props.user
     this.setState({
       firstName: user.firstName || '',
@@ -85,10 +73,12 @@ export class SingleUser extends Component {
     }))
   }
 
-  // handleDelete() {
-  //   this.props.deleteUser(this.props.match.params.userId)
-  //   this.props.history.push('/allUsers')
-  // }
+  handleDelete() {
+    console.log('allprops', this.props)
+
+    this.props.deleteUser(this.props.singleUser.id)
+    this.props.history.push('/allUsers')
+  }
 
   handleSubmit = event => {
     // const [validated, setValidated] = React.useState(false)
@@ -115,19 +105,17 @@ export class SingleUser extends Component {
   render() {
     let user = this.props.user
 
-    if (this.props.match.path !== '/profile') {
-      if (user.id === +this.props.match.params.userId || user.admin) {
-        user = this.props.singleUser
-      } else {
-        return <NotAdmin />
-      }
+    if (user.id === +this.props.match.params.userId || user.admin) {
+      user = this.props.singleUser
+    } else {
+      return <NotAdmin />
     }
     return (
       <div>
         {this.props.user.admin && (
           <AdminUserTools
             toggleEdit={this.toggleEdit}
-            handleDelete={this.props.handleDelete}
+            handleDelete={this.handleDelete}
           />
         )}
         <div className="product-container">
@@ -167,11 +155,10 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => ({
+  deleteUser: userId => dispatch(removeSingleUserDb(userId)),
   fetchSingleUser: userId => dispatch(getSingleUserDb(userId)),
   updateSingleUser: (userId, update) =>
-    dispatch(updateSingleUserDb(userId, update)),
-  deleteUser: userId => dispatch(removeSingleUserDb(userId)),
-  fetchUsers: () => dispatch(getUsers())
+    dispatch(updateSingleUserDb(userId, update))
 })
 
 export default connect(mapState, mapDispatch)(SingleUser)

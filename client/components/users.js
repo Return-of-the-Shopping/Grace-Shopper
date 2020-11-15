@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {getUsers, removeSingleUserDb} from '../store/users'
 import {Table} from 'react-bootstrap'
 import {UserLine, AdminUserTools} from '../components'
-import {Link} from 'react-router-dom'
 
 export class AllUsers extends Component {
   constructor() {
@@ -11,7 +10,7 @@ export class AllUsers extends Component {
     this.state = {
       toggleDelete: false
     }
-    this.handleDelete = this.handleDelete.bind(this)
+    // this.handleDelete = this.handleDelete.bind(this)
     this.toggleDelete = this.toggleDelete.bind(this)
   }
 
@@ -19,10 +18,10 @@ export class AllUsers extends Component {
     this.props.fetchUsers()
   }
 
-  handleDelete(userId) {
-    this.props.deleteUser(userId)
-    this.props.history.push('/allUsers')
-  }
+  // handleDelete(userId) {
+  //   this.props.deleteUser(userId)
+  //   this.props.history.push('/allUsers')
+  // }
 
   toggleDelete() {
     console.log(this.state.toggleDelete)
@@ -51,14 +50,11 @@ export class AllUsers extends Component {
           </thead>
           <tbody>
             {users.map(user => (
-              <Link to={`/users/${user.id}`}>
-                <UserLine
-                  key={user.id}
-                  user={user}
-                  toggleDelete={this.state.toggleDelete}
-                  handleDelete={this.handleDelete}
-                />
-              </Link>
+              <UserLine
+                key={user.id}
+                user={user}
+                handleDelete={this.handleDelete}
+              />
             ))}
           </tbody>
         </Table>

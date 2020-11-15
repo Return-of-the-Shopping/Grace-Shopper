@@ -46,7 +46,6 @@ export default function(state = defaultUsers, action) {
       return action.users
     case REMOVE_SINGLE_USER:
       return state.filter(user => user.id !== action.userId)
-
     default:
       return state
   }
