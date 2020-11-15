@@ -2,7 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Form, InputGroup, Button} from 'react-bootstrap'
 import cart from '../cart'
-import {cartCheckout} from '../store/singleProduct'
+import {cartCheckout, updateSingleProduct} from '../store/singleProduct'
+import history from '../history'
 
 class Checkout extends React.Component {
   constructor() {
@@ -66,20 +67,23 @@ class Checkout extends React.Component {
     if (form.checkValidity() === false) {
       // event.preventDefault()
       event.stopPropagation()
+    } else {
+      // we need to find order as productOrders uses orderId to query db
+      // const order = await this.props.
+      // const productOrders = await axios.get(`/orders/${}`)
+      // Object.keys(cart).map(async (productId) => {
+      //   const product =
+      //   await this.props.updateSingleProduct(productId, {quantity: })
+      // })
+
+      // set order fuilfilled to true in backend
+      await this.props.cartCheckout(this.props.user.id)
+      // clear localStorage
+      cart.clear()
+
+      history.push('/orders/confirmation')
     }
-    // we need to set order fuilfilled to true in backend
-    await this.props.cartCheckout(this.props.user.id)
-
-    // check if status for error, render confirmation page if status is not an error; if error render something else
-    console.log('before')
-    console.log(cart)
-    // also clear the local storage (not working) there is a bug
-    cart.clear()
-    // console.log(cart)
-    console.log('after')
-
     this.setState({validated: true})
-    history.push('/')
   }
 
   handleChange(event) {
@@ -234,6 +238,8 @@ const mapDispatch = dispatch => {
     // fetchProducts: () => dispatch(fetchProducts()),
     // addProduct: (product) => dispatch(addProductToServer(product)),
     // deleteProduct: (productId) => dispatch(deleteProductFromServer(productId)),
+    updateSingleProduct: (productId, update) =>
+      dispatch(updateSingleProduct(productId, update)),
     cartCheckout: userId => dispatch(cartCheckout(userId))
   }
 }
