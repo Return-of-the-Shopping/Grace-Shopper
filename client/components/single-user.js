@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {UserForm} from '../components'
+import {UserForm, NotAdmin, AdminUserTools} from '../components'
 import {getSingleUserDb, updateSingleUserDb} from '../store/singleUser'
-import {NotAdmin} from '../components'
+import {removeSingleUserDb} from '../store/users'
 
 export class SingleUser extends Component {
   constructor() {
@@ -17,11 +17,14 @@ export class SingleUser extends Component {
       city: '',
       state: '',
       zipcode: null,
-      update: false
+      update: false,
+      toggleEdit: false
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.toggleEdit = this.toggleEdit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   // componentDidUpdate() {
@@ -42,20 +45,13 @@ export class SingleUser extends Component {
   // }
 
   componentDidMount() {
-    //when you load up the page, look at the url route
-    // if (
-    //   this.props.user.id === this.props.params.match.userId ||
-    //   this.props.user.admin
-    // ) {
-    // if (this.props.match.path !== '/profile' && this.props.user.admin) {
-    this.props.fetchSingleUser(this.props.match.params.userId)
-    // }
-    // }
+    if (
+      this.props.user.admin ||
+      +this.props.match.params.userId === this.props.user.id
+    ) {
+      this.props.fetchSingleUser(this.props.match.params.userId)
+    }
 
-    //if your user id !== route userId -> NO ACCESS
-    //if you are not an admin either -> NO ACCESS
-    //otherwise, populate
-    // this.props.fetchSingleUser(this.props.user.id)
     let user = this.props.user
     this.setState({
       firstName: user.firstName || '',
@@ -69,6 +65,20 @@ export class SingleUser extends Component {
       validated: false,
       update: true
     })
+  }
+
+  toggleEdit() {
+    console.log(this.state.toggleEdit)
+    this.setState(prevState => ({
+      toggleEdit: !prevState.toggleEdit
+    }))
+  }
+
+  handleDelete() {
+    console.log('allprops', this.props)
+
+    this.props.deleteUser(this.props.singleUser.id)
+    this.props.history.push('/allUsers')
   }
 
   handleSubmit = event => {
@@ -96,30 +106,41 @@ export class SingleUser extends Component {
   render() {
     let user = this.props.user
 
-    if (this.props.match.path !== '/profile') {
-      if (user.id === +this.props.match.params.userId || user.admin) {
-        user = this.props.singleUser
-      } else {
-        return <NotAdmin />
-      }
+    if (user.id === +this.props.match.params.userId || user.admin) {
+      user = this.props.singleUser
+    } else {
+      return <NotAdmin />
     }
     return (
-      <div className="product-container">
-        <div className="product-container-left" />
-        <div className="product-container-right">
-          <h1>
-            {user.firstName} {user.lastName}
-          </h1>
-          <hr />
-          <p>{user.email}</p>
-          <p>{user.address}</p>
-          <UserForm
-            user={this.state}
-            handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
+      <div>
+        {this.props.user.admin && (
+          <AdminUserTools
+            toggleEdit={this.toggleEdit}
+            handleDelete={this.handleDelete}
           />
-          {/* add buttons to edit/delete account
-            view/display based on admin rights or customer user-id */}
+        )}
+        <div className="product-container">
+          <div className="product-container-left" />
+          <div className="product-container-right">
+            {this.state.toggleEdit ? (
+              <UserForm
+                user={this.state}
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+              />
+            ) : (
+              <div>
+                <h1>
+                  {user.firstName} {user.lastName}
+                </h1>
+                <hr />
+                <p>{user.email}</p>
+                <p>{user.address}</p>
+              </div>
+            )}
+            {/* add buttons to edit/delete account
+          view/display based on admin rights or customer user-id */}
+          </div>
         </div>
       </div>
     )
@@ -135,6 +156,7 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => ({
+  deleteUser: userId => dispatch(removeSingleUserDb(userId)),
   fetchSingleUser: userId => dispatch(getSingleUserDb(userId)),
   updateSingleUser: (userId, update) =>
     dispatch(updateSingleUserDb(userId, update))

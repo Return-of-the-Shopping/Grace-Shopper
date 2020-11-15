@@ -6,7 +6,6 @@ import history from '../history'
  */
 const GET_SINGLE_USER = 'GET_SINGLE_USER'
 const UPDATE_SINGLE_USER = 'UPDATE_SINGLE_USER'
-const REMOVE_SINGLE_USER = 'REMOVE_SINGLE_USER'
 
 /**
  * INITIAL STATE
@@ -22,7 +21,6 @@ const updateSingleUser = singleUser => ({
   type: UPDATE_SINGLE_USER,
   singleUser
 })
-const removeSingleUser = () => ({type: REMOVE_SINGLE_USER})
 
 /**
  * THUNK CREATORS
@@ -46,7 +44,6 @@ export const updateSingleUserDb = (userId, update) => async dispatch => {
     console.log(error)
   }
 }
-export const removeSingleUserDb = () => ({})
 
 /**
  * REDUCER
@@ -57,8 +54,6 @@ export default function(state = defaultSingle, action) {
       return action.singleUser
     case UPDATE_SINGLE_USER:
       return action.singleUser
-    case REMOVE_SINGLE_USER:
-      return defaultSingle
     default:
       return state
   }

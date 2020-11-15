@@ -48,15 +48,18 @@ class Routes extends Component {
             {/* <Route path="/home" component={UserHome} /> */}
             {/* Should delete this component, we don't use it*/}
 
+
+            {/* <Route path="/profile" component={SingleUser} /> */}
+            <Route path="/users/:userId" component={SingleUser} />
+
             <Route path="/orders/confirmation" component={Confirmation} />
-            <Route path="/profile" component={SingleUser} />
+
             {isAdmin ? (
-              <Route exact path="/users" component={AllUsers} />
+              <Route exact path="/allUsers" component={AllUsers} />
             ) : (
               <NotAdmin />
             )}
             {/* <Route exact path="/users" component={AllUsers} /> */}
-            <Route path="/users/:userId" component={SingleUser} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
