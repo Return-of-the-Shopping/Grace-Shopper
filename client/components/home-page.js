@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <div>
       <div>
-        <Carousel fade="true" className="carousel">
+        <Carousel fade={true} className="carousel">
           <Carousel.Item interval={3000}>
             <img
               className="image-carousel"

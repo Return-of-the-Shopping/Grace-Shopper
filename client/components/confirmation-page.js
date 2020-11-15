@@ -4,7 +4,7 @@ const ConfirmationPage = props => {
   return (
     <div>
       Your Order has been confirmed!
-      {props.order.id}
+      {/* {props.order.id} */}
     </div>
   )
 }
