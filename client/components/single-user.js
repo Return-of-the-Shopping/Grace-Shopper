@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {UserForm} from '../components'
 import {getSingleUserDb, updateSingleUserDb} from '../store/singleUser'
-import {NotAdmin} from '../components'
+import {NotAdmin, AdminUserTools} from '../components'
+import {getUsers, removeSingleUserDb} from '../store/users'
 
 export class SingleUser extends Component {
   constructor() {
@@ -17,11 +18,14 @@ export class SingleUser extends Component {
       city: '',
       state: '',
       zipcode: null,
-      update: false
+      update: false,
+      toggleEdit: false
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.toggleEdit = this.toggleEdit.bind(this)
+    // this.handleDelete = this.handleDelete.bind(this)
   }
 
   // componentDidUpdate() {
@@ -49,6 +53,9 @@ export class SingleUser extends Component {
     // ) {
     // if (this.props.match.path !== '/profile' && this.props.user.admin) {
     this.props.fetchSingleUser(this.props.match.params.userId)
+    // if (this.props.user.admin) {
+    //   this.props.fetchUsers()
+    // }
     // }
     // }
 
@@ -70,6 +77,18 @@ export class SingleUser extends Component {
       update: true
     })
   }
+
+  toggleEdit() {
+    console.log(this.state.toggleEdit)
+    this.setState(prevState => ({
+      toggleEdit: !prevState.toggleEdit
+    }))
+  }
+
+  // handleDelete() {
+  //   this.props.deleteUser(this.props.match.params.userId)
+  //   this.props.history.push('/allUsers')
+  // }
 
   handleSubmit = event => {
     // const [validated, setValidated] = React.useState(false)
@@ -104,22 +123,35 @@ export class SingleUser extends Component {
       }
     }
     return (
-      <div className="product-container">
-        <div className="product-container-left" />
-        <div className="product-container-right">
-          <h1>
-            {user.firstName} {user.lastName}
-          </h1>
-          <hr />
-          <p>{user.email}</p>
-          <p>{user.address}</p>
-          <UserForm
-            user={this.state}
-            handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
+      <div>
+        {this.props.user.admin && (
+          <AdminUserTools
+            toggleEdit={this.toggleEdit}
+            handleDelete={this.props.handleDelete}
           />
-          {/* add buttons to edit/delete account
-            view/display based on admin rights or customer user-id */}
+        )}
+        <div className="product-container">
+          <div className="product-container-left" />
+          <div className="product-container-right">
+            {this.state.toggleEdit ? (
+              <UserForm
+                user={this.state}
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+              />
+            ) : (
+              <div>
+                <h1>
+                  {user.firstName} {user.lastName}
+                </h1>
+                <hr />
+                <p>{user.email}</p>
+                <p>{user.address}</p>
+              </div>
+            )}
+            {/* add buttons to edit/delete account
+          view/display based on admin rights or customer user-id */}
+          </div>
         </div>
       </div>
     )
@@ -137,7 +169,9 @@ const mapState = state => {
 const mapDispatch = dispatch => ({
   fetchSingleUser: userId => dispatch(getSingleUserDb(userId)),
   updateSingleUser: (userId, update) =>
-    dispatch(updateSingleUserDb(userId, update))
+    dispatch(updateSingleUserDb(userId, update)),
+  deleteUser: userId => dispatch(removeSingleUserDb(userId)),
+  fetchUsers: () => dispatch(getUsers())
 })
 
 export default connect(mapState, mapDispatch)(SingleUser)
