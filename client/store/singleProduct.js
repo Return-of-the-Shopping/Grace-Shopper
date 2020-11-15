@@ -75,9 +75,10 @@ export const editInCart = info => async dispatch => {
   }
 }
 
-export const fetchCart = orderId => async dispatch => {
+export const fetchCart = userId => async dispatch => {
   try {
-    await axios.get(`/api/orders/${orderId}`)
+    // grab cart using userId; store cart in state and compare product to cart quantities; update product quantity info
+    await axios.get(`/api/users/orders/${userId}`)
     dispatch(getCart())
   } catch (err) {
     console.error(err)

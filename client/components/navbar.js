@@ -11,9 +11,7 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
   <div>
     <NavBar className="main-nav" bg="light" variant="light">
       <NavBar.Brand>
-        <Link to="/home" activeClassName="selected">
-          Hoppy Endings
-        </Link>
+        <Link to="/home">Hoppy Endings</Link>
       </NavBar.Brand>
       <Nav className="mr-auto">
         <NavLink to="/home" activeClassName="selected">
@@ -29,9 +27,7 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
           <NavLink to={`/users/${userId}`} activeClassName="selected">
             Profile
           </NavLink>
-          <a onClick={handleClick} activeClassName="selected">
-            Logout
-          </a>
+          <a onClick={handleClick}>Logout</a>
         </Nav>
       ) : (
         <Nav className="nav-right">
