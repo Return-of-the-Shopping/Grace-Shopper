@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {removeFromCart, editInCart} from '../store/singleProduct'
 import cart from '../cart'
 import ProductLine from './product-line'
+import {Table} from 'react-bootstrap'
 
 class Cart extends React.Component {
   constructor() {
@@ -31,43 +32,65 @@ class Cart extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>
-          {Object.keys(cart).map(productId => {
-            const info = {
-              userId: this.props.user.id,
-              productId
-            }
-            return (
-              <ProductLine
-                product={JSON.parse(cart[productId])}
-                info={info}
-                editCart={this.props.editCart}
-                removeCart={this.props.removeCart}
-                key={productId}
-                cart={cart}
-                resetCartState={() => this.resetCartState(this.state)}
-              />
-            )
-          })}
-        </div>
-        <div>
-          Order Total:{' '}
-          {Object.keys(cart).reduce(
-            (orderTotal, productId) =>
-              orderTotal +
-              JSON.parse(cart[productId]).price *
-                JSON.parse(cart[productId]).quantity,
-            0
-          )}
-        </div>
-        <div>
-          {Object.keys(cart).length && (
-            <Link to="/checkout">
-              <button type="button">Checkout</button>
-            </Link>
-          )}
-        </div>
+      <div className="cart-container">
+        <h1>Cart</h1>
+        <Table responsive>
+          <thead>
+            <tr>
+              <th />
+              <th>Product Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total Price</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(cart).map(productId => {
+              const info = {
+                userId: this.props.user.id,
+                productId
+              }
+              return (
+                <ProductLine
+                  product={JSON.parse(cart[productId])}
+                  info={info}
+                  editCart={this.props.editCart}
+                  removeCart={this.props.removeCart}
+                  key={productId}
+                  cart={cart}
+                  resetCartState={() => this.resetCartState(this.state)}
+                />
+              )
+            })}
+          </tbody>
+          <tr>
+            <th />
+            <th />
+            <th />
+            <th>Order Total</th>
+            <th>
+              {`$` +
+                (
+                  Object.keys(cart).reduce(
+                    (orderTotal, productId) =>
+                      orderTotal +
+                      JSON.parse(cart[productId]).price *
+                        JSON.parse(cart[productId]).quantity,
+                    0
+                  ) / 100
+                ).toFixed(2)}
+            </th>
+            <th />
+          </tr>
+          <div>
+            {Object.keys(cart).length && (
+              <Link to="/checkout" className="big-button">
+                Checkout
+              </Link>
+            )}
+          </div>
+        </Table>
       </div>
     )
   }

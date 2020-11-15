@@ -1,5 +1,5 @@
 import React from 'react'
-import {ListGroup, Image, InputGroup, Button} from 'react-bootstrap'
+import {InputGroup, Button, FormControl} from 'react-bootstrap'
 
 class ProductLine extends React.Component {
   constructor() {
@@ -11,6 +11,7 @@ class ProductLine extends React.Component {
 
     // this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
@@ -30,14 +31,14 @@ class ProductLine extends React.Component {
     // }
   }
 
-  // handleChange(event) {
-  //   this.setState({
-  //     [event.target.name]: event.target.value,
-  //   })
-  // }
-
   handleSubmit(event) {
     event.preventDefault()
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   render() {
@@ -45,56 +46,74 @@ class ProductLine extends React.Component {
     const info = this.props.info
     console.log(this.state.quantity)
     return (
-      <ListGroup horizontal>
-        <Image src={product.imageUrl} thumbnail />
-        <ListGroup.Item>{product.name}</ListGroup.Item>
-        <ListGroup.Item>{`$` + product.price}</ListGroup.Item>
-        <InputGroup className="mb-3">
-          <InputGroup.Prepend>
+      <tr>
+        <td>
+          <img src={product.imageUrl} thumbnail />
+        </td>
+        <td>{product.name}</td>
+        <td>{`$` + (product.price / 100).toFixed(2)}</td>
+        <td>
+          <InputGroup className="mb-3">
+            <InputGroup.Prepend>
+              <Button
+                disabled={!this.state.quantity}
+                variant="outline-secondary"
+                onClick={() => {
+                  this.setState(prevState => ({
+                    quantity: +prevState.quantity - 1
+                  }))
+                  // this.props.resetCartState()
+                }}
+              >
+                -
+              </Button>
+            </InputGroup.Prepend>
+            <FormControl
+              aria-describedby="basic-addon1"
+              type="number"
+              name="quantity"
+              min="0"
+              onChange={this.handleChange}
+              value={this.state.quantity}
+            />
+            <InputGroup.Append>
+              <Button
+                variant="outline-secondary"
+                onClick={() => {
+                  this.setState(prevState => ({
+                    quantity: +prevState.quantity + 1
+                  }))
+                  // this.props.resetCartState()
+                }}
+              >
+                +
+              </Button>
+            </InputGroup.Append>
             <Button
-              disabled={!product.quantity}
               variant="outline-secondary"
-              onClick={() => {
-                let reduceQuant = (product.quantity -= 1)
-                this.setState({quantity: reduceQuant})
+              onClick={event => {
+                event.preventDefault()
+                info.quantity = this.state.quantity
+                const change = {...product, quantity: info.quantity}
+                if (info.quantity <= 0) {
+                  this.props.cart.removeItem(info.productId)
+                  this.props.resetCartState()
+                } else {
+                  this.props.cart.setItem(
+                    info.productId,
+                    JSON.stringify(change)
+                  )
+                }
+                this.props.editCart(info)
                 this.props.resetCartState()
               }}
             >
-              -
+              Update
             </Button>
-          </InputGroup.Prepend>
-          <ListGroup.Item>{this.state.quantity}</ListGroup.Item>
-          <InputGroup.Append>
-            <Button
-              variant="outline-secondary"
-              onClick={() => {
-                let addQuant = (product.quantity += 1)
-                this.setState({quantity: addQuant})
-                this.props.resetCartState()
-              }}
-            >
-              +
-            </Button>
-          </InputGroup.Append>
-          <Button
-            variant="outline-secondary"
-            onClick={event => {
-              event.preventDefault()
-              info.quantity = this.state.quantity
-              const change = {...product, quantity: info.quantity}
-              if (info.quantity <= 0) {
-                this.props.cart.removeItem(info.productId)
-                this.props.resetCartState()
-              } else {
-                this.props.cart.setItem(info.productId, JSON.stringify(change))
-              }
-              this.props.editCart(info)
-              this.props.resetCartState()
-            }}
-          >
-            update
-          </Button>
-
+          </InputGroup>
+        </td>
+        <td>{`$` + (product.price / 100 * this.state.quantity).toFixed(2)}</td>
+        <td>
           <Button
             variant="outline-secondary"
             onClick={event => {
@@ -103,25 +122,12 @@ class ProductLine extends React.Component {
               this.props.cart.removeItem(info.productId)
               this.props.removeCart(info)
               this.props.resetCartState()
-
-              // info.quantity = this.state.quantity
-              // const change = {...product, quantity: info.quantity}
-              // if (info.quantity <= 0) {
-              //   this.props.cart.removeItem(info.productId)
-              //   this.props.resetCartState()
-              // } else {
-              //   this.props.cart.setItem(info.productId, JSON.stringify(change))
-              // }
             }}
           >
-            {`delete item(s)`}
+            X
           </Button>
-        </InputGroup>
-        {/* <ListGroup.Item>{product.quantity}</ListGroup.Item> */}
-        <ListGroup.Item>
-          {`$` + product.price * this.state.quantity}
-        </ListGroup.Item>
-      </ListGroup>
+        </td>
+      </tr>
     )
   }
 }
