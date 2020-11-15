@@ -1,18 +1,22 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {
   addProductToServer,
   deleteProductFromServer,
   fetchProducts
 } from '../store/products'
-import {ProductCard} from '../components'
+import {ProductCard, AdminTools} from '../components'
 
 class Products extends React.Component {
   constructor() {
     super()
+    this.state = {
+      toggleDelete: false
+    }
     this.handleDelete = this.handleDelete.bind(this)
+    this.toggleDelete = this.toggleDelete.bind(this)
   }
+
   componentDidMount() {
     this.props.fetchProducts()
   }
@@ -21,20 +25,26 @@ class Products extends React.Component {
     this.props.deleteProduct(productId)
   }
 
+  toggleDelete() {
+    console.log(this.state.toggleDelete)
+    this.setState(state => ({
+      toggleDelete: !state.toggleDelete
+    }))
+  }
+
   render() {
     const {products} = this.props
     return (
       <div>
-        <div className="product-util">
-          <div className="util-right">
-            <Link to="/create">Add New Product</Link>
-          </div>
-        </div>
+        {this.props.user.admin && (
+          <AdminTools toggleDelete={this.toggleDelete} />
+        )}
         <div className="card-container">
           {products.map(product => (
             <ProductCard
               key={product.id}
               product={product}
+              toggleDelete={this.state.toggleDelete}
               handleDelete={this.handleDelete}
             />
           ))}
@@ -46,7 +56,8 @@ class Products extends React.Component {
 
 const mapState = state => {
   return {
-    products: state.products
+    products: state.products,
+    user: state.user
   }
 }
 

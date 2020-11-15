@@ -61,8 +61,11 @@ export class SingleUser extends Component {
       firstName: user.firstName || '',
       lastName: user.lastName || '',
       email: user.email || '',
-      address: user.address || '',
       payment: user.payment || '',
+      address: user.address || '',
+      city: user.city || '',
+      state: user.state || '',
+      zipcode: user.zipcode || null,
       validated: false,
       update: true
     })

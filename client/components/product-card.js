@@ -11,11 +11,11 @@ const ProductCard = props => {
       <Card.Body className="card-body">
         <Card.Title className="card-title">{product.name}</Card.Title>
         <Link to={`/products/${product.id}`}>View</Link>
-        {/* {user.admin && (
+        {props.toggleDelete && (
           <Button onClick={() => props.handleDelete(product.id)}>
             Delete Product
           </Button>
-        )} */}
+        )}
       </Card.Body>
     </Card>
   )

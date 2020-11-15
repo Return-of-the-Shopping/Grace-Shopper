@@ -34,6 +34,7 @@ class AddProduct extends React.Component {
     const form = event.currentTarget
 
     event.preventDefault()
+
     if (form.checkValidity() === false) {
       this.setState({validated: true})
       event.stopPropagation()
@@ -46,7 +47,7 @@ class AddProduct extends React.Component {
         this.setState({error: error})
       }
       if (!this.state.error) {
-        this.setState({
+        this.setState(state => ({
           name: '',
           category: '',
           description: '',
@@ -55,32 +56,38 @@ class AddProduct extends React.Component {
           price: '',
           quantity: '',
           error: null,
-          success: `Successfully added ${
-            this.state.name
-          } to our product database!`,
+          success: `Successfully added ${state.name} to our product database!`,
           validated: false
-        })
+        }))
       }
     }
   }
 
   render() {
     return (
-      <ProductForm
-        for="add"
-        handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
-        name={this.state.name}
-        category={this.state.category}
-        description={this.state.description}
-        abv={this.state.abv}
-        imageUrl={this.state.imageUrl}
-        price={this.state.price}
-        quantity={this.state.quantity}
-        validated={this.state.validated}
-        error={this.state.error}
-        success={this.state.success}
-      />
+      <div className="product-container">
+        <div className="product-container-left">
+          <img src="https://www.ball.com/Ball/media/Ball/Global/Markets%20and%20Capabilities%20Images/Beverage-Can-Upright-and-Can-Side-340x430.jpg?ext=.jpg" />
+          <div className="">{this.state.success && this.state.success}</div>
+        </div>
+        <div className="product-container-right">
+          <ProductForm
+            for="add"
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}
+            name={this.state.name}
+            category={this.state.category}
+            description={this.state.description}
+            abv={this.state.abv}
+            imageUrl={this.state.imageUrl}
+            price={this.state.price}
+            quantity={this.state.quantity}
+            validated={this.state.validated}
+            error={this.state.error}
+            success={this.state.success}
+          />
+        </div>
+      </div>
     )
   }
 }

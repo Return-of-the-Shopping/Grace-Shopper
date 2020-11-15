@@ -104,6 +104,11 @@ form div {
   background-color: #007bff;
 }
 
+.card img {
+  height: 250px;
+  object-fit: contain;
+}
+
 .cart-title {
   text-align: center;
 }
@@ -169,6 +174,12 @@ form div {
 .product-container-left {
   flex: 1 1 400px;
 }
+
+.product-container-left img {
+  width: 80%;
+  object-fit: fill;
+}
+
 .product-container-right {
   flex: 1 1 400px;
 }
