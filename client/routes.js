@@ -14,7 +14,8 @@ import {
   Checkout,
   HomePage,
   AddProduct,
-  NotAdmin
+  NotAdmin,
+  Confirmation
 } from './components'
 import {me} from './store'
 
@@ -40,7 +41,6 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route path="/cart" component={Cart} />
         <Route path="/checkout" component={Checkout} />
-
         <Route exact path="/home" component={HomePage} />
         {isLoggedIn && (
           <Switch>
@@ -48,8 +48,12 @@ class Routes extends Component {
             {/* <Route path="/home" component={UserHome} /> */}
             {/* Should delete this component, we don't use it*/}
 
+
             {/* <Route path="/profile" component={SingleUser} /> */}
             <Route path="/users/:userId" component={SingleUser} />
+
+            <Route path="/orders/confirmation" component={Confirmation} />
+
             {isAdmin ? (
               <Route exact path="/allUsers" component={AllUsers} />
             ) : (
