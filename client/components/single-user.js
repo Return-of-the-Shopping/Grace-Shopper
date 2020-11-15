@@ -47,8 +47,9 @@ export class SingleUser extends Component {
     //   this.props.user.id === this.props.params.match.userId ||
     //   this.props.user.admin
     // ) {
+    // if (this.props.match.path !== '/profile' && this.props.user.admin) {
     this.props.fetchSingleUser(this.props.match.params.userId)
-
+    // }
     // }
 
     //if your user id !== route userId -> NO ACCESS
@@ -78,6 +79,7 @@ export class SingleUser extends Component {
     }
     // we need to set order fuilfilled to true in backend
     // also clear the local storage
+    // error when editing from /profile >> this.props.match.params.userId does not exist
     this.props.updateSingleUser(this.props.match.params.userId, this.state)
     this.setState({validated: true})
   }
@@ -91,35 +93,33 @@ export class SingleUser extends Component {
   render() {
     let user = this.props.user
 
-    if (
-      this.props.user.id === +this.props.match.params.userId ||
-      this.props.user.admin
-    ) {
-      user = this.props.singleUser
-      return (
-        <div className="product-container">
-          <div className="product-container-left" />
-          <div className="product-container-right">
-            <h1>
-              {user.firstName} {user.lastName}
-            </h1>
-            <hr />
-            <p>{user.email}</p>
-            <p>{user.address}</p>
-            <UserForm
-              user={this.state}
-              handleChange={this.handleChange}
-              handleSubmit={this.handleSubmit}
-            />
-            {/* add buttons to edit/delete account
-            view/display based on admin rights or customer user-id */}
-          </div>
-        </div>
-      )
-    } else {
-      user = this.props.user
-      return <NotAdmin />
+    if (this.props.match.path !== '/profile') {
+      if (user.id === +this.props.match.params.userId || user.admin) {
+        user = this.props.singleUser
+      } else {
+        return <NotAdmin />
+      }
     }
+    return (
+      <div className="product-container">
+        <div className="product-container-left" />
+        <div className="product-container-right">
+          <h1>
+            {user.firstName} {user.lastName}
+          </h1>
+          <hr />
+          <p>{user.email}</p>
+          <p>{user.address}</p>
+          <UserForm
+            user={this.state}
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}
+          />
+          {/* add buttons to edit/delete account
+            view/display based on admin rights or customer user-id */}
+        </div>
+      </div>
+    )
   }
 }
 
