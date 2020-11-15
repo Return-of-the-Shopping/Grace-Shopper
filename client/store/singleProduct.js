@@ -9,6 +9,7 @@ const ADD_TO_CART = 'ADD_TO_CART'
 const DELETE_FROM_CART = 'DELETE_FROM_CART'
 const EDIT_CART = 'EDIT_CART'
 const GET_CART = 'GET_CART'
+const CHECKOUT_CART = 'CHECKOUT_CART'
 
 /**
  * INITIAL STATE
@@ -24,6 +25,7 @@ const addToCart = () => ({type: ADD_TO_CART})
 const deleteFromCart = () => ({type: DELETE_FROM_CART})
 const editCart = () => ({type: EDIT_CART})
 const getCart = () => ({type: GET_CART})
+const checkoutCart = () => ({type: CHECKOUT_CART})
 
 /**
  * THUNK CREATORS
@@ -77,6 +79,15 @@ export const fetchCart = orderId => async dispatch => {
   try {
     await axios.get(`/api/orders/${orderId}`)
     dispatch(getCart())
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const cartCheckout = userId => async dispatch => {
+  try {
+    await axios.put(`/api/orders/checkout`, {userId})
+    dispatch(checkoutCart())
   } catch (err) {
     console.error(err)
   }

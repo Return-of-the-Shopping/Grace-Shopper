@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Form, InputGroup, Button} from 'react-bootstrap'
+import cart from '../cart'
+import {cartCheckout} from '../store/singleProduct'
 
 class Checkout extends React.Component {
   constructor() {
@@ -60,16 +62,23 @@ class Checkout extends React.Component {
     console.log(this.state)
   }
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     // const [validated, setValidated] = React.useState(false)
     const form = event.currentTarget
     if (form.checkValidity() === false) {
       event.preventDefault()
       event.stopPropagation()
     }
-
     // we need to set order fuilfilled to true in backend
-    // also clear the local storage
+    const status = await this.props.cartCheckout(this.props.user.id)
+
+    // check if status for error, render confirmation page if status is not an error; if error render something else
+    console.log(status)
+
+    // also clear the local storage (not working) there is a bug
+    cart.clear()
+    // console.log(cart)
+
     this.setState({validated: true})
   }
 
@@ -113,23 +122,18 @@ class Checkout extends React.Component {
 
           <Form.Group md="4" controlId="validationCustomEmail">
             <Form.Label>Email</Form.Label>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                type="text"
-                placeholder="Email"
-                aria-describedby="inputGroupPrepend"
-                required
-                name="email"
-                value={this.state.email}
-                onChange={this.handleChange}
-              />
-              <Form.Control.Feedback type="invalid">
-                Please provide your email.
-              </Form.Control.Feedback>
-            </InputGroup>
+            <Form.Control
+              type="text"
+              placeholder="Email"
+              aria-describedby="inputGroupPrepend"
+              required
+              name="email"
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide your email.
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
 
@@ -195,6 +199,17 @@ class Checkout extends React.Component {
           </Form.Group>
         </Form.Row>
 
+        <div>
+          Order Total:{' '}
+          {Object.keys(cart).reduce(
+            (orderTotal, productId) =>
+              orderTotal +
+              JSON.parse(cart[productId]).price *
+                JSON.parse(cart[productId]).quantity,
+            0
+          )}
+        </div>
+
         <Form.Group>
           <Form.Check
             required
@@ -214,12 +229,13 @@ const mapState = state => {
   }
 }
 
-// const mapDispatch = (dispatch) => {
-//   return {
-//     fetchProducts: () => dispatch(fetchProducts()),
-//     addProduct: (product) => dispatch(addProductToServer(product)),
-//     deleteProduct: (productId) => dispatch(deleteProductFromServer(productId)),
-//   }
-// }
+const mapDispatch = dispatch => {
+  return {
+    // fetchProducts: () => dispatch(fetchProducts()),
+    // addProduct: (product) => dispatch(addProductToServer(product)),
+    // deleteProduct: (productId) => dispatch(deleteProductFromServer(productId)),
+    cartCheckout: userId => dispatch(cartCheckout(userId))
+  }
+}
 
-export default connect(mapState)(Checkout)
+export default connect(mapState, mapDispatch)(Checkout)
