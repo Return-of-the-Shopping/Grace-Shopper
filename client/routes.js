@@ -51,9 +51,7 @@ class Routes extends Component {
 
             {/* <Route path="/profile" component={SingleUser} /> */}
             <Route path="/users/:userId" component={SingleUser} />
-
             <Route path="/orders/confirmation" component={Confirmation} />
-
             {isAdmin ? (
               <Route exact path="/allUsers" component={AllUsers} />
             ) : (
