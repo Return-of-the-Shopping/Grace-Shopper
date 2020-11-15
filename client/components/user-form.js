@@ -9,7 +9,7 @@ const userForm = props => {
     address,
     city,
     state,
-    zip,
+    zipcode,
     validated
   } = props.user
   console.log(props)
@@ -50,7 +50,7 @@ const userForm = props => {
         <Form.Label>Email</Form.Label>
 
         <Form.Control
-          type="text"
+          type="email"
           placeholder="email"
           aria-describedby="inputGroupPrepend"
           required
@@ -111,11 +111,11 @@ const userForm = props => {
       <Form.Group md="3" controlId="validationCustom05">
         <Form.Label>Zip</Form.Label>
         <Form.Control
-          type="text"
+          type="number"
           placeholder="Zip"
           required
-          name="zip"
-          value={zip}
+          name="zipcode"
+          value={zipcode}
           onChange={props.handleChange}
         />
         <Form.Control.Feedback type="invalid">

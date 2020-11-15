@@ -19,7 +19,7 @@ const getProducts = products => ({type: GET_PRODUCTS, products})
 
 const addProduct = product => ({type: ADD_PRODUCT, product})
 
-const deleteProduct = product => ({type: DELETE_PRODUCT, product})
+const deleteProduct = productId => ({type: DELETE_PRODUCT, productId})
 
 /**
  * THUNK CREATORS

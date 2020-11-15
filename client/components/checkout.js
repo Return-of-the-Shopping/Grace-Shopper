@@ -26,8 +26,6 @@ class Checkout extends React.Component {
 
   componentDidMount() {
     const user = this.props.user
-    // console.log('mount', user)
-
     this.setState({
       firstName: user.firstName || '',
       lastName: user.lastName || '',
@@ -38,7 +36,6 @@ class Checkout extends React.Component {
       zipcode: user.zipcode || '',
       payment: user.payment || '',
       validated: false
-      // update: true,
     })
   }
 

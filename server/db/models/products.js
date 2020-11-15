@@ -15,19 +15,22 @@ const Product = db.define('product', {
   },
 
   abv: {
-    type: Sequelize.DECIMAL(4, 2)
+    type: Sequelize.DECIMAL(4, 2),
+    validate: {
+      min: 0.0
+    }
   },
 
   imageUrl: {
     type: Sequelize.TEXT,
     defaultValue:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS79p1If1EXMMm57dOqsPyux4OULqzhizOZLg&usqp=CAU'
+      'https://www.ball.com/Ball/media/Ball/Global/Markets%20and%20Capabilities%20Images/Beverage-Can-Upright-and-Can-Side-340x430.jpg?ext=.jpg'
   },
 
   price: {
     type: Sequelize.INTEGER,
     validate: {
-      min: 0.0
+      min: 0
     }
   },
 
@@ -46,6 +49,9 @@ const Product = db.define('product', {
 
 Product.beforeCreate(product => {
   product.price = product.price * 100
+  product.imageUrl = !product.imageUrl
+    ? 'https://www.ball.com/Ball/media/Ball/Global/Markets%20and%20Capabilities%20Images/Beverage-Can-Upright-and-Can-Side-340x430.jpg?ext=.jpg'
+    : product.imageUrl
 })
 
 module.exports = Product

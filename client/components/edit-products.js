@@ -1,7 +1,9 @@
 import React from 'react'
-import Form from './product-form'
+import {ProductForm} from '../components'
+import {updateSingleProduct} from '../store/singleProduct'
+import {connect} from 'react-redux'
 
-export default class CampusUpdate extends React.Component {
+class EditProduct extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -12,29 +14,25 @@ export default class CampusUpdate extends React.Component {
       imageUrl: '',
       price: '',
       quantity: '',
-      update: false,
-      error: false
+      error: null,
+      validated: false,
+      success: ''
     }
-
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidUpdate() {
-    const product = this.props.singleProduct
-
-    if (!this.state.update) {
-      this.setState({
-        name: product.name,
-        category: product.category,
-        description: product.description,
-        abv: product.abv,
-        imageUrl: product.imageUrl,
-        price: product.price,
-        quantity: product.quantity,
-        update: true
-      })
-    }
+  componentDidMount() {
+    const product = this.props.product
+    this.setState({
+      name: product.name || '',
+      category: product.category || '',
+      description: product.description || '',
+      abv: product.abv || '',
+      imageUrl: product.imageUrl || '',
+      price: product.price || '',
+      quantity: product.quantity || ''
+    })
   }
 
   handleChange(event) {
@@ -43,25 +41,34 @@ export default class CampusUpdate extends React.Component {
     })
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
+    const form = event.currentTarget
+
     event.preventDefault()
-
-    if (!this.state.name) {
-      this.setState({
-        error: true
-      })
+    if (form.checkValidity() === false) {
+      this.setState({validated: true})
+      event.stopPropagation()
     } else {
-      this.props.updateProduct(this.props.singleProduct.id, this.state)
-
-      this.setState({
-        error: false
-      })
+      try {
+        this.setState({error: null})
+        await this.props.updateProduct(this.props.product.id, this.state)
+      } catch (error) {
+        this.setState({error: error})
+      }
+      if (!this.state.error) {
+        this.setState(state => ({
+          error: null,
+          success: `Successfully added ${state.name} to our product database!`,
+          validated: false
+        }))
+        this.props.toggleEdit()
+      }
     }
   }
 
   render() {
     return (
-      <Form
+      <ProductForm
         for="update"
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
@@ -72,8 +79,16 @@ export default class CampusUpdate extends React.Component {
         imageUrl={this.state.imageUrl}
         price={this.state.price}
         quantity={this.state.quantity}
+        validated={this.state.validated}
         error={this.state.error}
       />
     )
   }
 }
+
+const mapDispatch = dispatch => ({
+  updateProduct: (productId, info) =>
+    dispatch(updateSingleProduct(productId, info))
+})
+
+export default connect(null, mapDispatch)(EditProduct)
