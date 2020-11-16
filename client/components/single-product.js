@@ -7,7 +7,6 @@ import {
 } from '../store/singleProduct'
 import {deleteProductFromServer} from '../store/products'
 
-
 import {AdminTools, EditProduct, NotFound} from '../components'
 import {Button, InputGroup, FormControl, Form} from 'react-bootstrap'
 import cart from '../cart'
@@ -18,10 +17,9 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: 1,
       toggleEdit: false,
-      error: null
+      error: null,
       validated: false,
       success: ''
-
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
