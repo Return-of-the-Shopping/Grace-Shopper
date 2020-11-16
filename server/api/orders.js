@@ -4,8 +4,12 @@ module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const order = await Order.findAll()
-    res.json(order)
+    if (req.user.dataValues.admin) {
+      const order = await Order.findAll()
+      res.json(order)
+    } else {
+      res.sendStatus(401)
+    }
   } catch (err) {
     next(err)
   }
@@ -18,7 +22,9 @@ router.get('/:orderId', async (req, res, next) => {
     //   return res.sendStatus(404)
     // }
     // res.json(order)
-    const orderItems = await Order.findAll({
+
+    //ReadOrder Route//
+    const orderItems = await Order.findOne({
       where: {id: req.params.orderId},
       include: [
         {
@@ -26,10 +32,20 @@ router.get('/:orderId', async (req, res, next) => {
         }
       ]
     })
-    if (!orderItems.length) {
-      return res.sendStatus(404)
+    if (
+      req.user.dataValues.id === orderItems.userId ||
+      req.user.dataValues.admin
+    ) {
+      if (!orderItems.id) {
+        res.sendStatus(404)
+      }
+      res.json(orderItems)
+    } else {
+      res.sendStatus(401)
     }
-    res.json(orderItems)
+    // if (!orderItems.length) {
+    //   return res.sendStatus(404)
+    // }
   } catch (err) {
     next(err)
   }
@@ -50,7 +66,8 @@ router.get('/:orderId', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     // Inside our req.body; we NEED userId, productId, quantity, price
-
+    console.log(req.session)
+    console.log(req.user.dataValues.admin)
     //find an order for a user that is not yet fulfilled if it exists
     let order = await Order.findOne({
       // ***Keep in mind that guests have no userId
@@ -87,23 +104,34 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.delete('/', async (req, res, next) => {
+router.delete('/:orderId', async (req, res, next) => {
   try {
     // user, don’t know their order history? so get an order that isFulfilled = false that matches userId
     const userId = req.body.userId
-    const userOrder = await Order.findOne({
-      where: {
-        userId: userId,
-        isFulfilled: false
+    console.log(req.params.orderId)
+    console.log(userId)
+    if (req.user.dataValues.admin || +userId === +req.user.dataValues.id) {
+      const userOrder = await Order.findOne({
+        where: {
+          // userId: userId,
+          id: +req.params.orderId
+        }
+      })
+      if (userOrder) {
+        await ProductOrder.destroy({
+          where: {
+            orderId: userOrder.id
+            // productId: +req.body.productId
+          }
+        })
+        await userOrder.destroy()
+        res.sendStatus(204).end()
+      } else {
+        res.sendStatus(401)
       }
-    })
-    await ProductOrder.destroy({
-      where: {
-        orderId: userOrder.id,
-        productId: +req.body.productId
-      }
-    })
-    res.sendStatus(204).end()
+    } else {
+      res.sendStatus(401)
+    }
   } catch (err) {
     next(err)
   }
@@ -112,20 +140,24 @@ router.delete('/', async (req, res, next) => {
 router.put('/checkout', async (req, res, next) => {
   try {
     const userId = req.body.userId
-    const userOrder = await Order.findOne({
-      where: {
-        userId: userId,
-        isFulfilled: false
-      }
-    })
+    if (userId === req.user.dataValues.id) {
+      const userOrder = await Order.findOne({
+        where: {
+          userId: userId,
+          isFulfilled: false
+        }
+      })
 
-    if (userOrder) {
-      //reduce quanitity in product
-      await userOrder.update({isFulfilled: true})
-      res.sendStatus(204)
+      if (userOrder) {
+        //reduce quanitity in product
+        await userOrder.update({isFulfilled: true})
+        res.sendStatus(204)
+      } else {
+        const error = new Error('User does not have any current order.')
+        throw error
+      }
     } else {
-      const error = new Error('User does not have any current order.')
-      throw error
+      res.sendStatus(401)
     }
   } catch (err) {
     next(err)
@@ -135,29 +167,33 @@ router.put('/checkout', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const userId = req.body.userId
-    const userOrder = await Order.findOne({
-      where: {
-        userId: userId,
-        isFulfilled: false
-      }
-    })
+    if (req.user.dataValues.admin || +userId === +req.user.dataValues.id) {
+      const userOrder = await Order.findOne({
+        where: {
+          userId: userId,
+          isFulfilled: false
+        }
+      })
 
-    if (!req.body.quantity) {
-      await ProductOrder.destroy({
-        where: {
-          orderId: userOrder.id,
-          productId: req.body.productId
-        }
-      })
+      if (!req.body.quantity) {
+        await ProductOrder.destroy({
+          where: {
+            orderId: userOrder.id,
+            productId: req.body.productId
+          }
+        })
+      } else {
+        await ProductOrder.update(req.body, {
+          where: {
+            orderId: userOrder.id,
+            productId: req.body.productId
+          }
+        })
+      }
+      res.sendStatus(204)
     } else {
-      await ProductOrder.update(req.body, {
-        where: {
-          orderId: userOrder.id,
-          productId: req.body.productId
-        }
-      })
+      res.sendStatus(401)
     }
-    res.sendStatus(204)
   } catch (err) {
     next(err)
   }

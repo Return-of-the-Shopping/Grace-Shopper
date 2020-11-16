@@ -25,8 +25,17 @@ router.get('/:productId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const product = await Product.create(req.body)
-    res.status(201).json(product)
+    if (!req.user) {
+      res.sendStatus(404)
+    }
+    if (req.user) {
+      if (req.user.dataValues.admin) {
+        const product = await Product.create(req.body)
+        res.status(201).json(product)
+      } else {
+        return res.sendStatus(401)
+      }
+    }
   } catch (error) {
     next(error)
   }
@@ -34,11 +43,15 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/:productId', async (req, res, next) => {
   try {
-    const id = +req.params.productId
-    await Product.destroy({
-      where: {id}
-    })
-    res.sendStatus(204)
+    if (req.user.dataValues.admin) {
+      const id = +req.params.productId
+      await Product.destroy({
+        where: {id}
+      })
+      res.sendStatus(204)
+    } else {
+      res.sendStatus(401)
+    }
   } catch (error) {
     next(error)
   }
@@ -46,13 +59,17 @@ router.delete('/:productId', async (req, res, next) => {
 
 router.put('/:productId', async (req, res, next) => {
   try {
-    const id = +req.params.productId
-    const product = await Product.findByPk(id)
-    if (!product) {
-      res.sendStatus(404)
+    if (req.user.dataValues.admin) {
+      const id = +req.params.productId
+      const product = await Product.findByPk(id)
+      if (!product) {
+        res.sendStatus(404)
+      }
+      const updatedProduct = await product.update(req.body, {returning: true})
+      res.json(updatedProduct)
+    } else {
+      res.sendStatus(401)
     }
-    const updatedProduct = await product.update(req.body, {returning: true})
-    res.json(updatedProduct)
   } catch (error) {
     next(error)
   }
