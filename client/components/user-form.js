@@ -1,7 +1,7 @@
 import React from 'react'
 import {Form, InputGroup, Button} from 'react-bootstrap'
 
-const userForm = props => {
+const UserForm = props => {
   const {
     firstName,
     lastName,
@@ -30,7 +30,9 @@ const userForm = props => {
           value={firstName}
           onChange={props.handleChange}
         />
-        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">
+          Please enter a valid first name
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group md="4" controlId="validationCustom02">
@@ -43,10 +45,12 @@ const userForm = props => {
           value={lastName}
           onChange={props.handleChange}
         />
-        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        <Form.Control.Feedback>
+          Please enter a valid last name
+        </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group md="4" controlId="validationCustomUsername">
+      <Form.Group md="4" controlId="validationCustom03">
         <Form.Label>Email</Form.Label>
 
         <Form.Control
@@ -59,11 +63,11 @@ const userForm = props => {
           onChange={props.handleChange}
         />
         <Form.Control.Feedback type="invalid">
-          Please choose a username.
+          Please enter a valid email address
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group md="6" controlId="validationCustom03">
+      <Form.Group md="6" controlId="validationCustom04">
         <Form.Label>Address</Form.Label>
         <Form.Control
           type="text"
@@ -74,11 +78,11 @@ const userForm = props => {
           onChange={props.handleChange}
         />
         <Form.Control.Feedback type="invalid">
-          Please provide a valid address.
+          Please provide a valid billing address.
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group md="6" controlId="validationCustom03">
+      <Form.Group md="6" controlId="validationCustom05">
         <Form.Label>City</Form.Label>
         <Form.Control
           type="text"
@@ -93,7 +97,7 @@ const userForm = props => {
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group md="3" controlId="validationCustom04">
+      <Form.Group md="3" controlId="validationCustom06">
         <Form.Label>State</Form.Label>
         <Form.Control
           type="text"
@@ -108,7 +112,7 @@ const userForm = props => {
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group md="3" controlId="validationCustom05">
+      <Form.Group md="3" controlId="validationCustom07">
         <Form.Label>Zip</Form.Label>
         <Form.Control
           type="number"
@@ -130,9 +134,23 @@ const userForm = props => {
           feedback="You must agree before submitting."
         />
       </Form.Group>
-      <Button type="submit">Save Changes</Button>
+      <Button type="submit">
+        {props.for === 'checkout'
+          ? `Place Order ($` +
+            (
+              Object.keys(props.cart).reduce(
+                (orderTotal, productId) =>
+                  orderTotal +
+                  JSON.parse(props.cart[productId]).price *
+                    JSON.parse(props.cart[productId]).quantity,
+                0
+              ) / 100
+            ).toFixed(2) +
+            `)`
+          : 'Update User'}
+      </Button>
     </Form>
   )
 }
 
-export default userForm
+export default UserForm

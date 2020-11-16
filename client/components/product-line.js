@@ -52,8 +52,8 @@ class ProductLine extends React.Component {
         </td>
         <td>{product.name}</td>
         <td>{`$` + (product.price / 100).toFixed(2)}</td>
-        <td>
-          <InputGroup className="mb-3">
+        <td className="cart-update">
+          <InputGroup>
             <InputGroup.Prepend>
               <Button
                 disabled={!this.state.quantity}
@@ -89,28 +89,26 @@ class ProductLine extends React.Component {
                 +
               </Button>
             </InputGroup.Append>
-            <Button
-              variant="outline-secondary"
-              onClick={event => {
-                event.preventDefault()
-                info.quantity = +this.state.quantity
-                const change = {...product, quantity: +info.quantity}
-                if (info.quantity <= 0) {
-                  this.props.cart.removeItem(info.productId)
-                  this.props.resetCartState()
-                } else {
-                  this.props.cart.setItem(
-                    info.productId,
-                    JSON.stringify(change)
-                  )
-                }
-                this.props.editCart(info)
-                this.props.resetCartState()
-              }}
-            >
-              Update
-            </Button>
           </InputGroup>
+          <Button
+            className="cart-update-button"
+            variant="outline-secondary"
+            onClick={event => {
+              event.preventDefault()
+              info.quantity = +this.state.quantity
+              const change = {...product, quantity: +info.quantity}
+              if (info.quantity <= 0) {
+                this.props.cart.removeItem(info.productId)
+                this.props.resetCartState()
+              } else {
+                this.props.cart.setItem(info.productId, JSON.stringify(change))
+              }
+              this.props.editCart(info)
+              this.props.resetCartState()
+            }}
+          >
+            Update
+          </Button>
         </td>
         <td>{`$` + (product.price / 100 * this.state.quantity).toFixed(2)}</td>
         <td>

@@ -7,24 +7,20 @@
 
 body {
   width: 100vw;
-  font-family: 'Roboto', sans-serif;
+  height: 100vh;
+  background: linear-gradient(#ffffff7e, #dadada36);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: bottom;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-.p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
+p,
+.p1 {
   font-family: 'Roboto', sans-serif;
+  font-size: 14px;
 }
 
 h1,
@@ -42,37 +38,9 @@ label {
   display: block;
 }
 
-.main-nav a {
-  display: inline-block;
-  color: gray;
-  padding: 10px;
-  margin: 1em;
-  text-decoration: none;
-}
-.main-nav a:hover {
-  text-decoration: none;
-  color: black;
-  border: 1px solid black;
-}
-
-.selected {
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-}
-
 .nav-right {
   float: right;
 }
-/*
-form div {
-  margin: 1em;
-  display: inline-block;
-} */
-
-/* img.d-block w-100 {
-  border-color: black;
-} */
 
 .card-container {
   margin: 20px auto;
@@ -86,22 +54,26 @@ form div {
 .card-body {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 }
 
 .card-body a {
-  padding: 10px 30px;
-  border-radius: 5px;
-  color: black;
+  display: inline-block;
 
-  border: 1px solid lightgray;
+  font-size: 14px;
+  padding: 8px 40px;
+  color: black;
+  border-radius: 5px;
+  background-color: lightgray;
   transition: 0.2s all;
 }
 
 .card-body a:hover {
-  color: white;
+  color: #f8f9fa;
   text-decoration: none;
-  background-color: #007bff;
+  border-radius: 30px;
+  background-color: #f2b705;
 }
 
 .card img {
@@ -110,7 +82,22 @@ form div {
 }
 
 .cart-title {
+  display: flex;
+  flex-direction: column;
   text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cart-update {
+  width: 150px;
+}
+.cart-update-button {
+  width: 100%;
 }
 
 .card {
@@ -129,6 +116,7 @@ form div {
 }
 
 .carousel {
+  z-index: -1;
   position: fixed;
   margin: 0 auto;
 }
@@ -156,12 +144,45 @@ form div {
 }
 
 .main-nav {
-  height: 80px;
   display: flex;
+  flex-direction: row;
+  height: 80px;
+  justify-content: space-between;
+  box-shadow: 0px 0px 20px 1px rgba(102, 102, 102, 0.3);
+}
+
+.main-nav a {
+  display: inline-block;
+  color: gray;
+  padding: 10px 30px;
+  margin: 10px 10px;
+  text-decoration: none;
+}
+.main-nav a:hover {
+  text-decoration: none;
+  color: black;
+  margin-bottom: 5px;
+  border-bottom: 5px solid #f0cb5e;
+}
+
+.main-nav .logo:hover {
+  color: #f2b705;
+  border-bottom: none;
+}
+a.selected {
+  background-color: #f2b705;
+  color: white;
+  /* color: black;
+  border: 1px solid black; */
+}
+
+a.cart {
+  color: #222222;
+  border: 2px solid #222222;
 }
 
 .nav-right {
-  justify-content: flex-end;
+  align-self: center;
 }
 
 .product-container {
@@ -188,6 +209,7 @@ form div {
   margin: 50px auto;
   display: flex;
   flex-direction: column;
+  text-align: right;
   align-items: flex-end;
   width: 80%;
 }
@@ -210,54 +232,78 @@ form div {
 }
 
 .box {
+  margin: 10% auto;
   width: 500px;
   padding: 50px;
   border-radius: 10px;
+  background-color: #f8f9fa;
   border: 1px solid lightgray;
 }
 
 .product-util {
-  margin: 20px auto;
-  padding: 20px;
+  margin: 0 auto;
+  display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  align-content: center;
-  width: 80%;
-  background: linear-gradient(90deg, #ffffff00, lightslategrey);
+  align-content: flex-end;
+  justify-content: space-between;
+  background-color: #f2b705;
+  transition: 0.5s all;
 }
 
+.success {
+  background-color: green;
+}
+.util-center {
+  place-self: center center;
+  margin-left: auto 20px;
+  padding: 20px;
+  color: #f8f9fa;
+}
 .util-right {
   flex: 0 1 auto;
 }
 
 .product-util a {
+  display: inline-block;
   text-decoration: none;
   padding: 12px 16px;
-  border-radius: 20px;
+  border-radius: 25px;
   background-color: #f8f9fa;
-  color: black;
+  color: #2b2b2b;
   transition: 0.4s all;
+  margin: 10px;
 }
 .product-util a:hover {
   text-decoration: none;
+  background-color: #f28705;
   color: #f8f9fa;
-  background-color: black;
 }
 
 .big-button {
   flex: 0 1 auto;
   margin: 5px;
   text-decoration: none;
-  color: white;
-  background-color: teal;
+  color: #f8f9fa;
+  background-color: #f2b705;
   padding: 16px 20px;
   font-size: 24px;
   transition: 0.3s all;
 }
 .big-button:hover {
   text-decoration: none;
-  color: white;
-  background-color: black;
+  color: #f8f9fa;
+  background-color: #202020;
   margin: 1px;
   padding: 20px 24px;
+}
+
+.sold-out {
+  width: 200px;
+  padding: 20px 30px;
+  font-size: 20px;
+  border: 1px solid black;
+}
+
+.product-add {
+  width: 200px;
 }

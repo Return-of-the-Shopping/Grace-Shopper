@@ -3,11 +3,24 @@ import {Link} from 'react-router-dom'
 
 const AdminUserTools = props => {
   return (
-    <div className="product-util">
+    <div className={props.success ? 'product-util success' : 'product-util'}>
+      <div className="util-center">{props.success && props.success}</div>
       <div className="util-right">
-        <a onClick={props.toggleDelete}>Quick Delete</a>
-        <a onClick={props.toggleEdit}>Edit User</a>
-        <a onClick={props.handleDelete}>Delete User</a>
+        {props.toggleDelete && (
+          <Link to="#" onClick={props.toggleDelete}>
+            Quick Delete
+          </Link>
+        )}
+        {props.toggleDelete && (
+          <Link to="#" onClick={props.toggleEdit}>
+            Edit User
+          </Link>
+        )}
+        {props.toggleDelete && (
+          <Link to="#" onClick={props.handleDelete}>
+            Delete User
+          </Link>
+        )}
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import React from 'react'
 import ProductForm from './product-form'
 import {connect} from 'react-redux'
 import {addProductToServer} from '../store/products'
+import {AdminTools} from '../components'
 
 class AddProduct extends React.Component {
   constructor() {
@@ -65,27 +66,30 @@ class AddProduct extends React.Component {
 
   render() {
     return (
-      <div className="product-container">
-        <div className="product-container-left">
-          <img src="https://www.ball.com/Ball/media/Ball/Global/Markets%20and%20Capabilities%20Images/Beverage-Can-Upright-and-Can-Side-340x430.jpg?ext=.jpg" />
-          <div className="">{this.state.success && this.state.success}</div>
-        </div>
-        <div className="product-container-right">
-          <ProductForm
-            for="add"
-            handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
-            name={this.state.name}
-            category={this.state.category}
-            description={this.state.description}
-            abv={this.state.abv}
-            imageUrl={this.state.imageUrl}
-            price={this.state.price}
-            quantity={this.state.quantity}
-            validated={this.state.validated}
-            error={this.state.error}
-            success={this.state.success}
-          />
+      <div>
+        <AdminTools error={this.state.error} success={this.state.success} />
+        <div className="product-container">
+          <div className="product-container-left">
+            <img src="https://www.ball.com/Ball/media/Ball/Global/Markets%20and%20Capabilities%20Images/Beverage-Can-Upright-and-Can-Side-340x430.jpg?ext=.jpg" />
+            <div className="">{this.state.success && this.state.success}</div>
+          </div>
+          <div className="product-container-right">
+            <ProductForm
+              for="add"
+              handleChange={this.handleChange}
+              handleSubmit={this.handleSubmit}
+              name={this.state.name}
+              category={this.state.category}
+              description={this.state.description}
+              abv={this.state.abv}
+              imageUrl={this.state.imageUrl}
+              price={this.state.price}
+              quantity={this.state.quantity}
+              validated={this.state.validated}
+              error={this.state.error}
+              success={this.state.success}
+            />
+          </div>
         </div>
       </div>
     )

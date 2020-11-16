@@ -11,7 +11,9 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
   <div>
     <NavBar className="main-nav" bg="light" variant="light">
       <NavBar.Brand>
-        <Link to="/home">Hoppy Endings</Link>
+        <Link to="/home" className="logo">
+          Hoppy Endings
+        </Link>
       </NavBar.Brand>
       <Nav className="mr-auto">
         <NavLink to="/home" activeClassName="selected">
@@ -27,7 +29,9 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
           <NavLink to={`/users/${userId}`} activeClassName="selected">
             Profile
           </NavLink>
-          <a onClick={handleClick}>Logout</a>
+          <NavLink to="#" onClick={handleClick}>
+            Logout
+          </NavLink>
         </Nav>
       ) : (
         <Nav className="nav-right">
@@ -40,7 +44,9 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
         </Nav>
       )}
       <Badge badgeContent={Object.keys(cart).length} color="primary">
-        <NavLink to="/cart">Cart</NavLink>
+        <NavLink to="/cart" activeClassName="selected" className="cart">
+          Cart
+        </NavLink>
       </Badge>
       {/* <Form inline>
         <FormControl type="text" placeholder="Search" className="mr-sm-2" />

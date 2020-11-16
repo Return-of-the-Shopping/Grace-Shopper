@@ -7,7 +7,6 @@ import {
 } from '../store/singleProduct'
 import {deleteProductFromServer} from '../store/products'
 
-
 import {AdminTools, EditProduct, NotFound} from '../components'
 import {Button, InputGroup, FormControl, Form} from 'react-bootstrap'
 import cart from '../cart'
@@ -18,10 +17,9 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: 1,
       toggleEdit: false,
-      error: null
+      error: null,
       validated: false,
       success: ''
-
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -36,6 +34,7 @@ class SingleProduct extends React.Component {
 
   handleChange(event) {
     this.setState({
+      success: '',
       [event.target.name]: event.target.value
     })
   }
@@ -77,8 +76,8 @@ class SingleProduct extends React.Component {
       if (!this.state.error) {
         this.setState(state => ({
           error: null,
-          success: `Successfully added (${state.quantity}) ${
-            state.name
+          success: `Added (${state.quantity}) ${
+            this.props.product.name
           }(s) to your cart.`,
           validated: false
         }))
@@ -145,67 +144,76 @@ class SingleProduct extends React.Component {
                 <h3>${(product.price / 100).toFixed(2)}</h3>
 
                 {product.quantity && (
-                  <Form
-                    noValidate
-                    validated={this.state.validated}
-                    onSubmit={this.handleSubmit}
-                  >
-                    <Form.Group md="4" controlId="validationCustom04">
-                      <Form.Label>
-                        <i>{product.quantity} in stock</i>
-                      </Form.Label>
-                      <InputGroup className="mb-3">
-                        <InputGroup.Prepend>
-                          <Button
-                            variant="outline-secondary"
-                            disabled={this.state.quantity <= 1}
-                            onClick={() =>
-                              this.setState(state => ({
-                                quantity: +state.quantity - 1
-                              }))
-                            }
-                          >
-                            -
-                          </Button>
-                        </InputGroup.Prepend>
-                        <FormControl
-                          aria-describedby="basic-addon1"
-                          type="number"
-                          name="quantity"
-                          min="0"
-                          max={product.quantity}
-                          onChange={this.handleChange}
-                          value={this.state.quantity}
-                        />
-                        <InputGroup.Append>
-                          <Button
-                            variant="outline-secondary"
-                            onClick={() =>
-                              this.setState(state => ({
-                                quantity: +state.quantity + 1
-                              }))
-                            }
-                          >
-                            +
-                          </Button>
-                        </InputGroup.Append>
-                        <Form.Control.Feedback type="invalid">
-                          The quantity you selected is invalid
-                        </Form.Control.Feedback>
-                      </InputGroup>
-                    </Form.Group>
-                    <Button
-                      type="submit"
-                      size="lg"
-                      disabled={!product.quantity}
+                  <div className="product-add">
+                    <Form
+                      noValidate
+                      validated={this.state.validated}
+                      onSubmit={this.handleSubmit}
                     >
-                      Add to Cart
-                    </Button>
-                  </Form>
+                      <Form.Group md="4" controlId="validationCustom04">
+                        <Form.Label>
+                          <i>{product.quantity} in stock</i>
+                        </Form.Label>
+                        <InputGroup className="mb-3">
+                          <InputGroup.Prepend>
+                            <Button
+                              variant="outline-secondary"
+                              disabled={this.state.quantity <= 1}
+                              onClick={() =>
+                                this.setState(state => ({
+                                  quantity: +state.quantity - 1,
+                                  success: ''
+                                }))
+                              }
+                            >
+                              -
+                            </Button>
+                          </InputGroup.Prepend>
+                          <FormControl
+                            aria-describedby="basic-addon1"
+                            type="number"
+                            name="quantity"
+                            min="0"
+                            max={product.quantity}
+                            onChange={this.handleChange}
+                            value={this.state.quantity}
+                          />
+                          <InputGroup.Append>
+                            <Button
+                              variant="outline-secondary"
+                              onClick={() =>
+                                this.setState(state => ({
+                                  quantity: +state.quantity + 1,
+                                  success: ''
+                                }))
+                              }
+                            >
+                              +
+                            </Button>
+                          </InputGroup.Append>
+                          <Form.Control.Feedback type="invalid">
+                            The quantity you selected is invalid
+                          </Form.Control.Feedback>
+                        </InputGroup>
+                      </Form.Group>
+                      <Button
+                        block
+                        variant="warning"
+                        type="submit"
+                        size="lg"
+                        disabled={!product.quantity}
+                      >
+                        Add to Cart
+                      </Button>
+                      {this.state.success && this.state.success}
+                    </Form>
+                  </div>
                 )}
               </div>
             )}
-            {!product.quantity && 'Sorry, Sold Out'}
+            {!product.quantity && (
+              <div className="sold-out">Sorry, Sold Out</div>
+            )}
           </div>
         </div>
       </div>

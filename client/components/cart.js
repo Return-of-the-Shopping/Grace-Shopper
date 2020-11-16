@@ -35,16 +35,6 @@ class Cart extends React.Component {
       <div className="cart-container">
         <h1>Cart</h1>
         <Table responsive>
-          <thead>
-            <tr>
-              <th />
-              <th>Product Name</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total Price</th>
-              <th />
-            </tr>
-          </thead>
           <tbody>
             {Object.keys(cart).map(productId => {
               const info = {
@@ -64,33 +54,35 @@ class Cart extends React.Component {
               )
             })}
           </tbody>
-          <tr>
-            <th />
-            <th />
-            <th />
-            <th>Order Total</th>
-            <th>
-              {`$` +
-                (
-                  Object.keys(cart).reduce(
-                    (orderTotal, productId) =>
-                      orderTotal +
-                      JSON.parse(cart[productId]).price *
-                        JSON.parse(cart[productId]).quantity,
-                    0
-                  ) / 100
-                ).toFixed(2)}
-            </th>
-            <th />
-          </tr>
-          <div>
-            {Object.keys(cart).length && (
-              <Link to="/checkout" className="big-button">
-                Checkout
-              </Link>
-            )}
-          </div>
+          <thead>
+            <tr>
+              <th />
+              <th />
+              <th />
+              <th>Order Total</th>
+              <th>
+                {`$` +
+                  (
+                    Object.keys(cart).reduce(
+                      (orderTotal, productId) =>
+                        orderTotal +
+                        JSON.parse(cart[productId]).price *
+                          JSON.parse(cart[productId]).quantity,
+                      0
+                    ) / 100
+                  ).toFixed(2)}
+              </th>
+              <th />
+            </tr>
+          </thead>
         </Table>
+        <div>
+          {Object.keys(cart).length && (
+            <Link to="/checkout" className="big-button">
+              Checkout
+            </Link>
+          )}
+        </div>
       </div>
     )
   }
