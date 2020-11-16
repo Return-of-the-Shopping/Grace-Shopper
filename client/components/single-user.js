@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {UserForm, NotAdmin, AdminUserTools, NotFound} from '../components'
+import {NotAdmin, AdminUserTools, NotFound, EditUser} from '../components'
 import {getSingleUserDb, updateSingleUserDb} from '../store/singleUser'
 import {removeSingleUserDb} from '../store/users'
 
@@ -8,22 +8,22 @@ export class SingleUser extends Component {
   constructor() {
     super()
     this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      address: '',
-      payment: '',
-      validated: false,
-      city: '',
-      state: '',
-      zipcode: null,
-      update: false,
-      toggleEdit: false,
-      error: null
+      // firstName: '',
+      // lastName: '',
+      // email: '',
+      // address: '',
+      // payment: '',
+      // validated: false,
+      // city: '',
+      // state: '',
+      // zipcode: null,
+      // update: false,
+      toggleEdit: false
+      // error: null,
     }
 
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
+    // this.handleSubmit = this.handleSubmit.bind(this)
+    // this.handleChange = this.handleChange.bind(this)
     this.toggleEdit = this.toggleEdit.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
   }
@@ -46,6 +46,7 @@ export class SingleUser extends Component {
   // }
 
   componentDidMount() {
+    let user = this.props.user
     if (
       this.props.user.admin ||
       +this.props.match.params.userId === this.props.user.id
@@ -54,24 +55,25 @@ export class SingleUser extends Component {
         .fetchSingleUser(this.props.match.params.userId)
         .catch(error => this.setState({error}))
     }
-
-    let user = this.props.user
-    this.setState({
-      firstName: user.firstName || '',
-      lastName: user.lastName || '',
-      email: user.email || '',
-      payment: user.payment || '',
-      address: user.address || '',
-      city: user.city || '',
-      state: user.state || '',
-      zipcode: user.zipcode || null,
-      validated: false,
-      update: true
-    })
+    if (
+      !this.state.error &&
+      (this.props.user.admin ||
+        +this.props.match.params.userId === this.props.user.id)
+    ) {
+      user = this.props.singleUser
+      this.setState({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        address: user.address || '',
+        city: user.city || '',
+        state: user.state || '',
+        zipcode: user.zipcode || ''
+      })
+    }
   }
 
   toggleEdit() {
-    console.log(this.state.toggleEdit)
     this.setState(prevState => ({
       toggleEdit: !prevState.toggleEdit
     }))
@@ -80,31 +82,34 @@ export class SingleUser extends Component {
   handleDelete() {
     console.log('allprops', this.props)
 
-    this.props.deleteUser(this.props.singleUser.id)
-    this.props.history.push('/allUsers')
-  }
-
-  handleSubmit = event => {
-    // const [validated, setValidated] = React.useState(false)
-    console.log(this.state)
-    console.log(this.props.match.params.userId)
-    const form = event.currentTarget
-    if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+    if (this.props.user.id === this.props.singleUser.id) {
+      // BUG: deletes own account but doesn't log you out
+      this.props.deleteUser(this.props.singleUser.id)
+      this.props.history.push('/signUp')
+    } else {
+      this.props.deleteUser(this.props.singleUser.id)
+      this.props.history.push('/allUsers')
     }
-    // we need to set order fuilfilled to true in backend
-    // also clear the local storage
-    // error when editing from /profile >> this.props.match.params.userId does not exist
-    this.props.updateSingleUser(this.props.match.params.userId, this.state)
-    this.setState({validated: true})
   }
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
-  }
+  // handleSubmit = (event) => {
+  //   const form = event.currentTarget
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault()
+  //     event.stopPropagation()
+  //   }
+  //   // we need to set order fuilfilled to true in backend
+  //   // also clear the local storage
+  //   // error when editing from /profile >> this.props.match.params.userId does not exist
+  //   this.props.updateSingleUser(this.props.match.params.userId, this.state)
+  //   this.setState({validated: true})
+  // }
+
+  // handleChange(event) {
+  //   this.setState({
+  //     [event.target.name]: event.target.value,
+  //   })
+  // }
 
   render() {
     let user = this.props.user
@@ -117,6 +122,7 @@ export class SingleUser extends Component {
     if (this.state.error) {
       return <NotFound />
     }
+    console.log(user)
     return (
       <div>
         {this.props.user.admin && (
@@ -129,10 +135,10 @@ export class SingleUser extends Component {
           <div className="product-container-left" />
           <div className="product-container-right">
             {this.state.toggleEdit ? (
-              <UserForm
-                user={this.state}
-                handleChange={this.handleChange}
-                handleSubmit={this.handleSubmit}
+              <EditUser
+                user={user}
+                toggleEdit={this.toggleEdit}
+                matchId={this.props.match.params.userId}
               />
             ) : (
               <div>
@@ -142,10 +148,16 @@ export class SingleUser extends Component {
                 <hr />
                 <p>{user.email}</p>
                 <p>{user.address}</p>
+                <p>{user.city}</p>
+                <p>{user.state}</p>
+                <p>{user.zipcode}</p>
               </div>
             )}
-            {/* add buttons to edit/delete account
-          view/display based on admin rights or customer user-id */}
+
+            <button onClick={this.toggleEdit}>
+              {!this.state.toggleEdit ? 'Edit Account' : 'Cancel Changes'}
+            </button>
+            <button onClick={this.handleDelete}>Delete Account</button>
           </div>
         </div>
       </div>
