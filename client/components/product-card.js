@@ -10,7 +10,7 @@ const ProductCard = props => {
       <Card.Img variant="top" src={product.imageUrl} />
       <Card.Body className="card-body">
         <Card.Title className="card-title">{product.name}</Card.Title>
-        <Link to={`/products/${product.id}`}>View</Link>
+        <Link to={`/products/${product.id}`}>View Product</Link>
         {props.toggleDelete && (
           <Button onClick={() => props.handleDelete(product.id)}>
             Delete Product

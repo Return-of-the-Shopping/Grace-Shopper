@@ -15,8 +15,7 @@ class EditProduct extends React.Component {
       price: '',
       quantity: '',
       error: null,
-      validated: false,
-      success: ''
+      validated: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -56,11 +55,10 @@ class EditProduct extends React.Component {
         this.setState({error: error})
       }
       if (!this.state.error) {
-        this.setState(state => ({
+        this.setState({
           error: null,
-          success: `Successfully added ${state.name} to our product database!`,
           validated: false
-        }))
+        })
         this.props.toggleEdit()
       }
     }
