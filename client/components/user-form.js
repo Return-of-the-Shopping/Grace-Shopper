@@ -12,7 +12,7 @@ const UserForm = props => {
     zipcode,
     validated
   } = props.user
-  console.log(props)
+
   return (
     <Form
       noValidate

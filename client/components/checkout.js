@@ -82,10 +82,9 @@ class Checkout extends React.Component {
       await this.props.cartCheckout(this.props.user.id)
       // clear localStorage
       cart.clear()
-
-      history.push('/orders/confirmation')
     }
     this.setState({validated: true})
+    if (!Object.keys(cart).length) history.push('/orders/confirmation')
   }
 
   handleChange(event) {

@@ -56,16 +56,18 @@ export const auth = (email, password, method) => async dispatch => {
   try {
     dispatch(getUser(res.data))
     const {data} = await axios.get(`api/users/orders/${res.data.id}`)
-    const {products} = data
-    products.map(product => {
-      const info = {
-        name: product.name,
-        price: product.price,
-        quantity: product.productOrder.quantity,
-        imageUrl: product.imageUrl
-      }
-      return cart.setItem(product.id, JSON.stringify(info))
-    })
+    if (data) {
+      const {products} = data
+      products.map(product => {
+        const info = {
+          name: product.name,
+          price: product.price,
+          quantity: product.productOrder.quantity,
+          imageUrl: product.imageUrl
+        }
+        return cart.setItem(product.id, JSON.stringify(info))
+      })
+    }
     history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
