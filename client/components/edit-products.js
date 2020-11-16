@@ -30,7 +30,7 @@ class EditProduct extends React.Component {
       description: product.description || '',
       abv: product.abv || '',
       imageUrl: product.imageUrl || '',
-      price: product.price || '',
+      price: (product.price / 100).toFixed(2) || '',
       quantity: product.quantity || ''
     })
   }
