@@ -48,7 +48,16 @@ const Product = db.define('product', {
 })
 
 Product.beforeCreate(product => {
-  product.price = product.price * 100
+  product.price = Math.round(+product.price * 100)
+  product.imageUrl = !product.imageUrl
+    ? 'https://www.ball.com/Ball/media/Ball/Global/Markets%20and%20Capabilities%20Images/Beverage-Can-Upright-and-Can-Side-340x430.jpg?ext=.jpg'
+    : product.imageUrl
+})
+
+Product.beforeUpdate(product => {
+  console.log(typeof product.price)
+  product.price = Math.round(+product.price * 100)
+  console.log(typeof product.price)
   product.imageUrl = !product.imageUrl
     ? 'https://www.ball.com/Ball/media/Ball/Global/Markets%20and%20Capabilities%20Images/Beverage-Can-Upright-and-Can-Side-340x430.jpg?ext=.jpg'
     : product.imageUrl

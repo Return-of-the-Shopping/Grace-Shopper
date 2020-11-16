@@ -53,7 +53,7 @@ const ProductForm = props => {
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group md="4" controlId="validationCustom02">
+      <Form.Group md="4" controlId="validationCustom03">
         <Form.Label>Description</Form.Label>
         <Form.Control
           as="textarea"
@@ -67,7 +67,7 @@ const ProductForm = props => {
           Please write a short description
         </Form.Control.Feedback>
       </Form.Group>
-      <Form.Group md="4" controlId="validationCustomUsername">
+      <Form.Group md="4" controlId="validationCustom04">
         <Form.Label>ABV</Form.Label>
         <InputGroup className="mb-3">
           <Form.Control
@@ -90,7 +90,7 @@ const ProductForm = props => {
         </InputGroup>
       </Form.Group>
 
-      <Form.Group md="6" controlId="validationCustom03">
+      <Form.Group md="6" controlId="validationCustom05">
         <Form.Label>Image URL</Form.Label>
         <Form.Control
           type="text"
@@ -104,7 +104,7 @@ const ProductForm = props => {
           </Form.Control.Feedback> */}
       </Form.Group>
 
-      <Form.Group md="6" controlId="validationCustom03">
+      <Form.Group md="6" controlId="validationCustom06">
         <Form.Label>Quantity</Form.Label>
         <Form.Control
           type="number"
@@ -119,7 +119,7 @@ const ProductForm = props => {
           Quantity cannot be empty
         </Form.Control.Feedback>
       </Form.Group>
-      <Form.Group md="3" controlId="validationCustom04">
+      <Form.Group md="3" controlId="validationCustom07">
         <Form.Label>Price</Form.Label>
         <InputGroup className="mb-3">
           <InputGroup.Prepend>

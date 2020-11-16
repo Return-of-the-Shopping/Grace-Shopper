@@ -36,7 +36,6 @@ class Routes extends Component {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/products" component={Products} />
         <Route path="/products/:productId" component={SingleProduct} />
-        <Route exact path="/add-product" component={AddProduct} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/cart" component={Cart} />
@@ -48,12 +47,14 @@ class Routes extends Component {
             {/* <Route path="/home" component={UserHome} /> */}
             {/* Should delete this component, we don't use it*/}
 
-
             {/* <Route path="/profile" component={SingleUser} /> */}
             <Route path="/users/:userId" component={SingleUser} />
             <Route path="/orders/confirmation" component={Confirmation} />
             {isAdmin ? (
-              <Route exact path="/allUsers" component={AllUsers} />
+              <Switch>
+                <Route exact path="/add-product" component={AddProduct} />
+                <Route exact path="/allUsers" component={AllUsers} />
+              </Switch>
             ) : (
               <NotAdmin />
             )}
