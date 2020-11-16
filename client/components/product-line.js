@@ -48,7 +48,7 @@ class ProductLine extends React.Component {
     return (
       <tr>
         <td>
-          <img src={product.imageUrl} thumbnail />
+          <img src={product.imageUrl} />
         </td>
         <td>{product.name}</td>
         <td>{`$` + (product.price / 100).toFixed(2)}</td>
@@ -93,8 +93,8 @@ class ProductLine extends React.Component {
               variant="outline-secondary"
               onClick={event => {
                 event.preventDefault()
-                info.quantity = this.state.quantity
-                const change = {...product, quantity: info.quantity}
+                info.quantity = +this.state.quantity
+                const change = {...product, quantity: +info.quantity}
                 if (info.quantity <= 0) {
                   this.props.cart.removeItem(info.productId)
                   this.props.resetCartState()

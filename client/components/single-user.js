@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {UserForm, NotAdmin, AdminUserTools} from '../components'
+import {UserForm, NotAdmin, AdminUserTools, NotFound} from '../components'
 import {getSingleUserDb, updateSingleUserDb} from '../store/singleUser'
 import {removeSingleUserDb} from '../store/users'
 
@@ -18,7 +18,8 @@ export class SingleUser extends Component {
       state: '',
       zipcode: null,
       update: false,
-      toggleEdit: false
+      toggleEdit: false,
+      error: null
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -49,7 +50,9 @@ export class SingleUser extends Component {
       this.props.user.admin ||
       +this.props.match.params.userId === this.props.user.id
     ) {
-      this.props.fetchSingleUser(this.props.match.params.userId)
+      this.props
+        .fetchSingleUser(this.props.match.params.userId)
+        .catch(error => this.setState({error}))
     }
 
     let user = this.props.user
@@ -110,6 +113,9 @@ export class SingleUser extends Component {
       user = this.props.singleUser
     } else {
       return <NotAdmin />
+    }
+    if (this.state.error) {
+      return <NotFound />
     }
     return (
       <div>

@@ -7,7 +7,7 @@ import {
 } from '../store/singleProduct'
 import {deleteProductFromServer} from '../store/products'
 import {Button, InputGroup, FormControl} from 'react-bootstrap'
-import {AdminTools, EditProduct} from '../components'
+import {AdminTools, EditProduct, NotFound} from '../components'
 import cart from '../cart'
 
 class SingleProduct extends React.Component {
@@ -15,7 +15,8 @@ class SingleProduct extends React.Component {
     super()
     this.state = {
       quantity: 1,
-      toggleEdit: false
+      toggleEdit: false,
+      error: null
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -23,7 +24,9 @@ class SingleProduct extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
   }
   componentDidMount() {
-    this.props.fetchProduct(this.props.match.params.productId)
+    this.props
+      .fetchProduct(this.props.match.params.productId)
+      .catch(error => this.setState({error}))
   }
 
   handleChange(event) {
@@ -63,6 +66,10 @@ class SingleProduct extends React.Component {
 
   render() {
     const {product, user} = this.props
+
+    if (this.state.error) {
+      return <NotFound />
+    }
 
     return (
       <div>

@@ -26,14 +26,10 @@ const updateSingleUser = singleUser => ({
  * THUNK CREATORS
  */
 export const getSingleUserDb = userId => async dispatch => {
-  try {
-    // if (loginUser.id === userId ||| loginUser.admin)
-    //can we protect this, if you're NOT the user?
-    const {data} = await axios.get(`/api/users/${userId}`)
-    dispatch(getSingleUser(data))
-  } catch (err) {
-    console.log(err)
-  }
+  // if (loginUser.id === userId ||| loginUser.admin)
+  //can we protect this, if you're NOT the user?
+  const {data} = await axios.get(`/api/users/${userId}`)
+  dispatch(getSingleUser(data))
 }
 
 export const updateSingleUserDb = (userId, update) => async dispatch => {
