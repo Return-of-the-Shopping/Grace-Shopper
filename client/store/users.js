@@ -43,7 +43,7 @@ export const removeSingleUserDb = userId => async dispatch => {
 export default function(state = defaultUsers, action) {
   switch (action.type) {
     case GET_ALL_USERS:
-      return action.users
+      return action.users || state
     case REMOVE_SINGLE_USER:
       return state.filter(user => user.id !== action.userId)
     default:
