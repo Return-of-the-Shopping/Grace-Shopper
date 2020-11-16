@@ -10,7 +10,7 @@ export class AllUsers extends Component {
     this.state = {
       toggleDelete: false
     }
-    // this.handleDelete = this.handleDelete.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
     this.toggleDelete = this.toggleDelete.bind(this)
   }
 
@@ -18,10 +18,10 @@ export class AllUsers extends Component {
     this.props.fetchUsers()
   }
 
-  // handleDelete(userId) {
-  //   this.props.deleteUser(userId)
-  //   this.props.history.push('/allUsers')
-  // }
+  handleDelete(userId) {
+    this.props.deleteUser(userId)
+    // this.props.history.push('/allUsers')
+  }
 
   toggleDelete() {
     console.log(this.state.toggleDelete)
@@ -53,6 +53,7 @@ export class AllUsers extends Component {
               <UserLine
                 key={user.id}
                 user={user}
+                toggleDelete={this.state.toggleDelete}
                 handleDelete={this.handleDelete}
               />
             ))}

@@ -11,12 +11,12 @@ const AdminUserTools = props => {
             Quick Delete
           </Link>
         )}
-        {props.toggleDelete && (
+        {props.toggleEdit && (
           <Link to="#" onClick={props.toggleEdit}>
             Edit User
           </Link>
         )}
-        {props.toggleDelete && (
+        {props.handleDelete && (
           <Link to="#" onClick={props.handleDelete}>
             Delete User
           </Link>
