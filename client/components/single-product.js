@@ -6,8 +6,10 @@ import {
   putToCart
 } from '../store/singleProduct'
 import {deleteProductFromServer} from '../store/products'
+
+
+import {AdminTools, EditProduct, NotFound} from '../components'
 import {Button, InputGroup, FormControl, Form} from 'react-bootstrap'
-import {AdminTools, EditProduct} from '../components'
 import cart from '../cart'
 
 class SingleProduct extends React.Component {
@@ -16,8 +18,10 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: 1,
       toggleEdit: false,
+      error: null
       validated: false,
       success: ''
+
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -25,7 +29,9 @@ class SingleProduct extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
   }
   componentDidMount() {
-    this.props.fetchProduct(this.props.match.params.productId)
+    this.props
+      .fetchProduct(this.props.match.params.productId)
+      .catch(error => this.setState({error}))
   }
 
   handleChange(event) {
@@ -109,6 +115,10 @@ class SingleProduct extends React.Component {
 
   render() {
     const {product} = this.props
+
+    if (this.state.error) {
+      return <NotFound />
+    }
 
     return (
       <div>

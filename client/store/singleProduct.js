@@ -31,12 +31,8 @@ const checkoutCart = () => ({type: CHECKOUT_CART})
  * THUNK CREATORS
  */
 export const fetchSingleProduct = productId => async dispatch => {
-  try {
-    const res = await axios.get(`/api/products/${productId}`)
-    dispatch(getSingleProduct(res.data || defaultSingleProduct))
-  } catch (err) {
-    console.error(err)
-  }
+  const res = await axios.get(`/api/products/${productId}`)
+  dispatch(getSingleProduct(res.data || defaultSingleProduct))
 }
 
 export const updateSingleProduct = (productId, update) => async dispatch => {
