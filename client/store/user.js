@@ -1,5 +1,6 @@
 import axios from 'axios'
 import history from '../history'
+import cart from '../cart'
 
 /**
  * ACTION TYPES
@@ -7,6 +8,7 @@ import history from '../history'
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
 const GET_ALL_USERS = 'GET_ALL_USERS'
+const GET_USER_CART = 'GET_USER_CART'
 
 /**
  * INITIAL STATE
@@ -19,6 +21,7 @@ const defaultUser = {}
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
 const getAllUsers = users => ({type: GET_ALL_USERS, users})
+const getUserCart = () => ({type: GET_ALL_USERS})
 
 /**
  * THUNK CREATORS
@@ -52,6 +55,17 @@ export const auth = (email, password, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data))
+    const {data} = await axios.get(`api/users/orders/${res.data.id}`)
+    const {products} = data
+    products.map(product => {
+      const info = {
+        name: product.name,
+        price: product.price,
+        quantity: product.productOrder.quantity,
+        imageUrl: product.imageUrl
+      }
+      return cart.setItem(product.id, JSON.stringify(info))
+    })
     history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
