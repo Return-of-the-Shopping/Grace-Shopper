@@ -126,7 +126,6 @@ export class SingleUser extends Component {
 
   render() {
     let user = this.props.user
-
     if (user.id === +this.props.match.params.userId || user.admin) {
       user = this.props.singleUser
     } else {
@@ -135,7 +134,16 @@ export class SingleUser extends Component {
     if (this.state.error) {
       return <NotFound />
     }
-    console.log(user)
+    if (
+      this.props.user.id === +this.props.match.params.userId &&
+      this.props.user.admin
+    ) {
+      this.handleDelete = false
+      console.log(this.handleDelete)
+    }
+    console.log(this.props.user.id)
+    console.log(user.id)
+    console.log(this.props.match.params.userId)
     return (
       <div>
         {this.props.user.admin && (
@@ -159,18 +167,22 @@ export class SingleUser extends Component {
                   {user.firstName} {user.lastName}
                 </h1>
                 <hr />
-                <p>{user.email}</p>
-                <p>{user.address}</p>
-                <p>{user.city}</p>
-                <p>{user.state}</p>
-                <p>{user.zipcode}</p>
+                <p>Email: {user.email}</p>
+                <p>Address: {user.address}</p>
+                <p>City: {user.city}</p>
+                <p>State: {user.state}</p>
+                <p>Zipcode: {user.zipcode}</p>
               </div>
             )}
-
-            <button onClick={this.toggleEdit}>
-              {!this.state.toggleEdit ? 'Edit Account' : 'Cancel Changes'}
-            </button>
-            <button onClick={this.handleDelete}>Delete Account</button>
+            {!this.props.user.admin && (
+              <div>
+                <button onClick={this.toggleEdit}>
+                  {!this.state.toggleEdit ? 'Edit Account' : 'Cancel Changes'}
+                </button>
+                <button onClick={this.handleDelete}>Delete Account</button>
+              </div>
+            )}
+            {/* <button onClick={this.handleDelete}>Delete Account</button> */}
           </div>
         </div>
       </div>
