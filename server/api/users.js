@@ -58,7 +58,20 @@ router.put('/:userId', async (req, res, next) => {
     const userId = req.params.userId
     if (req.user.dataValues.admin || +userId === req.user.dataValues.id) {
       const findUser = await User.findOne({where: {id: userId}})
-      await findUser.update(req.body)
+
+      const newInfo = {
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phone: req.body.phone,
+        address: req.body.address,
+        city: req.body.city,
+        state: req.body.state,
+        zipcode: req.body.zipcode,
+        DOB: req.body.DOB
+      }
+
+      await findUser.update(newInfo)
       res.json(findUser)
     } else {
       res.sendStatus(401)
