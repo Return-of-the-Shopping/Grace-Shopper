@@ -53,7 +53,7 @@ class Routes extends Component {
             {isAdmin ? (
               <Switch>
                 <Route exact path="/add-product" component={AddProduct} />
-                <Route exact path="/allUsers" component={AllUsers} />
+                <Route exact path="/users" component={AllUsers} />
               </Switch>
             ) : (
               <NotAdmin />

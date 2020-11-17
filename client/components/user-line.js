@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import {Button} from 'react-bootstrap'
 
 const UserLine = props => {
   const user = props.user
@@ -15,9 +16,12 @@ const UserLine = props => {
       <td>{user.address}</td>
       <td>
         {props.toggleDelete && (
-          <Link to="#" onClick={() => props.handleDelete(user.id, userName)}>
-            Delete User
-          </Link>
+          <Button
+            variant="danger"
+            onClick={() => props.handleDelete(user.id, userName)}
+          >
+            Delete
+          </Button>
         )}
       </td>
     </tr>

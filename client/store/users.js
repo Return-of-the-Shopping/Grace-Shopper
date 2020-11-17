@@ -6,7 +6,7 @@ const REMOVE_SINGLE_USER = 'REMOVE_SINGLE_USER'
 /**
  * INITIAL STATE
  */
-const defaultUsers = []
+const INITIAL_STATE = {all: [], loading: true}
 
 /**
  * ACTION CREATORS
@@ -40,12 +40,19 @@ export const removeSingleUserDb = userId => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultUsers, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case GET_ALL_USERS:
-      return action.users || state
+      return {
+        all: action.users,
+        loading: false
+      }
+
     case REMOVE_SINGLE_USER:
-      return state.filter(user => user.id !== action.userId)
+      return {
+        all: state.all.filter(user => user.id !== action.userId),
+        loading: false
+      }
     default:
       return state
   }

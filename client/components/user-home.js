@@ -15,7 +15,7 @@ export const UserHome = props => {
         <h3>Welcome, {email}</h3>
         <h1>hello</h1>
         <Link to="/profile">Profile</Link>
-        <Link to="/allUsers">All Users</Link>
+        <Link to="/users">All Users</Link>
       </div>
     )
   } else {
