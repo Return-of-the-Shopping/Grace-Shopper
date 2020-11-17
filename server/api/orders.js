@@ -138,7 +138,9 @@ router.delete('/', async (req, res, next) => {
 
 router.put('/checkout', async (req, res, next) => {
   try {
-    const userId = req.body.userId
+    console.log(req.body)
+    const {userId, cart} = req.body
+
     if (userId === req.user.dataValues.id) {
       const userOrder = await Order.findOne({
         where: {
@@ -149,6 +151,16 @@ router.put('/checkout', async (req, res, next) => {
 
       if (userOrder) {
         //reduce quanitity in product
+        Object.keys(cart).map(async productId => {
+          const product = await Product.findOne({
+            where: {
+              id: productId
+            }
+          })
+          const originalQuantity = product.dataValues.quantity
+          const orderQuantity = +JSON.parse(cart[productId]).quantity
+          product.update({quantity: originalQuantity - orderQuantity})
+        })
         await userOrder.update({isFulfilled: true})
         res.sendStatus(204)
       } else {
