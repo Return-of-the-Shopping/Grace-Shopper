@@ -5,6 +5,7 @@ import axios from 'axios'
  */
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT'
 const UPDATE_SINGLE_PRODUCT = 'UPDATE_SINGLE_PRODUCT'
+const RESET_PRODUCT_LOADING = 'RESET_PRODUCT_LOADING'
 // const ADD_TO_CART = 'ADD_TO_CART'
 // const DELETE_FROM_CART = 'DELETE_FROM_CART'
 // const EDIT_CART = 'EDIT_CART'
@@ -14,11 +15,15 @@ const UPDATE_SINGLE_PRODUCT = 'UPDATE_SINGLE_PRODUCT'
 /**
  * INITIAL STATE
  */
-const defaultSingleProduct = {}
+const INITIAL_STATE = {info: {}, loading: true}
 
 /**
  * ACTION CREATORS
  */
+export const resetProductLoader = () => ({
+  type: RESET_PRODUCT_LOADING
+})
+
 const getSingleProduct = product => ({type: GET_SINGLE_PRODUCT, product})
 const updateProduct = info => ({type: UPDATE_SINGLE_PRODUCT, info})
 // const addToCart = () => ({type: ADD_TO_CART})
@@ -93,12 +98,23 @@ export const updateSingleProduct = (productId, update) => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultSingleProduct, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case GET_SINGLE_PRODUCT:
-      return action.product
+      return {
+        info: action.product,
+        loading: false
+      }
     case UPDATE_SINGLE_PRODUCT:
-      return {...state, ...action.info}
+      return {
+        info: {...state.info, ...action.info},
+        loading: false
+      }
+    case RESET_PRODUCT_LOADING:
+      return {
+        ...state,
+        loading: true
+      }
     default:
       return state
   }

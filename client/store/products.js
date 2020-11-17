@@ -10,7 +10,7 @@ const DELETE_PRODUCT = 'DELETE_PRODUCT'
 /**
  * INITIAL STATE
  */
-const defaultProducts = []
+const INITIAL_STATE = {all: [], loading: true}
 
 /**
  * ACTION CREATORS
@@ -27,7 +27,7 @@ const deleteProduct = productId => ({type: DELETE_PRODUCT, productId})
 export const fetchProducts = () => async dispatch => {
   try {
     const res = await axios.get('/api/products')
-    dispatch(getProducts(res.data || defaultProducts))
+    dispatch(getProducts(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -54,14 +54,23 @@ export const deleteProductFromServer = productId => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultProducts, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case ADD_PRODUCT:
-      return [...state, action.product]
+      return {
+        all: [...state.all, action.product],
+        loading: true
+      }
     case GET_PRODUCTS:
-      return action.products
+      return {
+        all: action.products,
+        loading: false
+      }
     case DELETE_PRODUCT:
-      return state.filter(product => product.id !== action.productId)
+      return {
+        all: state.all.filter(product => product.id !== action.productId),
+        loading: false
+      }
     default:
       return state
   }
