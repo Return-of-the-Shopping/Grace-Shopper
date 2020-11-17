@@ -2,9 +2,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {
   fetchSingleProduct,
-  updateSingleProduct,
-  putToCart
+  updateSingleProduct
+  /*putToCart*/
 } from '../store/singleProduct'
+import {putToCart} from '../store/cart'
 import {deleteProductFromServer} from '../store/products'
 
 import {AdminTools, EditProduct, NotFound} from '../components'
@@ -54,6 +55,7 @@ class SingleProduct extends React.Component {
         this.setState({error: null})
 
         const checkoutInfo = {
+          id: product.id,
           name: product.name,
           price: +product.price,
           quantity: +this.state.quantity,
@@ -61,10 +63,11 @@ class SingleProduct extends React.Component {
         }
 
         const info = {
-          productId: product.id,
+          productId: +product.id,
           userId: user.id,
           price: +product.price,
-          quantity: +this.state.quantity
+          quantity: +this.state.quantity,
+          imageUrl: product.imageUrl
         }
 
         this.props
@@ -224,7 +227,8 @@ class SingleProduct extends React.Component {
 const mapState = state => {
   return {
     product: state.singleProduct,
-    user: state.user
+    user: state.user,
+    cart: state.cart
   }
 }
 

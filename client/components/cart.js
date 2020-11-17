@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {removeFromCart, editInCart} from '../store/singleProduct'
+import {removeFromCart, editInCart} from '../store/cart'
 import cart from '../cart'
 import ProductLine from './product-line'
 import {Table} from 'react-bootstrap'
@@ -39,7 +39,9 @@ class Cart extends React.Component {
             {Object.keys(cart).map(productId => {
               const info = {
                 userId: this.props.user.id,
-                productId
+                productId,
+                price: +JSON.parse(cart[productId]).price,
+                imageUrl: JSON.parse(cart[productId]).imageUrl
               }
               return (
                 <ProductLine

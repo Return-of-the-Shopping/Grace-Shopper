@@ -96,6 +96,7 @@ class ProductLine extends React.Component {
             onClick={event => {
               event.preventDefault()
               info.quantity = +this.state.quantity
+              info.productId = +info.productId
               const change = {...product, quantity: +info.quantity}
               if (info.quantity <= 0) {
                 this.props.cart.removeItem(info.productId)
@@ -116,7 +117,7 @@ class ProductLine extends React.Component {
             variant="outline-secondary"
             onClick={event => {
               event.preventDefault()
-
+              console.log(info)
               this.props.cart.removeItem(info.productId)
               this.props.removeCart(info)
               this.props.resetCartState()
