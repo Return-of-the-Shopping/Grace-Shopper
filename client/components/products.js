@@ -5,7 +5,7 @@ import {
   deleteProductFromServer,
   fetchProducts
 } from '../store/products'
-import {ProductCard, AdminTools} from '../components'
+import {ProductCard, AdminTools, Loading} from '../components'
 import {toast} from 'react-toastify'
 
 class Products extends React.Component {
@@ -45,6 +45,10 @@ class Products extends React.Component {
 
   render() {
     const {products} = this.props
+    if (this.props.loading) {
+      return <Loading props="beer" />
+    }
+
     return (
       <div>
         {this.props.user.admin && (
@@ -67,7 +71,8 @@ class Products extends React.Component {
 
 const mapState = state => {
   return {
-    products: state.products,
+    products: state.products.all,
+    loading: state.products.loading,
     user: state.user
   }
 }
