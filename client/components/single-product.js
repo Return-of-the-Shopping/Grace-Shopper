@@ -11,6 +11,8 @@ import {deleteProductFromServer} from '../store/products'
 import {AdminTools, EditProduct, NotFound} from '../components'
 import {Button, InputGroup, FormControl, Form} from 'react-bootstrap'
 import cart from '../cart'
+import {toast} from 'react-toastify'
+import {green} from '@material-ui/core/colors'
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -35,7 +37,6 @@ class SingleProduct extends React.Component {
 
   handleChange(event) {
     this.setState({
-      success: '',
       [event.target.name]: event.target.value
     })
   }
@@ -79,28 +80,26 @@ class SingleProduct extends React.Component {
       if (!this.state.error) {
         this.setState(state => ({
           error: null,
-          success: `Added (${state.quantity}) ${
-            this.props.product.name
-          }(s) to your cart.`,
+
           validated: false
         }))
+        toast(
+          `Added (${this.state.quantity}) ${
+            this.props.product.name
+          }(s) to your cart.`,
+          {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            progressStyle: {backgroundColor: '#4caf50'}
+          }
+        )
       }
     }
-
-    // const checkoutInfo = {
-    //   name: product.name,
-    //   price: product.price,
-    //   quantity: this.state.quantity,
-    //   imageUrl: product.imageUrl,
-    // }
-    // cart.setItem(product.id, JSON.stringify(checkoutInfo))
-    // const info = {
-    //   productId: product.id,
-    //   userId: user.id,
-    //   price: product.price,
-    //   quantity: this.state.quantity,
-    // }
-    // this.props.addToCart(info)
   }
 
   toggleEdit() {
