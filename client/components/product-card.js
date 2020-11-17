@@ -12,7 +12,7 @@ const ProductCard = props => {
         <Card.Title className="card-title">{product.name}</Card.Title>
         <Link to={`/products/${product.id}`}>View Product</Link>
         {props.toggleDelete && (
-          <Button onClick={() => props.handleDelete(product.id)}>
+          <Button onClick={() => props.handleDelete(product.id, product.name)}>
             Delete Product
           </Button>
         )}

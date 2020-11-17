@@ -5,6 +5,7 @@ import {removeFromCart, editInCart} from '../store/cart'
 import cart from '../cart'
 import ProductLine from './product-line'
 import {Table} from 'react-bootstrap'
+import {toast} from 'react-toastify'
 
 class Cart extends React.Component {
   constructor() {
@@ -28,6 +29,16 @@ class Cart extends React.Component {
 
   resetCartState(state) {
     this.setState({cartUpdate: !state.cartUpdate})
+    toast(`Successfully Updated Cart!`, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      progressStyle: {backgroundColor: '#4caf50'}
+    })
   }
 
   render() {

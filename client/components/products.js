@@ -6,6 +6,7 @@ import {
   fetchProducts
 } from '../store/products'
 import {ProductCard, AdminTools} from '../components'
+import {toast} from 'react-toastify'
 
 class Products extends React.Component {
   constructor() {
@@ -21,8 +22,18 @@ class Products extends React.Component {
     this.props.fetchProducts()
   }
 
-  handleDelete(productId) {
+  handleDelete(productId, productName) {
     this.props.deleteProduct(productId)
+    toast(`Deleted ${productName} from Database!`, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      progressStyle: {backgroundColor: '#4caf50'}
+    })
   }
 
   toggleDelete() {

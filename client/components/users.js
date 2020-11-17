@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {getUsers, removeSingleUserDb} from '../store/users'
 import {Table} from 'react-bootstrap'
 import {UserLine, AdminUserTools} from '../components'
-
+import {toast} from 'react-toastify'
 export class AllUsers extends Component {
   constructor() {
     super()
@@ -18,9 +18,19 @@ export class AllUsers extends Component {
     this.props.fetchUsers()
   }
 
-  handleDelete(userId) {
+  handleDelete(userId, userName) {
     this.props.deleteUser(userId)
     // this.props.history.push('/allUsers')
+    toast(`Deleted ${userName} from Database!`, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      progressStyle: {backgroundColor: '#4caf50'}
+    })
   }
 
   toggleDelete() {

@@ -2,6 +2,7 @@ import React from 'react'
 import {UserForm} from '../components'
 import {updateSingleUserDb, getSingleUserDb} from '../store/singleUser'
 import {connect} from 'react-redux'
+import {toast} from 'react-toastify'
 
 class EditUser extends React.Component {
   constructor() {
@@ -59,6 +60,16 @@ class EditUser extends React.Component {
     this.props.updateSingleUser(this.props.matchId, this.state)
     this.setState({validated: true})
     this.props.toggleEdit()
+    toast(`Successfully Updated!`, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      progressStyle: {backgroundColor: '#4caf50'}
+    })
   }
 
   handleChange(event) {
