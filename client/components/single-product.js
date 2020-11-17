@@ -132,7 +132,7 @@ class SingleProduct extends React.Component {
   render() {
     const {product} = this.props
     if (this.props.loading) {
-      return <Loading props="beer" />
+      return <Loading props="product" />
     }
     if (this.state.error) {
       return <NotFound />

@@ -1,7 +1,17 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {NotAdmin, AdminUserTools, NotFound, EditUser} from '../components'
-import {getSingleUserDb, updateSingleUserDb} from '../store/singleUser'
+import {
+  NotAdmin,
+  AdminUserTools,
+  NotFound,
+  EditUser,
+  Loading
+} from '../components'
+import {
+  getSingleUserDb,
+  updateSingleUserDb,
+  resetUserLoading
+} from '../store/singleUser'
 import {removeSingleUserDb} from '../store/users'
 import {toast} from 'react-toastify'
 
@@ -74,6 +84,10 @@ export class SingleUser extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetLoading()
+  }
+
   toggleEdit() {
     this.setState(prevState => ({
       toggleEdit: !prevState.toggleEdit
@@ -126,6 +140,10 @@ export class SingleUser extends Component {
 
   render() {
     let user = this.props.user
+    if (this.props.loading) {
+      return <Loading props="user" />
+    }
+
     if (user.id === +this.props.match.params.userId || user.admin) {
       user = this.props.singleUser
     } else {
@@ -194,7 +212,8 @@ const mapState = state => {
   return {
     //either you're user, or admin
     user: state.user,
-    singleUser: state.singleUser
+    singleUser: state.singleUser.info,
+    loading: state.singleUser.loading
   }
 }
 
@@ -202,7 +221,8 @@ const mapDispatch = dispatch => ({
   deleteUser: userId => dispatch(removeSingleUserDb(userId)),
   fetchSingleUser: userId => dispatch(getSingleUserDb(userId)),
   updateSingleUser: (userId, update) =>
-    dispatch(updateSingleUserDb(userId, update))
+    dispatch(updateSingleUserDb(userId, update)),
+  resetLoading: () => dispatch(resetUserLoading())
 })
 
 export default connect(mapState, mapDispatch)(SingleUser)

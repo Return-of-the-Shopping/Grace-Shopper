@@ -51,6 +51,14 @@ label {
   flex-wrap: wrap;
 }
 
+.card-delete {
+  align-self: flex-end;
+  position: absolute;
+  background-color: red;
+  right: 0;
+  z-index: 5;
+}
+
 .card-body {
   display: flex;
   flex-direction: column;

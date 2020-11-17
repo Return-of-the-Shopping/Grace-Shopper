@@ -6,15 +6,20 @@ import history from '../history'
  */
 const GET_SINGLE_USER = 'GET_SINGLE_USER'
 const UPDATE_SINGLE_USER = 'UPDATE_SINGLE_USER'
+const RESET_USER_LOADING = 'RESET_USER_LOADING'
 
 /**
  * INITIAL STATE
  */
-const defaultSingle = {}
+const INITIAL_STATE = {info: {}, loading: true}
 
 /**
  * ACTION CREATORS
  */
+export const resetUserLoading = () => ({
+  type: RESET_USER_LOADING
+})
+
 const getSingleUser = singleUser => ({type: GET_SINGLE_USER, singleUser})
 
 const updateSingleUser = singleUser => ({
@@ -44,12 +49,23 @@ export const updateSingleUserDb = (userId, update) => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultSingle, action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case GET_SINGLE_USER:
-      return action.singleUser
+      return {
+        info: action.singleUser,
+        loading: false
+      }
     case UPDATE_SINGLE_USER:
-      return action.singleUser
+      return {
+        info: action.singleUser,
+        loading: false
+      }
+    case RESET_USER_LOADING:
+      return {
+        ...state,
+        loading: true
+      }
     default:
       return state
   }

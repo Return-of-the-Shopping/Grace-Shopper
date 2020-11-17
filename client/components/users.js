@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getUsers, removeSingleUserDb} from '../store/users'
 import {Table} from 'react-bootstrap'
-import {UserLine, AdminUserTools} from '../components'
+import {UserLine, AdminUserTools, Loading} from '../components'
 import {toast} from 'react-toastify'
 export class AllUsers extends Component {
   constructor() {
@@ -44,6 +44,9 @@ export class AllUsers extends Component {
     const {users} = this.props
     console.log(users)
     console.log('user', this.props.user)
+    if (this.props.loading) {
+      return <Loading props="user" />
+    }
     return (
       <div>
         <AdminUserTools toggleDelete={this.toggleDelete} />
@@ -77,7 +80,8 @@ export class AllUsers extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    users: state.users
+    users: state.users.all,
+    loading: state.users.loading
   }
 }
 
