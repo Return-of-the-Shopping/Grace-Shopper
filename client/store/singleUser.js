@@ -63,7 +63,7 @@ export default function(state = INITIAL_STATE, action) {
       }
     case RESET_USER_LOADING:
       return {
-        ...state,
+        info: {},
         loading: true
       }
     default:

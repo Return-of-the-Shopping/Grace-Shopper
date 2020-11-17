@@ -93,7 +93,7 @@ const mapState = state => {
   return {
     //either you're user, or admin
     user: state.user,
-    singleUser: state.singleUser
+    singleUser: state.singleUser.info
   }
 }
 

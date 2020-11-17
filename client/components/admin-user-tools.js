@@ -13,9 +13,10 @@ const AdminUserTools = props => {
         )}
         {props.toggleEdit && (
           <Link to="#" onClick={props.toggleEdit}>
-            Edit User
+            {!props.toggleState ? 'Edit User' : 'Cancel Changes'}
           </Link>
         )}
+
         {props.handleDelete && (
           <Link to="#" onClick={props.handleDelete}>
             Delete User
