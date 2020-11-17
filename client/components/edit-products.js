@@ -2,6 +2,7 @@ import React from 'react'
 import {ProductForm} from '../components'
 import {updateSingleProduct} from '../store/singleProduct'
 import {connect} from 'react-redux'
+import {toast} from 'react-toastify'
 
 class EditProduct extends React.Component {
   constructor() {
@@ -60,6 +61,16 @@ class EditProduct extends React.Component {
           validated: false
         })
         this.props.toggleEdit()
+        toast(`Successfully Updated!`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          progressStyle: {backgroundColor: '#4caf50'}
+        })
       }
     }
   }

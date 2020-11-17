@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 
 const UserLine = props => {
   const user = props.user
+  let userName = `${user.firstName} ${user.lastName}`
   return (
     <tr>
       <td>
@@ -14,7 +15,7 @@ const UserLine = props => {
       <td>{user.address}</td>
       <td>
         {props.toggleDelete && (
-          <Link to="#" onClick={() => props.handleDelete(user.id)}>
+          <Link to="#" onClick={() => props.handleDelete(user.id, userName)}>
             Delete User
           </Link>
         )}

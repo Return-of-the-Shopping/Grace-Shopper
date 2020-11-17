@@ -110,8 +110,19 @@ class SingleProduct extends React.Component {
   }
 
   handleDelete() {
+    let productName = this.props.product.name
     this.props.deleteProduct(this.props.product.id)
     this.props.history.push('/products')
+    toast(`Deleted ${productName} from Database!`, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      progressStyle: {backgroundColor: '#4caf50'}
+    })
   }
 
   render() {

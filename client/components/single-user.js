@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {NotAdmin, AdminUserTools, NotFound, EditUser} from '../components'
 import {getSingleUserDb, updateSingleUserDb} from '../store/singleUser'
 import {removeSingleUserDb} from '../store/users'
+import {toast} from 'react-toastify'
 
 export class SingleUser extends Component {
   constructor() {
@@ -81,7 +82,9 @@ export class SingleUser extends Component {
 
   handleDelete() {
     console.log('allprops', this.props)
-
+    let userName = `${this.props.singleUser.firstName} ${
+      this.props.singleUser.lastName
+    }`
     if (this.props.user.id === this.props.singleUser.id) {
       // BUG: deletes own account but doesn't log you out
       this.props.deleteUser(this.props.singleUser.id)
@@ -89,6 +92,16 @@ export class SingleUser extends Component {
     } else {
       this.props.deleteUser(this.props.singleUser.id)
       this.props.history.push('/allUsers')
+      toast(`Deleted ${userName} from Database!`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        progressStyle: {backgroundColor: '#4caf50'}
+      })
     }
   }
 
