@@ -5,7 +5,7 @@ const {User, Product} = require('../server/db/models')
 const faker = require('faker')
 
 const axios = require('axios')
-const key = require('../secrets')
+const {key} = require('../secrets')
 
 //created an array to hold all the objects that we create
 //generateUsers loop 20 times to create 20 new objects

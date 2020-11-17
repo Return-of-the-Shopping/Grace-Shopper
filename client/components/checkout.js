@@ -5,7 +5,15 @@ import cart from '../cart'
 import {updateSingleProduct} from '../store/singleProduct'
 import {cartCheckout} from '../store/cart'
 import history from '../history'
-import {UserForm} from '.'
+
+import {Elements} from '@stripe/react-stripe-js'
+import {loadStripe} from '@stripe/stripe-js'
+import CheckoutForm from './checkout-form'
+import {stripeKeyPk} from '../../secrets'
+
+const stripePK = process.env.STRIPE_PK || stripeKeyPk
+
+const stripePromise = loadStripe(stripePK)
 
 class Checkout extends React.Component {
   constructor() {
@@ -25,6 +33,7 @@ class Checkout extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    // this.handleCheckout = this.handleCheckout.bind(this)
   }
 
   componentDidMount() {
@@ -44,7 +53,6 @@ class Checkout extends React.Component {
 
   componentDidUpdate() {
     const user = this.props.user
-    // console.log('mount', user)
     if (!this.state.update && user.firstName) {
       this.setState({
         firstName: user.firstName,
@@ -59,12 +67,9 @@ class Checkout extends React.Component {
         update: true
       })
     }
-    // console.log(this.state)
   }
 
   handleSubmit = async event => {
-    // const [validated, setValidated] = React.useState(false)
-
     const form = event.currentTarget
     event.preventDefault()
     if (form.checkValidity() === false) {
@@ -86,7 +91,6 @@ class Checkout extends React.Component {
       cart.clear()
     }
     this.setState({validated: true})
-    if (!Object.keys(cart).length) history.push('/orders/confirmation')
   }
 
   handleChange(event) {
@@ -96,135 +100,18 @@ class Checkout extends React.Component {
   }
 
   render() {
-    // console.log(this.state)
-    // const {validated} = this.state
-
     return (
       <div className="product-container">
         <div className="product-container-left">
-          <UserForm
-            for="checkout"
-            cart={cart}
-            user={this.state}
-            handleSubmit={this.handleSubmit}
-            handleChange={this.handleChange}
-          />
-          {/* <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
-            <Form.Row>
-              <Form.Group md="4" controlId="validationCustom01">
-                <Form.Label>First name</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  placeholder="First name"
-                  name="firstName"
-                  value={this.state.firstName}
-                  onChange={this.handleChange}
-                />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group md="4" controlId="validationCustom02">
-                <Form.Label>Last name</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  placeholder="Last name"
-                  name="lastName"
-                  value={this.state.lastName}
-                  onChange={this.handleChange}
-                />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group md="4" controlId="validationCustomEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Email"
-                  aria-describedby="inputGroupPrepend"
-                  required
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide your email.
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Form.Row>
-
-            <Form.Row>
-              <Form.Group md="6" controlId="validationCustom03">
-                <Form.Label>Address</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Address"
-                  required
-                  name="address"
-                  value={this.state.address}
-                  onChange={this.handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid address.
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group md="6" controlId="validationCustom03">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="City"
-                  required
-                  name="city"
-                  value={this.state.city}
-                  onChange={this.handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid city.
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group md="3" controlId="validationCustom04">
-                <Form.Label>State</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="State"
-                  required
-                  name="state"
-                  value={this.state.state}
-                  onChange={this.handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid state.
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group md="3" controlId="validationCustom05">
-                <Form.Label>Zip</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Zip"
-                  required
-                  name="zipcode"
-                  value={this.state.zipcode}
-                  onChange={this.handleChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid zip.
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Form.Row>
-
-            <Form.Group>
-              <Form.Check
-                required
-                label="Agree to terms and conditions"
-                feedback="You must agree before submitting."
-              />
-            </Form.Group>
-            <Button type="submit">Confirm Purchase</Button>
-          </Form> */}
+          <Elements stripe={stripePromise}>
+            <CheckoutForm
+              cart={cart}
+              user={this.state}
+              handleSubmit={this.handleSubmit}
+              handleChange={this.handleChange}
+              // handleCheckout={this.handleCheckout}
+            />
+          </Elements>
         </div>
         <div className="product-container-right">
           <div>
@@ -253,9 +140,6 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    // fetchProducts: () => dispatch(fetchProducts()),
-    // addProduct: (product) => dispatch(addProductToServer(product)),
-    // deleteProduct: (productId) => dispatch(deleteProductFromServer(productId)),
     updateSingleProduct: (productId, update) =>
       dispatch(updateSingleProduct(productId, update)),
     cartCheckout: userId => dispatch(cartCheckout(userId))

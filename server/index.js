@@ -10,12 +10,25 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
+const {stripeKeySk} = require('../secrets')
+
 module.exports = app
 
 // This is a global Mocha hook, used for resource cleanup.
 // Otherwise, Mocha v4+ never quits after tests.
 if (process.env.NODE_ENV === 'test') {
   after('close the session store', () => sessionStore.stopExpiringSessions())
+}
+
+// Set your secret key. Remember to switch to your live secret key in production!
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+const {resolve} = require('path')
+const stripe = require('stripe')(process.env.STRIPE_SK || stripeKeySk)
+const calculateOrderAmount = items => {
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  return 1400
 }
 
 /**
@@ -79,6 +92,18 @@ const createApp = () => {
     } else {
       next()
     }
+  })
+
+  app.post('/create-payment-intent', async (req, res) => {
+    const {items} = req.body
+    // Create a PaymentIntent with the order amount and currency
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: calculateOrderAmount(items),
+      currency: 'usd'
+    })
+    res.send({
+      clientSecret: paymentIntent.client_secret
+    })
   })
 
   // sends index.html
