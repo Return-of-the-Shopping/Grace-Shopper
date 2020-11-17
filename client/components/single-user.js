@@ -19,44 +19,15 @@ export class SingleUser extends Component {
   constructor() {
     super()
     this.state = {
-      // firstName: '',
-      // lastName: '',
-      // email: '',
-      // address: '',
-      // payment: '',
-      // validated: false,
-      // city: '',
-      // state: '',
-      // zipcode: null,
-      // update: false,
       toggleEdit: false
-      // error: null,
     }
 
-    // this.handleSubmit = this.handleSubmit.bind(this)
-    // this.handleChange = this.handleChange.bind(this)
     this.toggleEdit = this.toggleEdit.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
   }
 
-  // componentDidUpdate() {
-  //   const user = this.props.user
-  //   console.log('mount', user)
-
-  //   if (!this.state.update) {
-  //     this.setState({
-  //       firstName: user.firstName || '',
-  //       lastName: user.lastName || '',
-  //       email: user.email || '',
-  //       address: user.address || '',
-  //       payment: user.payment || '',
-  //       validated: false,
-  //       update: true,
-  //     })
-  //   }
-  // }
-
   componentDidMount() {
+    this.props.resetLoading()
     let user = this.props.user
     if (
       this.props.user.admin ||
@@ -168,6 +139,7 @@ export class SingleUser extends Component {
           <AdminUserTools
             toggleEdit={this.toggleEdit}
             handleDelete={this.handleDelete}
+            toggleState={this.state.toggleEdit}
           />
         )}
         <div className="product-container">
