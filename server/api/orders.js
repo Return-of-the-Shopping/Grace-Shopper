@@ -104,27 +104,26 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.delete('/:orderId', async (req, res, next) => {
+router.delete('/', async (req, res, next) => {
   try {
     // user, don’t know their order history? so get an order that isFulfilled = false that matches userId
     const userId = req.body.userId
-    console.log(req.params.orderId)
-    console.log(userId)
     if (req.user.dataValues.admin || +userId === +req.user.dataValues.id) {
       const userOrder = await Order.findOne({
         where: {
-          // userId: userId,
-          id: +req.params.orderId
+          userId: userId,
+          isFulfilled: false
+          // id: +req.params.orderId,
         }
       })
       if (userOrder) {
         await ProductOrder.destroy({
           where: {
-            orderId: userOrder.id
-            // productId: +req.body.productId
+            orderId: userOrder.id,
+            productId: +req.body.productId
           }
         })
-        await userOrder.destroy()
+        // await userOrder.destroy()
         res.sendStatus(204).end()
       } else {
         res.sendStatus(401)
