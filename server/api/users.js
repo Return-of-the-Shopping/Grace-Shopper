@@ -22,9 +22,8 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:userId', async (req, res, next) => {
   try {
-    console.log(req.params)
-    console.log(req.user.dataValues)
     if (
+      //checks user logged in is admin OR if logged-in user is equal to the specific route /:userId
       req.user.dataValues.admin ||
       req.user.dataValues.id === +req.params.userId
     ) {
@@ -43,6 +42,7 @@ router.get('/:userId', async (req, res, next) => {
 
 router.get('/orders/:userId', async (req, res, next) => {
   try {
+    //getting an order specific to a user
     const userOrder = await Order.findOne({
       where: {userId: req.params.userId, isFulfilled: false},
       include: [{model: Product}]
@@ -59,6 +59,7 @@ router.put('/:userId', async (req, res, next) => {
     if (req.user.dataValues.admin || +userId === req.user.dataValues.id) {
       const findUser = await User.findOne({where: {id: userId}})
 
+      // can only manipulate this information, so NOT admin field
       const newInfo = {
         email: req.body.email,
         firstName: req.body.firstName,
@@ -83,6 +84,7 @@ router.put('/:userId', async (req, res, next) => {
 
 router.delete('/:userId', async (req, res, next) => {
   try {
+    // users can only delete themselves or an admin
     const userId = req.params.userId
     if (req.user.dataValues.admin || +userId === req.user.dataValues.id) {
       const user = await User.findByPk(userId)

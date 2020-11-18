@@ -54,9 +54,6 @@ class EditUser extends React.Component {
     if (form.checkValidity() === false) {
       event.stopPropagation()
     }
-    // we need to set order fuilfilled to true in backend
-    // also clear the local storage
-    // error when editing from /profile >> this.props.match.params.userId does not exist
     this.props.updateSingleUser(this.props.matchId, this.state)
     this.setState({validated: true})
     this.props.toggleEdit()
@@ -91,7 +88,6 @@ class EditUser extends React.Component {
 }
 const mapState = state => {
   return {
-    //either you're user, or admin
     user: state.user,
     singleUser: state.singleUser.info
   }

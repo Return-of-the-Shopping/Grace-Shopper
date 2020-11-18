@@ -37,7 +37,6 @@ export const putToCart = info => async dispatch => {
 
 export const removeFromCart = info => async dispatch => {
   try {
-    console.log('XXXXX', info)
     await axios.delete(`/api/orders/`, {data: info})
     dispatch(deleteFromCart(info))
   } catch (err) {
@@ -82,7 +81,6 @@ export default function(state = defaultCart, action) {
       return action.cart
 
     case ADD_TO_CART:
-      console.log([...state, action.product])
       let duplicate = false
       let newCart = state.map(product => {
         if (product.productId === +action.product.productId) {
@@ -101,8 +99,6 @@ export default function(state = defaultCart, action) {
 
     case EDIT_CART:
       return state.map(product => {
-        console.log(product)
-        console.log(+action.info.productId)
         if (product.productId === +action.info.productId) {
           product = action.info
         }

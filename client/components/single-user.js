@@ -66,17 +66,15 @@ export class SingleUser extends Component {
   }
 
   handleDelete() {
-    console.log('allprops', this.props)
     let userName = `${this.props.singleUser.firstName} ${
       this.props.singleUser.lastName
     }`
     if (this.props.user.id === this.props.singleUser.id) {
-      // BUG: deletes own account but doesn't log you out
       this.props.deleteUser(this.props.singleUser.id)
       this.props.history.push('/signUp')
     } else {
       this.props.deleteUser(this.props.singleUser.id)
-      this.props.history.push('/allUsers')
+      this.props.history.push('/users')
       toast(`Deleted ${userName} from Database!`, {
         position: 'top-right',
         autoClose: 5000,
@@ -89,25 +87,6 @@ export class SingleUser extends Component {
       })
     }
   }
-
-  // handleSubmit = (event) => {
-  //   const form = event.currentTarget
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault()
-  //     event.stopPropagation()
-  //   }
-  //   // we need to set order fuilfilled to true in backend
-  //   // also clear the local storage
-  //   // error when editing from /profile >> this.props.match.params.userId does not exist
-  //   this.props.updateSingleUser(this.props.match.params.userId, this.state)
-  //   this.setState({validated: true})
-  // }
-
-  // handleChange(event) {
-  //   this.setState({
-  //     [event.target.name]: event.target.value,
-  //   })
-  // }
 
   render() {
     let user = this.props.user
@@ -128,11 +107,8 @@ export class SingleUser extends Component {
       this.props.user.admin
     ) {
       this.handleDelete = false
-      console.log(this.handleDelete)
     }
-    console.log(this.props.user.id)
-    console.log(user.id)
-    console.log(this.props.match.params.userId)
+
     return (
       <div>
         {this.props.user.admin && (
@@ -172,7 +148,6 @@ export class SingleUser extends Component {
                 <button onClick={this.handleDelete}>Delete Account</button>
               </div>
             )}
-            {/* <button onClick={this.handleDelete}>Delete Account</button> */}
           </div>
         </div>
       </div>
@@ -182,7 +157,6 @@ export class SingleUser extends Component {
 
 const mapState = state => {
   return {
-    //either you're user, or admin
     user: state.user,
     singleUser: state.singleUser.info,
     loading: state.singleUser.loading

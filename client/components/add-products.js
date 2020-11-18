@@ -43,7 +43,6 @@ class AddProduct extends React.Component {
       try {
         this.setState({error: null})
         const res = await this.props.addProduct(this.state)
-        console.log(res)
       } catch (error) {
         this.setState({error: error})
       }

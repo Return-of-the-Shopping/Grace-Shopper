@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js'
 import {Form, InputGroup, Button} from 'react-bootstrap'
 import CardSection from './card-section'
+import history from '../history'
 
 const CheckoutForm = props => {
   const [succeeded, setSucceeded] = useState(false)

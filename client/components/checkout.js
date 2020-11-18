@@ -1,11 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Form, InputGroup, Button} from 'react-bootstrap'
 import cart from '../cart'
 import {updateSingleProduct} from '../store/singleProduct'
 import {cartCheckout} from '../store/cart'
-import history from '../history'
-
 import {Elements} from '@stripe/react-stripe-js'
 import {loadStripe} from '@stripe/stripe-js'
 import CheckoutForm from './checkout-form'
@@ -33,7 +30,6 @@ class Checkout extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    // this.handleCheckout = this.handleCheckout.bind(this)
   }
 
   componentDidMount() {
@@ -109,7 +105,6 @@ class Checkout extends React.Component {
               user={this.state}
               handleSubmit={this.handleSubmit}
               handleChange={this.handleChange}
-              // handleCheckout={this.handleCheckout}
             />
           </Elements>
         </div>

@@ -6,29 +6,16 @@ class ProductLine extends React.Component {
     super()
     this.state = {
       quantity: 0
-      // update: false,
     }
-
-    // this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
     const product = this.props.product
-    console.log('running?')
-
     this.setState({
       quantity: product.quantity
-      // update: true,
     })
-
-    // if (!this.state.update) {
-    //   this.setState({
-    //     quantity: product.quantity,
-    //     update: true,
-    //   })
-    // }
   }
 
   handleSubmit(event) {
@@ -44,7 +31,6 @@ class ProductLine extends React.Component {
   render() {
     const product = this.props.product
     const info = this.props.info
-    console.log(this.state.quantity)
     return (
       <tr>
         <td>
@@ -62,7 +48,6 @@ class ProductLine extends React.Component {
                   this.setState(prevState => ({
                     quantity: +prevState.quantity - 1
                   }))
-                  // this.props.resetCartState()
                 }}
               >
                 -
@@ -83,7 +68,6 @@ class ProductLine extends React.Component {
                   this.setState(prevState => ({
                     quantity: +prevState.quantity + 1
                   }))
-                  // this.props.resetCartState()
                 }}
               >
                 +
@@ -117,7 +101,6 @@ class ProductLine extends React.Component {
             variant="outline-secondary"
             onClick={event => {
               event.preventDefault()
-              console.log(info)
               this.props.cart.removeItem(info.productId)
               this.props.removeCart(info)
               this.props.resetCartState()

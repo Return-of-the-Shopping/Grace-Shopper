@@ -37,7 +37,6 @@ class Products extends React.Component {
   }
 
   toggleDelete() {
-    console.log(this.state.toggleDelete)
     this.setState(state => ({
       toggleDelete: !state.toggleDelete
     }))
