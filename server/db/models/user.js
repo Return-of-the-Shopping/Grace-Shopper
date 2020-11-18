@@ -38,7 +38,9 @@ const User = db.define('user', {
     //   isBefore: Date.now() - 21
     // }
   },
-
+  googleId: {
+    type: Sequelize.STRING
+  },
   payment: {
     type: Sequelize.STRING
     // validate: {
