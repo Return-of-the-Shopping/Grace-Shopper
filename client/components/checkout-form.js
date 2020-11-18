@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js'
 import {Form, InputGroup, Button} from 'react-bootstrap'
 import CardSection from './card-section'
-// import history from '../history'
+import cart from '../store/cart'
+import history from '../history'
 
 const CheckoutForm = props => {
   const [succeeded, setSucceeded] = useState(false)
@@ -67,6 +68,9 @@ const CheckoutForm = props => {
       setProcessing(false)
       setSucceeded(true)
       console.log('Succeeded')
+      // if (!Object.keys(cart).length) {
+      //   history.push('/orders/confirmation')
+      // }
     }
   }
 
@@ -205,7 +209,6 @@ const CheckoutForm = props => {
               ) / 100
             ).toFixed(2)}`}
       </Button>
-      {state.error && <div>{state.error.message}</div>}
     </Form>
   )
 }

@@ -132,9 +132,10 @@ router.put('/checkout', async (req, res, next) => {
               id: productId
             }
           })
+          const price = product.dataValues.price / 100
           const originalQuantity = product.dataValues.quantity
           const orderQuantity = +JSON.parse(cart[productId]).quantity
-          product.update({quantity: originalQuantity - orderQuantity})
+          product.update({price, quantity: originalQuantity - orderQuantity})
         })
         await userOrder.update({isFulfilled: true})
         res.sendStatus(204)
