@@ -5,8 +5,8 @@ import Loader from 'react-loader-spinner'
 
 export default function Loading(props) {
   return (
-    <div>
-      <Loader type="Puff" color="#f2b705" height={150} width={150} />
+    <div className="centered-container">
+      <Loader type="Circles" color="#f2b705" height={100} width={100} />
     </div>
   )
 }

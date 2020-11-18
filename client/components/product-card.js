@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Card, Button} from 'react-bootstrap'
+import {Card, Button, Badge} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 
 const ProductCard = props => {
@@ -15,6 +15,13 @@ const ProductCard = props => {
         >
           X
         </Button>
+      )}
+      {!product.quantity && (
+        <h4>
+          <Badge variant="secondary" className="badge-soldout">
+            Sold Out
+          </Badge>
+        </h4>
       )}
       <Card.Img variant="top" src={product.imageUrl} />
       <Card.Body className="card-body">

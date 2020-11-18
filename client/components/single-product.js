@@ -92,8 +92,8 @@ class SingleProduct extends React.Component {
           }(s) to your cart.`,
           {
             position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
+            autoClose: 3000,
+            hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: true,
@@ -154,8 +154,14 @@ class SingleProduct extends React.Component {
                 <div>
                   <h1>{product.name}</h1>
                   <h2>{product.abv}%</h2>
+                  <h5>Category:</h5>
+                  <h6>
+                    {product.category}
+                    <br />
+                  </h6>
                   <hr />
-                  <h6>Product Description:</h6>
+
+                  <h5>Product Description:</h5>
                   <p>{product.description}</p>
                   <h3>${(product.price / 100).toFixed(2)}</h3>
 

@@ -22,8 +22,8 @@ export class AllUsers extends Component {
     this.props.deleteUser(userId)
     toast(`Deleted ${userName} from Database!`, {
       position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
+      autoClose: 3000,
+      hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: false,
       draggable: true,
@@ -53,7 +53,7 @@ export class AllUsers extends Component {
               <th>#</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Username</th>
+              <th>Email</th>
               <th>Address</th>
             </tr>
           </thead>

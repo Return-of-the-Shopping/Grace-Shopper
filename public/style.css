@@ -39,6 +39,7 @@ label {
 }
 
 .nav-right {
+  justify-content: right;
   float: right;
 }
 
@@ -57,6 +58,27 @@ label {
   background-color: red;
   right: 0;
   z-index: 5;
+}
+
+.badge-soldout {
+  align-self: flex-start;
+  left: 0;
+  top: 20px;
+  position: absolute;
+  z-index: 5;
+}
+
+.google-login {
+  text-align: center;
+  padding-top: 20px;
+}
+
+td {
+  padding-left: 100px;
+}
+
+.td-right {
+  text-align: right;
 }
 
 .card-body {
@@ -129,6 +151,14 @@ input::-webkit-inner-spin-button {
   margin: 0 auto;
 }
 
+.centered-container {
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  margin: 15% auto;
+}
+
 .centered-caption {
   position: absolute;
   right: 15%;
@@ -154,13 +184,14 @@ input::-webkit-inner-spin-button {
 .main-nav {
   display: flex;
   flex-direction: row;
-  height: 80px;
+  flex-wrap: wrap;
   justify-content: space-between;
   box-shadow: 0px 0px 20px 1px rgba(102, 102, 102, 0.3);
 }
 
 .main-nav a {
-  display: inline-block;
+  display: inline-flex;
+  flex: 0 1 auto;
   color: gray;
   padding: 10px 30px;
   margin: 10px 10px;
@@ -190,7 +221,12 @@ a.cart {
 }
 
 .nav-right {
+  flex: 0 1 auto;
   align-self: center;
+}
+
+.checkout-header {
+  width: 100%;
 }
 
 .product-container {
@@ -198,6 +234,9 @@ a.cart {
   display: flex;
   flex-direction: row;
   width: 80%;
+  flex-wrap: wrap;
+  row-gap: 20px;
+  column-gap: 20px;
 }
 
 .product-container-left {
@@ -223,6 +262,10 @@ a.cart {
 }
 
 .cart-container img {
+  width: 100px;
+  object-fit: fill;
+}
+table img {
   width: 100px;
   object-fit: fill;
 }
@@ -253,7 +296,7 @@ a.cart {
   display: flex;
   flex-direction: row;
   align-content: flex-end;
-  justify-content: space-between;
+  justify-content: flex-end;
   background-color: #f2b705;
   transition: 0.5s all;
 }
@@ -292,17 +335,17 @@ a.cart {
   margin: 5px;
   text-decoration: none;
   color: #f8f9fa;
-  background-color: #f2b705;
-  padding: 16px 20px;
-  font-size: 24px;
+  background-color: #007bff;
+  border-radius: 0px;
+  padding: 14px 20px;
+  font-size: 20px;
   transition: 0.3s all;
 }
 .big-button:hover {
   text-decoration: none;
   color: #f8f9fa;
   background-color: #202020;
-  margin: 1px;
-  padding: 20px 24px;
+  border-radius: 8px;
 }
 
 .sold-out {
