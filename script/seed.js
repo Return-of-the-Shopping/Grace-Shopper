@@ -44,16 +44,25 @@ const generateUsers = () => {
 }
 // invoke the function to loop
 generateUsers()
-const ownUser = {
+
+const adminUser = {
   firstName: 'Min Kyu',
   lastName: 'Han',
-  email: 'min@yahoo.com',
+  email: 'min123@yahoo.com',
   address: '123 Hoppy Street',
-  password: '123',
-  admin: true
+  password: '123'
 }
 
-usersArr.push(ownUser)
+const adminUser1 = {
+  firstName: 'Jane',
+  lastName: 'Doe',
+  email: 'admin@hoppyendings.com',
+  address: '123 Hoppity Street',
+  password: 'jdoe123'
+}
+
+usersArr.push(adminUser)
+usersArr.push(adminUser1)
 
 const adminUser = {
   firstName: 'Min Kyu',
@@ -109,12 +118,12 @@ async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
   // map the usersArray and create a single instance for each object in the array
+  await fetchProducts()
   await Promise.all(
     usersArr.map(user => {
       return User.create(user)
     })
   )
-  await fetchProducts()
   console.log(`seeded ${usersArr.length} users`)
   console.log(`seeded successfully`)
 }
