@@ -63,8 +63,8 @@ class EditProduct extends React.Component {
         this.props.toggleEdit()
         toast(`Successfully Updated!`, {
           position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
+          autoClose: 3000,
+          hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: false,
           draggable: true,

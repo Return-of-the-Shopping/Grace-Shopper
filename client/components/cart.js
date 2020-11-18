@@ -18,15 +18,14 @@ class Cart extends React.Component {
 
   resetCartState(state) {
     this.setState({cartUpdate: !state.cartUpdate})
-    toast(`Successfully Updated Cart!`, {
+    toast(`Successfully updated your cart!`, {
       position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
+      autoClose: 3000,
+      hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: false,
       draggable: true,
-      progress: undefined,
-      progressStyle: {backgroundColor: '#4caf50'}
+      progress: undefined
     })
   }
 
@@ -55,8 +54,6 @@ class Cart extends React.Component {
                 />
               )
             })}
-          </tbody>
-          <thead>
             <tr>
               <th />
               <th />
@@ -76,7 +73,7 @@ class Cart extends React.Component {
               </th>
               <th />
             </tr>
-          </thead>
+          </tbody>
         </Table>
         <div>
           {Object.keys(cart).length && (

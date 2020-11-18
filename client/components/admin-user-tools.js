@@ -3,8 +3,7 @@ import {Link} from 'react-router-dom'
 
 const AdminUserTools = props => {
   return (
-    <div className={props.success ? 'product-util success' : 'product-util'}>
-      <div className="util-center">{props.success && props.success}</div>
+    <div className="product-util">
       <div className="util-right">
         {props.toggleDelete && (
           <Link to="#" onClick={props.toggleDelete}>

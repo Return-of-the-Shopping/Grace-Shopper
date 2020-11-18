@@ -26,8 +26,8 @@ class Products extends React.Component {
     this.props.deleteProduct(productId)
     toast(`Deleted ${productName} from Database!`, {
       position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
+      autoClose: 3000,
+      hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: false,
       draggable: true,

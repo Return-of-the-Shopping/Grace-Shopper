@@ -7,6 +7,9 @@ import {Elements} from '@stripe/react-stripe-js'
 import {loadStripe} from '@stripe/stripe-js'
 import CheckoutForm from './checkout-form'
 import {stripeKeyPk} from '../../secrets'
+import {Table} from 'react-bootstrap'
+import {ProductLine} from '../components'
+import history from '../history'
 
 const stripePK = process.env.STRIPE_PK || stripeKeyPk
 
@@ -25,10 +28,11 @@ class Checkout extends React.Component {
       zipcode: '',
       payment: '',
       validated: false,
-      update: false
+      update: false,
+      error: false
     }
 
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCheckout = this.handleCheckout.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -65,11 +69,10 @@ class Checkout extends React.Component {
     }
   }
 
-  handleSubmit = async event => {
+  handleCheckout = async event => {
     const form = event.currentTarget
     event.preventDefault()
     if (form.checkValidity() === false) {
-      // event.preventDefault()
       event.stopPropagation()
     } else {
       // we need to find order as productOrders uses orderId to query db
@@ -80,13 +83,16 @@ class Checkout extends React.Component {
       //   await this.props.updateSingleProduct(productId, {quantity: })
       // })
       const info = {userId: this.props.user.id, cart}
+      await this.props.cartCheckout(info).then(cart.clear())
+
       // set order fuilfilled to true in backend
-      await this.props.cartCheckout(info)
       // await this.props.cartCheckout(this.props.user.id)
       // clear localStorage
-      cart.clear()
     }
     this.setState({validated: true})
+    if (!cart.length) {
+      history.push('/orders/confirmation')
+    }
   }
 
   handleChange(event) {
@@ -98,29 +104,39 @@ class Checkout extends React.Component {
   render() {
     return (
       <div className="product-container">
+        <div className="checkout-header">
+          <h1>Checkout</h1>
+        </div>
         <div className="product-container-left">
           <Elements stripe={stripePromise}>
             <CheckoutForm
               cart={cart}
               user={this.state}
-              handleSubmit={this.handleSubmit}
+              handleCheckout={this.handleCheckout}
               handleChange={this.handleChange}
             />
           </Elements>
         </div>
         <div className="product-container-right">
-          <div>
-            Order Total:{' '}
-            {(
-              Object.keys(cart).reduce(
-                (orderTotal, productId) =>
-                  orderTotal +
-                  JSON.parse(cart[productId]).price *
-                    JSON.parse(cart[productId]).quantity,
-                0
-              ) / 100
-            ).toFixed(2)}
-          </div>
+          <Table responsive>
+            <tbody>
+              {Object.keys(cart).map(productId => {
+                const info = {
+                  userId: this.props.user.id,
+                  productId,
+                  price: +JSON.parse(cart[productId]).price,
+                  imageUrl: JSON.parse(cart[productId]).imageUrl
+                }
+                return (
+                  <ProductLine
+                    product={JSON.parse(cart[productId])}
+                    info={info}
+                    key={productId}
+                  />
+                )
+              })}
+            </tbody>
+          </Table>
         </div>
       </div>
     )

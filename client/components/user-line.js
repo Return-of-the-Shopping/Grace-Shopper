@@ -14,16 +14,17 @@ const UserLine = props => {
       <td>{user.lastName}</td>
       <td>{user.email}</td>
       <td>{user.address}</td>
-      <td>
-        {props.toggleDelete && (
+      {props.toggleDelete && (
+        <td className="user-delete">
           <Button
             variant="danger"
+            size="sm"
             onClick={() => props.handleDelete(user.id, userName)}
           >
             Delete
           </Button>
-        )}
-      </td>
+        </td>
+      )}
     </tr>
   )
 }

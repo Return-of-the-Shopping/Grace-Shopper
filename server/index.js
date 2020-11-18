@@ -24,11 +24,12 @@ if (process.env.NODE_ENV === 'test') {
 // See your keys here: https://dashboard.stripe.com/account/apikeys
 const {resolve} = require('path')
 const stripe = require('stripe')(process.env.STRIPE_SK || stripeKeySk)
+
 const calculateOrderAmount = items => {
   // Replace this constant with a calculation of the order's amount
   // Calculate the order total on the server to prevent
   // people from directly manipulating the amount on the client
-  return 1400
+  return 'success'
 }
 
 /**

@@ -12,6 +12,7 @@ import {
   updateSingleUserDb,
   resetUserLoading
 } from '../store/singleUser'
+import {Button} from 'react-bootstrap'
 import {removeSingleUserDb} from '../store/users'
 import {toast} from 'react-toastify'
 
@@ -77,8 +78,8 @@ export class SingleUser extends Component {
       this.props.history.push('/users')
       toast(`Deleted ${userName} from Database!`, {
         position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
+        autoClose: 3000,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
@@ -119,7 +120,9 @@ export class SingleUser extends Component {
           />
         )}
         <div className="product-container">
-          <div className="product-container-left" />
+          <div className="product-container-left">
+            <h1>Profile</h1>
+          </div>
           <div className="product-container-right">
             {this.state.toggleEdit ? (
               <EditUser
@@ -141,11 +144,13 @@ export class SingleUser extends Component {
               </div>
             )}
             {!this.props.user.admin && (
-              <div>
-                <button onClick={this.toggleEdit}>
+              <div className="product-container">
+                <Button onClick={this.toggleEdit}>
                   {!this.state.toggleEdit ? 'Edit Account' : 'Cancel Changes'}
-                </button>
-                <button onClick={this.handleDelete}>Delete Account</button>
+                </Button>
+                <Button variant="danger" onClick={this.handleDelete}>
+                  Delete Account
+                </Button>
               </div>
             )}
           </div>

@@ -3,6 +3,7 @@ import ProductForm from './product-form'
 import {connect} from 'react-redux'
 import {addProductToServer} from '../store/products'
 import {AdminTools} from '../components'
+import {toast} from 'react-toastify'
 
 class AddProduct extends React.Component {
   constructor() {
@@ -16,8 +17,7 @@ class AddProduct extends React.Component {
       price: '',
       quantity: '',
       error: null,
-      validated: false,
-      success: ''
+      validated: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -47,6 +47,15 @@ class AddProduct extends React.Component {
         this.setState({error: error})
       }
       if (!this.state.error) {
+        toast(`Successfully added ${this.state.name} to database.`, {
+          position: 'bottom-right',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined
+        })
         this.setState(state => ({
           name: '',
           category: '',
@@ -56,7 +65,6 @@ class AddProduct extends React.Component {
           price: '',
           quantity: '',
           error: null,
-          success: `Successfully added ${state.name} to our product database!`,
           validated: false
         }))
       }
@@ -66,11 +74,10 @@ class AddProduct extends React.Component {
   render() {
     return (
       <div>
-        <AdminTools error={this.state.error} success={this.state.success} />
+        <AdminTools />
         <div className="product-container">
           <div className="product-container-left">
             <img src="https://www.ball.com/Ball/media/Ball/Global/Markets%20and%20Capabilities%20Images/Beverage-Can-Upright-and-Can-Side-340x430.jpg?ext=.jpg" />
-            <div className="">{this.state.success && this.state.success}</div>
           </div>
           <div className="product-container-right">
             <ProductForm
@@ -86,7 +93,6 @@ class AddProduct extends React.Component {
               quantity={this.state.quantity}
               validated={this.state.validated}
               error={this.state.error}
-              success={this.state.success}
             />
           </div>
         </div>
