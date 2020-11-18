@@ -72,7 +72,6 @@ const UserForm = props => {
         <Form.Control
           type="text"
           placeholder="Address"
-          defaultValue=""
           name="address"
           value={address}
           onChange={props.handleChange}
@@ -86,7 +85,6 @@ const UserForm = props => {
           type="text"
           name="city"
           placeholder="City"
-          defaultValue=""
           value={city}
           onChange={props.handleChange}
         />
@@ -100,7 +98,6 @@ const UserForm = props => {
           placeholder="State"
           name="state"
           value={state}
-          defaultValue=""
           onChange={props.handleChange}
         />
         <Form.Control.Feedback />
@@ -111,7 +108,6 @@ const UserForm = props => {
         <Form.Control
           type="number"
           placeholder="Zip"
-          defaultValue=""
           name="zipcode"
           value={zipcode}
           onChange={props.handleChange}

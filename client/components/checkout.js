@@ -83,14 +83,16 @@ class Checkout extends React.Component {
       //   await this.props.updateSingleProduct(productId, {quantity: })
       // })
       const info = {userId: this.props.user.id, cart}
-      await this.props.cartCheckout(info).then(cart.clear())
+      await this.props.cartCheckout(info)
+
+      cart.clear()
 
       // set order fuilfilled to true in backend
       // await this.props.cartCheckout(this.props.user.id)
       // clear localStorage
     }
     this.setState({validated: true})
-    if (!cart.length) {
+    if (!Object.keys(cart).length) {
       history.push('/orders/confirmation')
     }
   }

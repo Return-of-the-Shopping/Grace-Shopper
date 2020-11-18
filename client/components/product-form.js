@@ -40,7 +40,6 @@ const ProductForm = props => {
       <Form.Group md="4" controlId="validationCustom02">
         <Form.Label>Category</Form.Label>
         <Form.Control
-          defaultValue="Uncategorized"
           required
           type="text"
           placeholder="Category"
@@ -57,7 +56,6 @@ const ProductForm = props => {
         <Form.Label>Description</Form.Label>
         <Form.Control
           as="textarea"
-          defaultValue=""
           placeholder="description"
           name="description"
           value={description}
@@ -73,7 +71,6 @@ const ProductForm = props => {
             type="number"
             placeholder="10.00"
             required
-            defaultValue="5.0"
             name="abv"
             min="0"
             max="100"
@@ -95,7 +92,6 @@ const ProductForm = props => {
         <Form.Control
           type="text"
           placeholder="Image Url"
-          defaultValue=""
           name="imageUrl"
           value={imageUrl}
           onChange={handleChange}
@@ -107,7 +103,6 @@ const ProductForm = props => {
         <Form.Control
           type="number"
           name="quantity"
-          defaultValue="10"
           placeholder="100"
           required
           min="0"
@@ -128,7 +123,6 @@ const ProductForm = props => {
             type="number"
             placeholder="10.00"
             required
-            defaultValue="10.00"
             name="price"
             min="0"
             step=".01"
