@@ -45,6 +45,24 @@ const generateUsers = () => {
 // invoke the function to loop
 generateUsers()
 
+const adminUser = {
+  firstName: 'Min Kyu',
+  lastName: 'Han',
+  email: 'min@yahoo.com',
+  address: '123 Hoppy Street',
+  password: '1234'
+}
+
+const adminUser1 = {
+  firstName: 'Jane',
+  lastName: 'Doe',
+  email: 'admin@hoppyendings.com',
+  address: '123 Hoppity Street',
+  password: 'jdoe123'
+}
+
+usersArr.push(adminUser)
+usersArr.push(adminUser1)
 const beerPrice = () => {
   return 10 - Math.floor(Math.random() * 4)
 }
