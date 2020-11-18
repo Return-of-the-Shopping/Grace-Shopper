@@ -44,6 +44,16 @@ const generateUsers = () => {
 }
 // invoke the function to loop
 generateUsers()
+const ownUser = {
+  firstName: 'Min Kyu',
+  lastName: 'Han',
+  email: 'min@yahoo.com',
+  address: '123 Hoppy Street',
+  password: '123',
+  admin: true
+}
+
+usersArr.push(ownUser)
 
 const beerPrice = () => {
   return 10 - Math.floor(Math.random() * 4)
