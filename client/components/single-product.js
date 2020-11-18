@@ -4,7 +4,6 @@ import {
   fetchSingleProduct,
   updateSingleProduct,
   resetProductLoader
-  /*putToCart*/
 } from '../store/singleProduct'
 import {putToCart} from '../store/cart'
 import {deleteProductFromServer} from '../store/products'
@@ -107,7 +106,6 @@ class SingleProduct extends React.Component {
   }
 
   toggleEdit() {
-    console.log(this.state.toggleEdit)
     this.setState(prevState => ({
       toggleEdit: !prevState.toggleEdit
     }))
@@ -223,7 +221,6 @@ class SingleProduct extends React.Component {
                         >
                           Add to Cart
                         </Button>
-                        {this.state.success && this.state.success}
                       </Form>
                     </div>
                   )}

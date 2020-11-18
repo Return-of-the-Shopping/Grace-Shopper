@@ -12,7 +12,6 @@ const ProductForm = props => {
     imageUrl,
     price,
     quantity,
-    error,
     validated
   } = props
 
@@ -41,6 +40,7 @@ const ProductForm = props => {
       <Form.Group md="4" controlId="validationCustom02">
         <Form.Label>Category</Form.Label>
         <Form.Control
+          defaultValue="Uncategorized"
           required
           type="text"
           placeholder="Category"
@@ -57,16 +57,15 @@ const ProductForm = props => {
         <Form.Label>Description</Form.Label>
         <Form.Control
           as="textarea"
-          required
+          defaultValue=""
           placeholder="description"
           name="description"
           value={description}
           onChange={handleChange}
         />
-        <Form.Control.Feedback type="invalid">
-          Please write a short description
-        </Form.Control.Feedback>
+        <Form.Control.Feedback />
       </Form.Group>
+
       <Form.Group md="4" controlId="validationCustom04">
         <Form.Label>ABV</Form.Label>
         <InputGroup className="mb-3">
@@ -74,6 +73,7 @@ const ProductForm = props => {
             type="number"
             placeholder="10.00"
             required
+            defaultValue="5.0"
             name="abv"
             min="0"
             max="100"
@@ -95,13 +95,11 @@ const ProductForm = props => {
         <Form.Control
           type="text"
           placeholder="Image Url"
+          defaultValue=""
           name="imageUrl"
           value={imageUrl}
           onChange={handleChange}
         />
-        {/* <Form.Control.Feedback type="invalid">
-            Please check your image url.
-          </Form.Control.Feedback> */}
       </Form.Group>
 
       <Form.Group md="6" controlId="validationCustom06">
@@ -109,6 +107,7 @@ const ProductForm = props => {
         <Form.Control
           type="number"
           name="quantity"
+          defaultValue="10"
           placeholder="100"
           required
           min="0"
@@ -129,6 +128,7 @@ const ProductForm = props => {
             type="number"
             placeholder="10.00"
             required
+            defaultValue="10.00"
             name="price"
             min="0"
             step=".01"
@@ -140,14 +140,7 @@ const ProductForm = props => {
           </Form.Control.Feedback>
         </InputGroup>
       </Form.Group>
-      <Form.Group>
-        <Form.Check
-          required
-          label="Agree to terms and conditions"
-          feedback="You must agree before submitting."
-        />
-      </Form.Group>
-      {error && <div>{error.message}</div>}
+
       <Button type="submit">
         {props.for === 'add' ? 'Add Product' : 'Update Product'}
       </Button>

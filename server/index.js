@@ -10,7 +10,7 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
-const {stripeKeySk} = require('../secrets')
+const {stripeKeySk, sessionSecrets} = require('../secrets')
 
 module.exports = app
 
@@ -67,7 +67,7 @@ const createApp = () => {
   // session middleware with passport
   app.use(
     session({
-      secret: process.env.SESSION_SECRET || 'my best friend is Cody',
+      secret: process.env.SESSION_SECRET || sessionSecrets,
       store: sessionStore,
       resave: false,
       saveUninitialized: false

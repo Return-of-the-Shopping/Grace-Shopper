@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, InputGroup, Button} from 'react-bootstrap'
+import {Form, Button} from 'react-bootstrap'
 
 const UserForm = props => {
   const {
@@ -72,14 +72,12 @@ const UserForm = props => {
         <Form.Control
           type="text"
           placeholder="Address"
-          required
+          defaultValue=""
           name="address"
           value={address}
           onChange={props.handleChange}
         />
-        <Form.Control.Feedback type="invalid">
-          Please provide a valid billing address.
-        </Form.Control.Feedback>
+        <Form.Control.Feedback />
       </Form.Group>
 
       <Form.Group md="6" controlId="validationCustom05">
@@ -88,13 +86,11 @@ const UserForm = props => {
           type="text"
           name="city"
           placeholder="City"
-          required
+          defaultValue=""
           value={city}
           onChange={props.handleChange}
         />
-        <Form.Control.Feedback type="invalid">
-          Please provide a valid city.
-        </Form.Control.Feedback>
+        <Form.Control.Feedback />
       </Form.Group>
 
       <Form.Group md="3" controlId="validationCustom06">
@@ -102,14 +98,12 @@ const UserForm = props => {
         <Form.Control
           type="text"
           placeholder="State"
-          required
           name="state"
           value={state}
+          defaultValue=""
           onChange={props.handleChange}
         />
-        <Form.Control.Feedback type="invalid">
-          Please provide a valid state.
-        </Form.Control.Feedback>
+        <Form.Control.Feedback />
       </Form.Group>
 
       <Form.Group md="3" controlId="validationCustom07">
@@ -117,39 +111,15 @@ const UserForm = props => {
         <Form.Control
           type="number"
           placeholder="Zip"
-          required
+          defaultValue=""
           name="zipcode"
           value={zipcode}
           onChange={props.handleChange}
         />
-        <Form.Control.Feedback type="invalid">
-          Please provide a valid zip.
-        </Form.Control.Feedback>
+        <Form.Control.Feedback />
       </Form.Group>
 
-      <Form.Group>
-        <Form.Check
-          required
-          label="Agree to terms and conditions"
-          feedback="You must agree before submitting."
-        />
-      </Form.Group>
-
-      <Button type="submit">
-        {props.for === 'checkout'
-          ? `Place Order ($` +
-            (
-              Object.keys(props.cart).reduce(
-                (orderTotal, productId) =>
-                  orderTotal +
-                  JSON.parse(props.cart[productId]).price *
-                    JSON.parse(props.cart[productId]).quantity,
-                0
-              ) / 100
-            ).toFixed(2) +
-            `)`
-          : 'Update User'}
-      </Button>
+      <Button type="submit">Update User</Button>
     </Form>
   )
 }

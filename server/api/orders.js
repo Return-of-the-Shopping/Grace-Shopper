@@ -17,13 +17,8 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:orderId', async (req, res, next) => {
   try {
-    // const order = await Order.findByPk(req.params.orderId)
-    // if (!order) {
-    //   return res.sendStatus(404)
-    // }
-    // res.json(order)
-
-    //ReadOrder Route//
+    //Read Order Route//
+    // retrieves an order with all the products attached to the order
     const orderItems = await Order.findOne({
       where: {id: req.params.orderId},
       include: [
@@ -32,6 +27,7 @@ router.get('/:orderId', async (req, res, next) => {
         }
       ]
     })
+    // check if admin for the sake of a user searching someone else's order
     if (
       req.user.dataValues.id === orderItems.userId ||
       req.user.dataValues.admin
@@ -43,31 +39,14 @@ router.get('/:orderId', async (req, res, next) => {
     } else {
       res.sendStatus(401)
     }
-    // if (!orderItems.length) {
-    //   return res.sendStatus(404)
-    // }
   } catch (err) {
     next(err)
   }
 })
 
-// router.get('/:productId', async (req, res, next) => {
-//   try {
-//     const product = await Product.findByPk(req.params.productId)
-//     if (!product) {
-//       return res.sendStatus(404)
-//     }
-//     res.json(product)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
-
 router.post('/', async (req, res, next) => {
   try {
     // Inside our req.body; we NEED userId, productId, quantity, price
-    console.log(req.session)
-    console.log(req.user.dataValues.admin)
     //find an order for a user that is not yet fulfilled if it exists
     let order = await Order.findOne({
       // ***Keep in mind that guests have no userId
@@ -97,7 +76,6 @@ router.post('/', async (req, res, next) => {
     // productorder table should have values now
     //we're creating an association between the product we clicked, and the order we found or created.
 
-    // res.send(order)
     res.status(201).json(order)
   } catch (error) {
     next(error)
@@ -106,14 +84,13 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/', async (req, res, next) => {
   try {
-    // user, don’t know their order history? so get an order that isFulfilled = false that matches userId
+    // This route deletes an item from the cart
     const userId = req.body.userId
     if (req.user.dataValues.admin || +userId === +req.user.dataValues.id) {
       const userOrder = await Order.findOne({
         where: {
           userId: userId,
           isFulfilled: false
-          // id: +req.params.orderId,
         }
       })
       if (userOrder) {
@@ -123,7 +100,6 @@ router.delete('/', async (req, res, next) => {
             productId: +req.body.productId
           }
         })
-        // await userOrder.destroy()
         res.sendStatus(204).end()
       } else {
         res.sendStatus(401)
@@ -138,7 +114,6 @@ router.delete('/', async (req, res, next) => {
 
 router.put('/checkout', async (req, res, next) => {
   try {
-    console.log(req.body)
     const {userId, cart} = req.body
 
     if (userId === req.user.dataValues.id) {
@@ -148,7 +123,7 @@ router.put('/checkout', async (req, res, next) => {
           isFulfilled: false
         }
       })
-
+      // when we checkout, we update the quantity for that specific product
       if (userOrder) {
         //reduce quanitity in product
         Object.keys(cart).map(async productId => {
@@ -177,6 +152,8 @@ router.put('/checkout', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
   try {
+    // If the quantity reaches 0, delete it from the cart
+    // Else, update the quantity
     const userId = req.body.userId
     if (req.user.dataValues.admin || +userId === +req.user.dataValues.id) {
       const userOrder = await Order.findOne({
@@ -209,29 +186,3 @@ router.put('/', async (req, res, next) => {
     next(err)
   }
 })
-
-// router.delete('/:productId', async (req, res, next) => {
-//   try {
-//     const id = +req.params.productId
-//     await Product.destroy({
-//       where: {id},
-//     })
-//     res.sendStatus(204)
-//   } catch (error) {
-//     next(error)
-//   }
-// })
-
-// router.put('/:productId', async (req, res, next) => {
-//   try {
-//     const id = +req.params.productId
-//     const product = await Product.findByPk(id)
-//     if (!product) {
-//       res.sendStatus(404)
-//     }
-//     const updatedProduct = await product.update(req.body, {returning: true})
-//     res.json(updatedProduct)
-//   } catch (error) {
-//     next(error)
-//   }
-// })

@@ -33,6 +33,7 @@ router.post('/', async (req, res, next) => {
         const product = await Product.create(req.body)
         res.status(201).json(product)
       } else {
+        // send 401 if theyre not an admin
         return res.sendStatus(401)
       }
     }

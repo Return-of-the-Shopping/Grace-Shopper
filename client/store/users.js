@@ -21,7 +21,6 @@ const removeSingleUser = userId => ({type: REMOVE_SINGLE_USER, userId})
 export const getUsers = () => async dispatch => {
   try {
     const {data} = await axios.get('/api/users')
-    console.log('data', data)
     dispatch(getAllUsers(data))
   } catch (error) {
     console.error(error)

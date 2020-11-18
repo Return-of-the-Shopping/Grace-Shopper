@@ -20,7 +20,6 @@ export class AllUsers extends Component {
 
   handleDelete(userId, userName) {
     this.props.deleteUser(userId)
-    // this.props.history.push('/allUsers')
     toast(`Deleted ${userName} from Database!`, {
       position: 'top-right',
       autoClose: 5000,
@@ -34,7 +33,6 @@ export class AllUsers extends Component {
   }
 
   toggleDelete() {
-    console.log(this.state.toggleDelete)
     this.setState(state => ({
       toggleDelete: !state.toggleDelete
     }))
@@ -42,8 +40,6 @@ export class AllUsers extends Component {
 
   render() {
     const {users} = this.props
-    console.log(users)
-    console.log('user', this.props.user)
     if (this.props.loading) {
       return <Loading props="user" />
     }

@@ -44,10 +44,6 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            {/* <Route path="/home" component={UserHome} /> */}
-            {/* Should delete this component, we don't use it*/}
-
-            {/* <Route path="/profile" component={SingleUser} /> */}
             <Route path="/users/:userId" component={SingleUser} />
             <Route path="/orders/confirmation" component={Confirmation} />
             {isAdmin ? (
@@ -58,7 +54,6 @@ class Routes extends Component {
             ) : (
               <NotAdmin />
             )}
-            {/* <Route exact path="/users" component={AllUsers} /> */}
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

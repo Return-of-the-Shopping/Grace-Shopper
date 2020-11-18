@@ -26,21 +26,9 @@ const generateUsers = () => {
         return true
       })
       .join('')
-    // had to get rid of - values cause of isNumeric validator, I think it'll be preferred if we get rid of the validator so its more clean
 
     const address = faker.address.streetAddress()
     let payment = faker.finance.creditCardNumber()
-
-    // at first, the isCreditCard validator worked for us but not sure why it won't work for the random generator, so I got rid of it.
-
-    // payment = payment.split('').filter((number)=>{
-    //   const convert = parseInt(number);
-    //   if(isNaN(convert)){
-    //     return false;
-    //   }
-    //   return true;
-    // }).join('');
-
     const password = faker.internet.password()
     const userObj = {
       firstName: firstName,
@@ -73,6 +61,7 @@ const fetchProducts = async () => {
       for (let j = 0; j < 50; j++) {
         await Product.create({
           name: beers[j].name,
+          quantity: 10,
           abv: beers[j].abv,
           price: beerPrice(),
           description: beers[j].description || 'n/a',

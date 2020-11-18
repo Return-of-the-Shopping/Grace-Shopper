@@ -3,18 +3,10 @@ const Product = require('./products')
 const Order = require('./orders')
 const ProductOrder = require('./product-orders')
 
-/**
- * If we had any associations to make, this would be a great place to put them!
- * ex. if we had another model called BlogPost, we might say:
- *
- *    BlogPost.belongsTo(User)
- */
-
-//userId will appear in order?
 User.hasMany(Order)
 Order.belongsTo(User)
 
-//productId and orderId are created
+//productId and orderId are created, through table is created
 Product.belongsToMany(Order, {through: ProductOrder})
 Order.belongsToMany(Product, {through: ProductOrder})
 

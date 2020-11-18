@@ -3,9 +3,7 @@ import {Link} from 'react-router-dom'
 
 const AdminTools = props => {
   return (
-    //color change based on success or failure?
-    <div className={props.success ? 'product-util success' : 'product-util'}>
-      <div className="util-center">{props.success && props.success}</div>
+    <div className="product-util">
       <div className="util-right">
         <Link to="/add-product">Add New Product</Link>
         {props.toggleDelete && (

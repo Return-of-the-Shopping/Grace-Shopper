@@ -11,21 +11,10 @@ class Cart extends React.Component {
   constructor() {
     super()
     this.state = {
-      // orderTotal: 0,
       cartUpdate: false
     }
-
     this.resetCartState = this.resetCartState.bind(this)
-    // this.resetOrderTotal = this.resetOrderTotal.bind(this)
   }
-
-  // resetOrderTotal(state, operation, amount) {
-  //   if (operation === 'add') {
-  //     this.setState({orderTotal: state.orderTotal})
-  //   } else {
-  //     this.setState({})
-  //   }
-  // }
 
   resetCartState(state) {
     this.setState({cartUpdate: !state.cartUpdate})
@@ -110,7 +99,6 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    // getCart: orderId => dispatch(fetchCart(orderId)),
     removeCart: info => dispatch(removeFromCart(info)),
     editCart: info => dispatch(editInCart(info)),
     updateOrderTotal: orderTotal => dispatch(updateOrderTotal(orderTotal))
