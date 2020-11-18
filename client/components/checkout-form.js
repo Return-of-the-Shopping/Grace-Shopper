@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js'
 import {Form, InputGroup, Button} from 'react-bootstrap'
 import CardSection from './card-section'
-import history from '../history'
+// import history from '../history'
 
 const CheckoutForm = props => {
   const [succeeded, setSucceeded] = useState(false)
@@ -49,9 +49,10 @@ const CheckoutForm = props => {
     props.handleChange(event)
   }
 
-  const handleSubmit = async ev => {
-    ev.preventDefault()
-    props.handleSubmit()
+  const handleSubmit = async event => {
+    //form validation on checkout component
+    props.handleCheckout(event)
+
     setProcessing(true)
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
@@ -66,7 +67,6 @@ const CheckoutForm = props => {
       setProcessing(false)
       setSucceeded(true)
       console.log('Succeeded')
-      history.push('/orders/confirmation')
     }
   }
 
@@ -89,7 +89,7 @@ const CheckoutForm = props => {
           onChange={props.handleChange}
         />
         <Form.Control.Feedback type="invalid">
-          Please enter a valid first name
+          Please enter a valid first name.
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -103,8 +103,8 @@ const CheckoutForm = props => {
           value={lastName}
           onChange={props.handleChange}
         />
-        <Form.Control.Feedback>
-          Please enter a valid last name
+        <Form.Control.Feedback type="invalid">
+          Please enter a valid last name.
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -121,7 +121,7 @@ const CheckoutForm = props => {
           onChange={props.handleChange}
         />
         <Form.Control.Feedback type="invalid">
-          Please enter a valid email address
+          Please enter a valid email address.
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -192,7 +192,7 @@ const CheckoutForm = props => {
           feedback="You must agree before submitting."
         />
       </Form.Group>
-      <CardSection />
+      <CardSection onChange={handleChange} />
       <Button type="submit" disabled={!stripe}>
         {`Place Order $
             ${(
@@ -205,6 +205,7 @@ const CheckoutForm = props => {
               ) / 100
             ).toFixed(2)}`}
       </Button>
+      {state.error && <div>{state.error.message}</div>}
     </Form>
   )
 }
