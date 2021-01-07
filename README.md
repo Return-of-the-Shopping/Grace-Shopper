@@ -4,4 +4,4 @@
 
 Team - Mike Kim, Tun Oo Swe, Nancy Kwan, Min Kyu Han
 
-Heroku - hoppyendings.herokuapp.com
+Heroku - https://hoppyendings.herokuapp.com
